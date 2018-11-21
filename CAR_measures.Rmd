@@ -29,18 +29,18 @@ author: Megan McMahon
 ![](figures/SELECT_FILE.png)
 
 ```{r setup, echo = FALSE}
-
-
-#Select the FIRST FILE in the "new" actigraphy data you wish to analyze
-DATA_PATH <- file.choose()
-
-MAIN_DIR <- substr(path, 1, unlist(stringr::str_locate_all(pattern ='/data/', path))[1])
-ACT_DIR <- substr(path, 1, unlist(stringr::str_locate_all(pattern ='/new/', path))[2])
-
 library(lubridate)
 library(ggplot2) 
 library(dplyr)
 library(stringr)
+
+
+#Select the FIRST FILE in the "new" actigraphy data you wish to analyze
+#DATA_PATH <- file.choose()
+DATA_PATH <- "/Users/megmcmahon/Box/ADM_Study/ADM/data/actigraphy/cleaned_09-21-2018/new/30003_10_23_2017_1_25_00_PM_New_Analysis.csv"
+
+MAIN_DIR <- substr(DATA_PATH, 1, unlist(stringr::str_locate_all(pattern ='/data/', DATA_PATH))[1])
+ACT_DIR <- substr(DATA_PATH, 1, unlist(stringr::str_locate_all(pattern ='/new/', DATA_PATH))[1])
 
 
 #SETTINGS
@@ -67,6 +67,7 @@ if (!dir.exists(paste0(ACT_DIR, "/processed"))) {
 if (!dir.exists(paste0(ACT_DIR, "/residuals"))) {
   dir.create(paste0(ACT_DIR, "/residuals"))
 } 
+
 ```
 
 # Prep for nparACT 
@@ -94,11 +95,11 @@ dup_records = substr(basename(dup_files), 1, id_length)
 # Read in .csv files, set new wd and save .txt to new directory, reset directory
 discard = c()
 for (i in 1:length(files)) {
-  #setwd(paste0(ACT_DIR, "/new"))
   filename <- paste0(ACT_DIR, "/text/", record_id[i],".txt")
   act <- read.csv(files[i], skip = 1, header = TRUE, row.names = NULL)
   act [,1] <- ymd_hms(as.character(act[,1]), tz = "UTC")
   colnames(act) <- c("datetime", "activity")
+  
   
   #checks that subjects have no more than 10% missing values
   # if ( (sum(is.na(act$activity))) / (length(act$activity)) > 0.10) {
@@ -120,8 +121,12 @@ for (i in 1:length(files)) {
     
     #only keep most recent 10 days of data for all subjects
     start = ymd_hms(tail(act$datetime, 1), tz="UTC") - days(act_period)
-    act <- act[act$datetime >= start,]
-    write.table(act, file = filename, col.names = FALSE, row.names = FALSE, sep = " ")
+    act_all <- act
+    cut <- act[act$datetime < start, ]
+    act <- act[act$datetime >= start, ]
+    
+    #write.table(act, file = filename, col.names = FALSE, row.names = FALSE, sep = " ")
+    write.table(act_all, file = paste0(ACT_DIR, "/text/", record_id[i],".txt"), col.names = FALSE, row.names = FALSE, sep = " ")
   }
   
 }
@@ -170,7 +175,7 @@ write.csv(base_data, file = paste0(MAIN_DIR, "/data/CAR/nparact_", format(Sys.ti
 ## CAR processed
 ### 1) Convert Variables
 This converts actigraphy measures to formats which will be input into the circadian activity script.
-#### Note: this takes a LONG time
+
 
 ```{r CAR process}
 library(stats)
@@ -403,17 +408,20 @@ library(stringr)
 # Load redcap data from survey folder
 # Currently using 9-20
 redcap <- read.csv(file.choose())
-
+head(redcap)
 #redcapday2 <- read.csv(paste0(MAIN_DIR,"/data/survey/AgingDecMem_DATA_2018-10-12_0817.csv"))
 
 #Load nparact
 base_data <- read.csv(file.choose())
+head(base_data)
 
 #Load CAR analysis
 c=read.csv(file.choose())
+head(c)
 
 #Load behavioral 
-memmatch <- read.csv(paste0(MAIN_DIR, "/data/behavioral/MemMatch_summary.csv"))
+mem <- read.csv("~/Box/ADM_Study/ADM/data/summary/memmatch_results.csv")
+head(mem)
 
 ###Assign Age Groups
 redcap <- redcap[!is.na(redcap$age),]
@@ -446,7 +454,7 @@ colnames(psqi) <- c("record_id", "global_psqi")
 all_data <- merge(sleep_data, redcap, by = "record_id")
 all_data$global_psqi[all_data$global_psqi > 21] <- NA
 
-d <- merge(all_data, memmatch, by = "record_id")
+d <- merge(all_data, mem, by.x = "record_id", by.y = "subnum")
 
-write.csv(d, file = paste0(MAIN_DIR,"/data/summary/combined_data_", format(Sys.time(), "%Y-%m-%d"), ".csv"), row.names = FALSE)
+write.csv(d, file = paste0(MAIN_DIR,"/data/combined_data_", format(Sys.time(), "%Y-%m-%d"), ".csv"), row.names = FALSE)
 ```
