@@ -43,17 +43,18 @@ sh /Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/03_BIDS_intendedfor.sh 30004
 Upload the BIDS directory to the [BIDS Validator website](http://bids-standard.github.io/bids-validator/) and check to make sure there are no errors.
 
 # mriqc
-Requires [Docker](https://docs.docker.com/engine/installation/).
+Requires [Docker](https://docs.docker.com/engine/installation/).\
+Documentation available [here](https://mriqc.readthedocs.io/en/stable/docker.html).
 
 To run mriqc:
 
-Participant level command
+*Participant level command*\
 Currently using a fd threshold of 0.25 mm for rsfMRI and 0.50 mm for task fMRI
 
 ```
 docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out participant --fd_thres 0.25 --no-sub -vvv --participant_label 30004 
 ```
-Group level command
+*Group level command*
 
 ```
 docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out group -m {T1w,bold} 
@@ -62,8 +63,8 @@ docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v
 # Update excel sheet with information about scan quality
 Review group mriqc report and copy values to ~/Scan_Data/AgingDataProgress.xlsx
 
-#fMRIprep
-Requires [Docker](https://docs.docker.com/engine/installation/).
+# fmriprep
+Requires [Docker](https://docs.docker.com/engine/installation/).\
 You will need to specify the path to a freesufer license file. If you do not already have a freesurfer license, you can obtain one [here](https://surfer.nmr.mgh.harvard.edu/fswiki/License).
 
 [Installation instructions](https://fmriprep.readthedocs.io/en/stable/installation.html)
