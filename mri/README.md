@@ -6,7 +6,7 @@ The following commands are given as an example for subject number 30004.
 
 Make sure subject's raw DICOM files are in ~/Scan_Data/RAW/{subject ID}
 
-## 1. BIDS conversion
+## BIDS conversion
 
 Open Terminal and run:
 
@@ -39,10 +39,10 @@ In Terminal, run:
 sh /Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/03_BIDS_intendedfor.sh 30004
 ```
 
-# BIDS Validator
+## BIDS Validator
 Upload the BIDS directory to the [BIDS Validator website](http://bids-standard.github.io/bids-validator/) and check to make sure there are no errors.
 
-# mriqc
+## mriqc
 Requires [Docker](https://docs.docker.com/engine/installation/).\
 Documentation available [here](https://mriqc.readthedocs.io/en/stable/docker.html).
 
@@ -60,10 +60,10 @@ docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v
 docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out group -m {T1w,bold} 
 ```
 
-# Update excel sheet with information about scan quality
+#### Update excel sheet with information about scan quality
 Review group mriqc report and copy values to ~/Scan_Data/AgingDataProgress.xlsx
 
-# fmriprep
+## fmriprep
 Requires [Docker](https://docs.docker.com/engine/installation/).\
 You will need to specify the path to a freesufer license file. If you do not already have a freesurfer license, you can obtain one [here](https://surfer.nmr.mgh.harvard.edu/fswiki/License).
 
