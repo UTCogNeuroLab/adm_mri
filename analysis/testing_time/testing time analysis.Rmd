@@ -1,0 +1,45 @@
+---
+title: "Test Time Analysis"
+author: "MM YM"
+date: "2/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(ggplot2)
+```
+
+## Load Data
+
+```{r load data}
+testtime <- read.csv("~/FILENAME")
+
+# will need to double check variable names - should make them "record_id" and "ttime"
+
+data <- read.csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-01-23-v2.csv")
+
+d <- merge(data, testtime, by = "record_id")
+```
+
+## Plots
+
+```{r plots}
+d$ttimediff <- d$actphi - d$ttime
+
+ggplot(data = d, aes(x = ttimediff, y = accuracy, colour = group)) + 
+  geom_point()
+
+ggplot(data = d, aes(x = ttimediff, y = rt, colour = group)) + 
+  geom_point()
+
+```
+
+## Analysis
+
+```{r linear model}
+summary(lm(accuracy ~ ttimediff, data = d))
+
+summary(lm(rt ~ ttimediff, data = d))
+```
+
