@@ -16,7 +16,11 @@ sh /Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/01_BIDS_conversion_ADM.sh 300
 
 #### Rename DICOM folders if subject had multiple fieldmaps
 
-Go to the subject's raw file directory ~/Scan_Data/RAW/{subject ID} and check for instances where there are more than 2 FIELD_MAPPING directories. If there are more than 2, each of these FIELD_MAPPING directories will need to be renamed such that the first two corresponding to the first fieldmap are called "FIELD_MAPPING_RUN1_0004" and "FIELD_MAPPING_RUN1_0005", the second two directories corresponding to the second fieldmap are called "FIELD_MAPPING_RUN2_0015" and ""FIELD_MAPPING_RUN2_0016". Note that the number suffixes should *not* change (these numbers given here are just for an example :) ).
+Go to the subject's raw file directory ~/Scan_Data/RAW/{subject ID} and check for instances where there are more than 2 FIELD_MAPPING directories.\
+
+If there are more than 2, each of these FIELD_MAPPING directories will need to be renamed such that the first two corresponding to the first fieldmap are called "FIELD_MAPPING_RUN1_0004" and "FIELD_MAPPING_RUN1_0005", the second two directories corresponding to the second fieldmap are called "FIELD_MAPPING_RUN2_0015" and ""FIELD_MAPPING_RUN2_0016".\
+
+Note that the number suffixes should *not* change (these numbers given here are just for an example :) ).
 
 #### DICOM to NIFTI conversion for multiple fieldmaps
 
