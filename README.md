@@ -8,4 +8,4 @@ Includes processing script and scripts for calculation of circadian measures.
 Includes scripts for BIDS conversion and preprocessing.
 
 ## analysis
-Includes scripts for functional connectivity analysis.
+Includes scripts for functional connectivity and behavioral analyses.
