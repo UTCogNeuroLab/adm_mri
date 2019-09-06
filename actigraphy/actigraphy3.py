@@ -57,7 +57,7 @@ while True:
         #prepare text file
         # filename = sorted(os.listdir(oldD))[1]
         # filename
-        for filename in sorted(os.listdir(oldD))[:3]:
+        for filename in sorted(os.listdir(oldD)):
             if filename.endswith('.csv'):
                 record_id = filename[0:5]
                 print('processing data for subject %s' % record_id)
