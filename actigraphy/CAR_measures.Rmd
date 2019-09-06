@@ -154,22 +154,16 @@ library(dplyr)
 library(stringr)
 
 
-files <- list.files(paste0(ACT_DIR, "/text"), pattern= ".txt", full.names = TRUE)
-record_id <- substr(basename(files),1, id_length)
+files <- list.files("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed", pattern= ".csv", full.names = TRUE)
+record_id <- substr(basename(files),1, 5)
 
 #Get IS, IV, RA, L5, and M10 values
-npar_data <- nparACT_base_loop(paste0(ACT_DIR, "/text"), SR)
+crdata <- nparACT_base_loop(files, SR = 2/60)
 record_id <- unique(record_id)
-base_data <- cbind(npar_data, record_id)
-base_data <- base_data[c("record_id","IS", "IV", "RA", "L5", "L5_starttime", "M10", "M10_starttime")]
+crdata <- cbind(record_id, crdata)
+#base_data <- base_data[c("record_id","IS", "IV", "RA", "L5", "L5_starttime", "M10", "M10_starttime")]
 
-# Convert Start Time Variables
-base_data$L5_start_diff <-  base_data$L5_starttime  
-base_data$M10_start_diff <-  base_data$M10_starttime  
-base_data <- transform(base_data, M10_start_diff = as.difftime(M10_start_diff, units = "hours"), 
-                       L5_start_diff = as.difftime(L5_start_diff, units = "hours"))
-
-write.csv(base_data, file = paste0(MAIN_DIR, "/data/CAR/nparact_", format(Sys.time(), "%Y-%m-%d"), ".csv"), row.names = FALSE)
+write.csv(crdata, file = paste0("~/Box/CogNeuroLab/Aging Decision Making R01/Data/cr/nparact_", format(Sys.time(), "%Y-%m-%d"), ".csv"), row.names = FALSE)
 ```
 
 ## CAR processed
