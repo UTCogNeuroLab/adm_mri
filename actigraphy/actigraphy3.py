@@ -32,7 +32,7 @@ except ImportError:
 
 from pathlib import Path
 home_dir = str(Path.home())
-work_dir = os.path.join(home_dir, 'Box/CogNeuroLab/Aging Decision Making R01')
+work_dir = os.path.join(home_dir, 'Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy')
 
 while True:
     try:
@@ -42,16 +42,9 @@ while True:
             dir = os.path.dirname(sys.argv[0])
 
         #directory
-        oldD = os.path.join(work_dir, 'Data/Actigraphy/raw')
-        newD = os.path.join(work_dir, 'Data/Actigraphy/processed')
+        oldD = os.path.join(work_dir, 'raw')
+        newD = os.path.join(work_dir, 'processed')
 
-
-        #preparing
-        #rows to skip
-        list(range(0, 22)) + [24]
-
-        #errorCount = counter for errors
-        #allCount = counter for all files
         allCount = 1
 
         #list of all files
@@ -62,7 +55,9 @@ while True:
         l_aResult = []
 
         #prepare text file
-        for filename in sorted(os.listdir(oldD)):
+        # filename = sorted(os.listdir(oldD))[1]
+        # filename
+        for filename in sorted(os.listdir(oldD))[:3]:
             if filename.endswith('.csv'):
                 record_id = filename[0:5]
                 print('processing data for subject %s' % record_id)
@@ -79,8 +74,8 @@ while True:
                 missingNum = df['Activity'].isnull().sum()
                 if missingNum == 0:
                     #df=df.rename(columns = {'Datetime':'Time'}) #relabel
-                    newcsv = os.path.join(newD, record_id + '_acti.csv') #name
-                    df.to_csv(newcsv, index = False, index_label = None) #name
+                    newcsv = os.path.join(newD, record_id + '.csv') #name
+                    df.to_csv(newcsv, index = False, index_label = None, header=None)
                     result = 'normal'
                 #remove all NaN values at the beginning
                 i = 0
@@ -98,8 +93,8 @@ while True:
                 #if not missing datapoints after the beginning and ends are trimmed
                 if missingNum == 0:
                     #df=df.rename(columns = {'Datetime':'Time'}) #relabel
-                    newcsv = os.path.join(newD, record_id + '_acti.csv') #name
-                    df.to_csv(newcsv, index = False, index_label = None) #name
+                    newcsv = os.path.join(newD, record_id + '.csv') #name
+                    df.to_csv(newcsv, index = False, index_label = None, header=None) #name
                     result = 'trimmed'
 
                 #interpolate values with a maximum of 10 consecutive values
@@ -109,8 +104,8 @@ while True:
                     missingNum = df['Activity'].isnull().sum()
                     #if not missing any values after interpolation, we're good to go!
                     if missingNum == 0:
-                        newcsv = os.path.join(newD, record_id + '_acti.csv') #name
-                        df.to_csv(newcsv, index = False, index_label = None) #save
+                        newcsv = os.path.join(newD, record_id + '.csv') #name
+                        df.to_csv(newcsv, index = False, index_label = None, header=None) #save
                         result = 'interpolated'
                     #start halfway throught the file and iterate downwards
                     else:
@@ -132,8 +127,8 @@ while True:
                             missingNum = df['Activity'].isnull().sum()
                             if missingNum==0:
                                 #df=df.rename(columns = {'Datetime':'Time'}) #relabel
-                                newcsv = os.path.join(newD, record_id + '_acti.csv') #name
-                                df.to_csv(newcsv, index = False, index_label = None) #name
+                                newcsv = os.path.join(newD, record_id + '.csv') #name
+                                df.to_csv(newcsv, index = False, index_label = None, header=None) #name
                                 result = 'edited'
                             else:
                                 result = 'skipped'
@@ -162,7 +157,7 @@ while True:
         aCount_df = pandas.DataFrame({'index': l_aCount, 'file': l_aFile, 'count': l_aNum, 'period': l_aPeriod, 'result': l_aResult})
         aCount_df = aCount_df[['index','file','count','result']]
         aFilename = "#all_" + datetime.datetime.now().strftime("%Y-%m-%d-%H%M")
-        Acsv = os.path.join(newD, aFilename + ".csv")
+        Acsv = os.path.join(work_dir, aFilename + ".csv")
         aCount_df.to_csv(Acsv, index = False, index_label = None)
 
         del aCount_df, Acsv, aFilename, l_aCount, l_aFile, l_aNum
