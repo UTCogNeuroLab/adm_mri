@@ -1,0 +1,264 @@
+Analysis in R: Examining Circadian Rhythms and Daily Mood Ratings
+========================================================
+author: Megan McMahon
+date: September 11, 2019
+autosize: false
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 10000)
+```
+
+
+Best Practices
+========================================================
+
+Store data on UT Box <br>
+Use git and GitHub to version control your scripts
+
+Why?
+- Protect privacy and confidentiality
+- Collaboration and transparency
+- Version control
+
+Loading Data into R
+========================================================
+
+```{r}
+library(readr)
+cr <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/cr/nparact_2019-06-20.csv")
+data <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/AgingDecMem-SleepSurveyData_DATA_2019-09-04_0929.csv")
+```
+
+Data Cleaning
+========================================================
+incremental:true
+- DO be as consistent as possible with data entry and organization <br>
+- DON'T use different variable names for the same thing (record_id, participant_id, subject_id, subnum, etc.)
+- DON'T use spaces in variable names
+
+Data Cleaning
+========================================================
+incremental:true
+Reformatting record IDs
+```{r}
+library(tidyverse)
+
+data$record_id <- str_pad(data$record_id, 4, pad = "0")
+data <- data %>%
+  group_by(record_id) %>%
+  fill(c(age, sex), .direction = "down")
+
+data$record_id <- ifelse(data$age <=30, paste0(3,data$record_id), paste0(4,data$record_id))
+data <- data[!is.na(data$record_id),]
+data <- data[!data$redcap_event_name == 'online_eligibility_arm_1',]
+
+data <- merge(data, cr, by = "record_id", all = TRUE)
+```
+
+Data Cleaning
+========================================================
+incremental:true
+
+Assigning age groups
+```{r}
+data$agegroup <- ifelse(data$record_id < 40000, 0, 1)
+data$age <- as.numeric(data$age)
+
+data$agegroup <- factor(data$agegroup)
+data$`Age Group` <- ifelse(data$agegroup == 1, "Older Adults", "Young Adults")
+```
+
+Data Cleaning
+========================================================
+incremental:true
+
+Reformatting sex variables
+```{r}
+data$sex[substr(data$sex, 0, 1) == "f" | substr(data$sex, 0, 1) == "F"] <- "F"
+data$sex[substr(data$sex, 0, 1) == "m" | substr(data$sex, 0, 1) == "M"] <- "M"
+data$sex <- factor(data$sex)
+```
+
+
+Checking Your Work
+========================================================
+
+Check dataset dimensions and use functions like `head` to quickly check that your code is working in the way you'd expect.
+
+```{r}
+length(data)
+head(data$record_id)
+```
+
+
+Plotting Data
+========================================================
+incremental:true
+
+Let's look at daily happiness ratings over the actigraphy recording period in young adults.
+
+```{r, eval=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+
+ggplot(data[data$agegroup == 0,], aes(x = redcap_event_name, y = happy, color = record_id, group = record_id)) +
+  geom_point() + 
+  theme_classic() + 
+  theme(legend.position = "none") +
+  xlab("Day") + ylab("Mean Daily Hapiness Rating") + 
+  scale_x_discrete(name ="Day", labels=seq(1,14,1)) +
+  ggtitle('Daily Happiness Ratings in Young Adults')
+```
+
+ 
+========================================================
+
+```{r, echo = FALSE, fig.align="center"}
+library(ggplot2)
+library(RColorBrewer)
+
+ggplot(data[data$agegroup == 0,], aes(x = redcap_event_name, y = happy, color = record_id, group = record_id)) +
+  geom_point() + 
+  theme_classic() + 
+  theme(legend.position = "none") +
+  xlab("Day") + ylab("Mean Daily Hapiness Rating") + 
+  scale_x_discrete(name ="Day", labels=seq(1,14,1)) +
+  ggtitle('Daily Happiness Ratings in Young Adults') 
+```
+Group Level Analysis
+========================================================
+incremental:true
+
+What if we want to look at group-level statistics?
+
+```{r, echo=FALSE}
+data_n <- data %>%
+  group_by(record_id) %>%
+  summarise(happy_mean = mean(happy, na.rm = TRUE), happy_var = var(happy, na.rm = TRUE), sad_mean = mean(sad, na.rm = TRUE), sad_var=var(sad, na.rm = TRUE))
+
+data_n$agegroup <- ifelse(data_n$record_id < 40000, 0, 1)
+data_n$`Age Group` <- ifelse(data_n$agegroup == 0, "Young Adults", "Older Adults")
+data_n$`Age Group`<-factor(data_n$`Age Group`, levels=c("Young Adults", "Older Adults"))
+```
+
+```{r}
+data_n %>%
+  group_by(agegroup) %>%
+  summarise(happy = mean(happy_mean, na.rm = TRUE), sad = mean(sad_mean, na.rm = TRUE), happy_var = mean(happy_var, na.rm = TRUE), sad_var = mean(sad_var, na.rm = TRUE))
+```
+
+Group Level Analysis
+========================================================
+incremental:true
+
+We can look at mean daily happiness level ratings by group!
+
+```{r, echo=FALSE}
+data_n <- merge(data_n, cr, by = 'record_id')
+```
+
+
+```{r}
+t.test(happy_mean ~ agegroup, data = data_n)
+```
+
+Group Level Plots
+========================================================
+
+```{r, eval = FALSE}
+ggplot(data_n, aes(x = `Age Group`, y = happy_mean, color = `Age Group`)) +
+  geom_boxplot(size=2) + 
+  theme_classic() + 
+  xlab("Age Group") + ylab("Mean Daily Hapiness Rating") + 
+  scale_colour_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  ggtitle('Daily Happiness Ratings')
+```
+--
+ 
+========================================================
+
+```{r, echo = FALSE, fig.align="center"}
+ggplot(data_n, aes(x = `Age Group`, y = happy_mean, color = `Age Group`)) +
+  geom_boxplot() + 
+  theme_classic() + 
+  xlab("Age Group") + ylab("Mean Daily Hapiness Rating") + 
+  scale_colour_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  ggtitle('Daily Happiness Ratings')
+```
+
+Regression Analysis
+========================================================
+incremental:true
+
+We can look at the relationship between predictors and an outcome using the `lm` function.
+
+```{r, eval=FALSE}
+model <- lm(happy_mean ~ IV + agegroup, data = data_n)
+summary(model)
+```
+
+Regression Analysis
+========================================================
+
+```{r, echo=FALSE}
+model <- lm(happy_mean ~ IV + agegroup, data = data_n)
+summary(model)
+```
+
+Regression Analysis
+========================================================
+incremental:true
+
+We can plot relationships between two variables using a scatter plot.
+
+```{r, eval=FALSE}
+ggplot(data_n, aes(x = IV, y = happy_mean, color = `Age Group`)) +
+  geom_point() + 
+  theme_classic() + 
+  xlab("IV") + ylab("Mean Daily Happiness Rating") + 
+  scale_colour_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  ggtitle('Intradaily Variability vs. Daily Happiness Ratings')
+
+```
+
+ 
+========================================================
+
+```{r, echo = FALSE, fig.align="center"}
+ggplot(data_n, aes(x = IV, y = happy_mean, color = `Age Group`)) +
+  geom_point() + 
+  theme_classic() + 
+  xlab("IV") + ylab("Mean Daily Happiness Rating") + 
+  scale_colour_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  ggtitle('Intradaily Variability vs. Daily Happiness Ratings')
+
+```
+
+Contributing to GitHub
+========================================================
+incremental:true
+
+Getting started:
+
+Clone a repository <br>
+`git clone https://github.com/UTCogNeuroLab/AgingStudy.git`
+
+Make some changes! <br>
+
+Contributing to GitHub
+========================================================
+incremental:true
+
+The basics: 
+
+Add modified files to tracked files <br>
+`git add cr_mood_example.Rpres` <br>
+
+Check status of tracked files <br>
+`git status`
+
+Commit changes to tracked files <br>
+`git commit -m 'adding example of analysis script in R'`
+
+Push changes to GitHub, where others can see <br>
+`git push`
