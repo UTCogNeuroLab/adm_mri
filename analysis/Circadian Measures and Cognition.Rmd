@@ -57,9 +57,6 @@ dsnmat <- select(dsnmat, IS:fact)
 #write_csv(dsnmat, '~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/cr_dsnmat.csv')
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
 
 ```{r circadian measures}
 library(formattable)
@@ -145,6 +142,10 @@ summary(lm(trails_b_z_score ~ gender + IS, data = d)) # NS
 summary(lm(ds_backward_score   ~ age + gender + IS, data = d)) # NS
 summary(lm(cvlt_ldelay_recall_zscore  ~ IS, data = d)) # p = 0.08899
 
+summary(lm(dmn_participation_x ~ group * RA, data = d))
+summary(lm(ds_backward_score   ~ age + gender + RA, data = d))
+summary(lm(cvlt_ldelay_recall_zscore  ~ RA, data = d))
+
 summary(lm(trails_b_z_score ~ actupmesor^2 + actupmesor, data = d)) 
 summary(lm(ds_backward_score   ~ actupmesor^2 + actupmesor, data = d)) 
 summary(lm(cvlt_ldelay_recall_zscore  ~ actupmesor^2 + actupmesor, data = d)) 
@@ -155,7 +156,7 @@ summary(lm(cvlt_ldelay_recall_zscore  ~ actamp, data = d)) # NS
 
 summary(lm(trails_b_z_score ~ group + fact, data = d)) # p = 0.015
 summary(lm(ds_backward_score   ~ age + gender + fact, data = d)) # NS
-summary(lm(cvlt_ldelay_recall_zscore  ~ actamp, data = d)) # NS
+summary(lm(cvlt_ldelay_recall_zscore  ~ fact, data = d)) # NS
 
 summary(lm(trails_b_z_score ~ group + actupmesor, data = d)) # p = 0.019
 summary(lm(ds_backward_score   ~ age + gender + group + actupmesor, data = d)) # NS
@@ -461,7 +462,12 @@ summary(lm(fpn_participation_x ~ group + total_ac, data = d))
 ```
 ```{r}
 library(ggpubr)
-summary(lm(fpn_modularity_x ~ group * actphi, data = d)) # *
+d$gr*
+lm1 <- lm(fpn_modularity_x ~ group * actphi, data = d) # *
+AIC(lm1)
+summary(lm1)
+#better AIC with just group
+
 summary(lm(fpn_efficiency_x ~ group * actphi, data = d))
 summary(lm(fpn_clustering_x ~ group * actphi, data = d)) # *
 summary(lm(fpn_participation_x ~ group * actphi, data = d)) # *
@@ -469,28 +475,51 @@ summary(lm(fpn_efficiency_x ~ group + actphi, data = d))
 
 p1 <- ggplot(data = d, show.legend = FALSE) + 
   geom_point(aes(x = actupmesor, y = fpn_modularity_x, group = group, color = group), size=2, show.legend = FALSE) + 
-  stat_smooth(aes(x = actupmesor, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x, 2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
+  stat_smooth(aes(x = actupmesor, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
   theme_minimal() + theme(legend.title = element_blank()) + 
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) + 
   xlab('Up-Mesor') + ylab('FPN Modularity')
 
 p2 <- ggplot(data = d) + 
   geom_point(aes(x = actphi, y = fpn_modularity_x, group = group, color = group), size=2, show.legend = FALSE) + 
-  stat_smooth(aes(x = actphi, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x, 2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
+  stat_smooth(aes(x = actphi, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
   theme_minimal() + 
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
   xlab('Acrophase') + ylab(element_blank())
 
 p3 <- ggplot(data = d) + 
-  geom_point(aes(x = actdownmesor, y = fpn_modularity_x, group = group, color = group), size=2) + 
-  stat_smooth(aes(x = actdownmesor, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x, 2), se = FALSE, fullrange = FALSE) +
+  geom_point(aes(x = actdownmesor, y = fpn_modularity_x, group = group, color = group), size=2, show.legend = FALSE) + 
+  stat_smooth(aes(x = actdownmesor, y = fpn_modularity_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
   theme_minimal() +
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
   xlab('Down-Mesor') + ylab(element_blank())
 
-ggarrange(p1, p2, p3, heights = c(3, 3, 3), widths = c(4, 4, 7),
+ggarrange(p1, p2, p3, heights = c(3, 3, 3), widths = c(8, 8, 8),
           ncol = 3, nrow = 1)
 
+p4 <- ggplot(data = d, show.legend = FALSE) + 
+  geom_point(aes(x = actupmesor, y = fpn_participation_x, group = group, color = group), size=2, show.legend = FALSE) + 
+  stat_smooth(aes(x = actupmesor, y = fpn_participation_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
+  theme_minimal() + theme(legend.title = element_blank()) + 
+  scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) + 
+  xlab('Up-Mesor') + ylab('FPN Participation Coefficient')
+
+p5 <- ggplot(data = d) + 
+  geom_point(aes(x = actphi, y = fpn_participation_x, group = group, color = group), size=2, show.legend = FALSE) + 
+  stat_smooth(aes(x = actphi, y = fpn_participation_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
+  theme_minimal() + 
+  scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  xlab('Acrophase') + ylab(element_blank())
+
+p6 <- ggplot(data = d) + 
+  geom_point(aes(x = actdownmesor, y = fpn_participation_x, group = group, color = group), size=2, show.legend = FALSE) + 
+  stat_smooth(aes(x = actdownmesor, y = fpn_participation_x, group = group, color = group), method = 'lm', formula = y ~ poly(x,2), se = FALSE, fullrange = FALSE, show.legend = FALSE) +
+  theme_minimal() +
+  scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  xlab('Down-Mesor') + ylab(element_blank())
+
+ggarrange(p4, p5, p6, heights = c(3, 3, 3), widths = c(8, 8, 8),
+          ncol = 3, nrow = 1)
 ```
 
 
@@ -678,4 +707,93 @@ focus_out <- cor_data %>%
 focus_out[abs(focus_out[,2]) > 0.15,]
 ```
 
+```{r participation coefficient}
+library(corrr)
+
+pcoef <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/bct/participation_nodewise.csv', col_names = TRUE )
+
+pcoef <- merge(pcoef, dplyr::select(cr, record_id, IS:RA, fact, actupmesor, actdownmesor, actquot), by = 'record_id')
+OA_cor_data <- filter(pcoef, record_id > 40000)
+YA_cor_data <- filter(pcoef, record_id < 40000)
+record_id <- pcoef$record_id
+group <- ifelse(record_id > 40000, 1, 0)
+
+cor_data <- dplyr::select(pcoef, -record_id)
+OA_cor_data <- dplyr::select(OA_cor_data, -record_id)
+YA_cor_data <- dplyr::select(YA_cor_data, -record_id)
+
+cor_data <- data.frame(apply(pcoef, 2, function(x) as.numeric(as.character(x))))
+OA_cor_data <- data.frame(apply(OA_cor_data, 2, function(x) as.numeric(as.character(x))))
+YA_cor_data <- data.frame(apply(YA_cor_data, 2, function(x) as.numeric(as.character(x))))
+
+focus_out_all <- cor_data %>%
+  correlate() %>%
+  focus(IS:RA,fact, actupmesor, actdownmesor, actquot)
+
+focus_out_OA <- OA_cor_data %>%
+  correlate() %>%
+  focus(IS:RA,fact, actupmesor, actdownmesor, actquot)
+
+focus_out_YA <- YA_cor_data %>%
+  correlate() %>%
+  focus(IS:RA,fact, actupmesor, actdownmesor, actquot)
+
+#focus_out[abs(focus_out[,4]) > 0.3,]
+
+
+focus.mlt <- melt(focus_out_all, id.vars = 'rowname')
+focus_OA.mlt <- melt(focus_out_OA, id.vars = 'rowname')
+focus_YA.mlt <- melt(focus_out_YA, id.vars = 'rowname')
+
+ggplot(data = focus.mlt[abs(focus.mlt$value) > 0.4,], aes(x = value, y = rowname)) + 
+  geom_point(color = 'black') + 
+  geom_point(data = focus_OA.mlt[abs(focus_OA.mlt$value) > 0.4,], color = 'blue') + 
+  geom_point(data = focus_YA.mlt[abs(focus_YA.mlt$value) > 0.4,], color = 'green') +
+  facet_grid( ~ variable,  scales='free')
+```
+
+```{r}
+pcoef <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/bct/participation_nodewise.csv', col_names = TRUE )
+
+pcoef <- merge(pcoef, dplyr::select(neuro, record_id, vc_zscore, cvlt_ldelay_recall_zscore, cowat_zscore, ds_zscore, trails_b_z_score), by = 'record_id')
+OA_cor_data <- filter(pcoef, record_id > 40000)
+YA_cor_data <- filter(pcoef, record_id < 40000)
+record_id <- pcoef$record_id
+group <- ifelse(record_id > 40000, 1, 0)
+
+focus_cog_OA <- OA_cor_data %>%
+  correlate() %>%
+  focus(vc_zscore, cvlt_ldelay_recall_zscore, cowat_zscore, ds_zscore, trails_b_z_score)
+
+focus_cog_YA <- YA_cor_data %>%
+  correlate() %>%
+  focus(vc_zscore, cvlt_ldelay_recall_zscore, cowat_zscore, ds_zscore, trails_b_z_score)
+
+focus_cog_OA.mlt <- melt(focus_cog_OA, id.vars = 'rowname')
+focus_cog_YA.mlt <- melt(focus_cog_YA, id.vars = 'rowname')
+
+ggplot(data = focus_cog_OA.mlt[abs(focus_cog_OA.mlt$value) > 0.3,], aes(x = value, y = rowname)) + 
+  geom_point(color = 'blue') + 
+  geom_point(data = focus_cog_YA.mlt[abs(focus_cog_YA.mlt$value) > 0.3,], color = 'green') + 
+  facet_grid( ~ variable,  scales='free')
+```
+
+```{r}
+#vc_zscore, cvlt_ldelay_recall_zscore, cowat_zscore, ds_zscore, trails_b_z_score
+
+summary(lm(cowat_zscore ~ dmn_participation_x, data = d))
+summary(lm(vc_zscore ~ dmn_participation_x, data = d)) # *
+summary(lm(trails_b_z_score ~ dmn_participation_x, data = d))
+summary(lm(ds_backward_score   ~ dmn_participation_x, data = d)) 
+summary(lm(ds_zscore   ~ dmn_participation_x, data = d)) 
+summary(lm(cvlt_ldelay_recall_zscore  ~ dmn_participation_x, data = d))
+
+summary(lm(RA ~ wb_modularity_x, data = d))
+summary(lm(vc_zscore ~ wb_modularity_x, data = d)) #.
+summary(lm(trails_b_z_score ~ wb_modularity_x, data = d))
+summary(lm(ds_backward_score   ~ wb_modularity_x, data = d)) 
+summary(lm(ds_zscore   ~ wb_modularity_x, data = d)) 
+summary(lm(cvlt_ldelay_recall_zscore  ~ wb_modularity_x, data = d))
+
+```
 

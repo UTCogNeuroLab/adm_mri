@@ -12,6 +12,8 @@ record_id = char(ts_dir.name);
 record_id = str2num(record_id(:, 1:5));
 group = (record_id > 40000);
 OA_ind = find(group, 1);
+OA = (record_id > 40000);
+YA = (record_id < 40000);
 
 %% xDF https://github.com/asoroosh/xDF#xxDF
 % Suppose X is a matrix of size IxT 
@@ -58,17 +60,18 @@ FC_wb_norm = [];
 for i = 1:length(FC_wb)
     for j = 1:length(threshold)
         % Whole Brain
-        FC_wb_norm{i,j} = weight_conversion(FC_wb{i,j}, 'normalize');
+%         FC_wb_norm{i,j} = weight_conversion(FC_wb{i,j}, 'normalize');
         
-        bct.wb.clustering(i,j) = mean(clustering_coef_wu(FC_wb_norm{i,j}));
-        bct.wb.efficiency(i,j) = efficiency_wei(FC_wb{i,j});
-        [~, bct.wb.modularity(i,j)] = modularity_und(FC_wb{i,j});
+%         bct.wb.clustering(i,j) = mean(clustering_coef_wu(FC_wb_norm{i,j}));
+%         bct.wb.efficiency(i,j) = efficiency_wei(FC_wb{i,j});
+%         [~, bct.wb.modularity(i,j)] = modularity_und(FC_wb{i,j});
         
         P = participation_coef(FC_wb{i,j}, schaefer, 0);
-        B = betweenness_wei(FC_wb{i,j});
+%         B = betweenness_wei(FC_wb{i,j});
         
-        bct.wb.participation_mean(i,j) = mean(P);
-        bct.wb.betweenness_mean(i,j) = mean(B);
+        P_x(i,j,:) = P;
+%         bct.wb.participation_mean(i,j) = mean(P);
+%         bct.wb.betweenness_mean(i,j) = mean(B);
     end
 end
 
@@ -245,7 +248,36 @@ bct_x.fpn_betweenness_x = mean(bct.fpn.betweenness_mean(:,2:6), 2);
 writetable(bct_x, '~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/bct/bct_x.csv');
 
 %% Create design matrices
-dsnmat = cat(2, cat(1, ones(40, 1), zeros(36, 1)), cat(1, zeros(40, 1), ones(36, 1)));
+
+dsnmat = cat(2, YA, OA);
+efzscores = readtable('/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/Analysis/neuropsych/ef_zscores.csv');
+efzscores = efzscores(:,2:end);
+efz_rest = sortrows(efzscores(ismember(efzscores.record_id, record_id),:), 'record_id');
+
+%match up fcon matrices
+load('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_wb.mat');
+load('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_dmn.mat');
+load('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_fpn.mat');
+
+record_id(~ismember(record_id, efzscores.record_id)); %delete these
+FC_wb([find(~ismember(record_id, efzscores.record_id) == 1)],:) = [];
+FC_dmn([find(~ismember(record_id, efzscores.record_id) == 1)],:) = [];
+FC_fpn([find(~ismember(record_id, efzscores.record_id) == 1)],:) = [];
+
+save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_wb_74ef.mat', 'FC_wb');
+save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_dmn_74ef.mat', 'FC_dmn');
+save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/FC_fpn_74ef.mat', 'FC_fpn');
+
+dsnmat_ef = cat(2, [efz_rest.record_id < 40000], [efz_rest.record_id > 40000], efz_rest.ef_zscore);
+dsnmat_ef_int = cat(2, dsnmat_ef, efz_rest.ef_zscore);
+dsnmat_ef_int(dsnmat_ef_int(:,1) == 0, 3) = 0;
+dsnmat_ef_int(dsnmat_ef_int(:,2) == 0, 4) = 0;
+
+save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/dsnmat_YA_OA_ef.mat', 'dsnmat_ef');
+save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/dsnmat_YA_OA_efYA_efOA.mat', 'dsnmat_ef_int');
+
+
+%dsnmat = cat(2, cat(1, ones(40, 1), zeros(36, 1)), cat(1, zeros(40, 1), ones(36, 1)));
 save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/dsnmat_ya_oa.mat', 'dsnmat'); 
 
 dsnmat_age_ef_int = cat(2, cat(1, ones(48, 1), ones(44, 1).*-1), efzscores);
