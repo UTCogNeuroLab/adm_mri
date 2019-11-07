@@ -47,8 +47,10 @@ d <- merge(cr, neuro, by='record_id', all=TRUE)
 d <- merge(d, bct, by='record_id', all=TRUE)
 d <- merge(d, rpx2, by.x = 'record_id', by.y = 'subject_id', all=TRUE)
 d <- d[(d$age >= 18) & (d$age <= 90) & !is.na(d$age), ]
+d$agegroup <- factor(ifelse(d$record_id < 40000, 0, 1))
 d$group <- factor(ifelse(d$record_id < 40000, 0, 1), labels = c('Young Adults', 'Older Adults'))
 
+save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data")
 
 
 dsnmat <- merge(bct, cr, by = 'record_id', all=TRUE)
