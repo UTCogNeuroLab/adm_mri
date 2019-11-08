@@ -33,7 +33,7 @@
 ###################################################################
 
 analysis=fc_$(whoami)
-design=/work/06089/mcm5324/stampede2/xcp/fc-6p_scrub.dsn
+design=/scratch/06089/mcm5324/xcp/fc-6p_scrub.dsn
 standard=MNI%2x2x2
 sequence=anatomical
 
@@ -59,7 +59,7 @@ confound2_rps[2]=1
 confound2_rms[2]=0
 confound2_wm[2]=1
 confound2_csf[2]=1
-confound2_gsr[2]=0
+confound2_gsr[2]=1 #this is actually regressing out TRs with FD > 0.25
 confound2_acompcor[2]=0
 confound2_tcompcor[2]=0
 confound2_aroma[2]=0
@@ -77,7 +77,7 @@ confound2_cleanup[2]=1
 # 3  REGRESS
 ###################################################################
 
-regress_tmpf[3]=gaussian
+regress_tmpf[3]=fft
 regress_hipass[3]=0.008
 regress_lopass[3]=0.1
 regress_tmpf_order[3]=
@@ -98,7 +98,7 @@ regress_process[3]=TMP-REG
 # 4 FCON
 ###################################################################
 
-fcon_atlas[4]=schaefer400
+fcon_atlas[4]=schaefer400x7
 fcon_metric[4]=corrcoef
 fcon_thr[4]=N
 fcon_rerun[4]=1
