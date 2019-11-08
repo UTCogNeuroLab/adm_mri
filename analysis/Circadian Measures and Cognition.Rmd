@@ -47,7 +47,8 @@ d <- merge(cr, neuro, by='record_id', all=TRUE)
 d <- merge(d, bct, by='record_id', all=TRUE)
 d <- merge(d, rpx2, by.x = 'record_id', by.y = 'subject_id', all=TRUE)
 d <- d[(d$age >= 18) & (d$age <= 90) & !is.na(d$age), ]
-d$group <- factor(ifelse(d$record_id < 40000, 0, 1), labels = c('Young Adults', 'Older Adults'))
+d$group <- factor(ifelse(d$record_id < 40000, 0, 1))
+d$groupname <- factor(ifelse(d$record_id < 40000, 0, 1), labels = c('Young Adults', 'Older Adults'))
 
 
 
@@ -59,7 +60,7 @@ dsnmat <- select(dsnmat, IS:fact)
 
 
 ```{r circadian measures}
-library(formattable)
+#library(formattable)
 
 d %>%
   select(age, IS:fact, group) %>%
@@ -71,10 +72,10 @@ d %>%
   select(age, IS:fact) %>%
   summary()
 
-d.mlt <- melt(select(d, record_id, group, IS:actquot, -rsqact, -fnlrgact, -L5_starttime, -M10_starttime), id.vars=c('record_id', 'group'))
+d.mlt <- melt(select(d, record_id, group, groupname, IS:fact, -rsqact, -fnlrgact, -L5_starttime, -M10_starttime), id.vars=c('record_id', 'groupname', 'group'))
 
-ggplot(data = d.mlt, aes(x = variable, y = value, group = group)) + 
-  geom_violin(aes(fill = group)) + 
+ggplot(data = d.mlt, aes(x = variable, y = value, group = groupname)) + 
+  geom_violin(aes(fill = groupname)) + 
   facet_wrap( ~ variable,  scales='free') + 
   theme_minimal() +
   scale_fill_manual(values = brewer.pal(8, "Paired")[7:8], name = 'Group') +
@@ -84,20 +85,28 @@ ggplot(data = d.mlt, aes(x = variable, y = value, group = group)) +
 ```{r}
 #Effect of age on circadian variables
 #Older Adults
-summary(lm(actamp ~ age, data = d[d$group == 1,])) #p = 0.0119
-summary(lm(fact ~ age, data = d[d$group == 1,])) #p = 0.024507
-summary(lm(actupmesor ~ age, data = d[d$group == 1,])) #NS
+summary(lm(actamp ~ age, data = d[d$group == 1,])) #
+summary(lm(fact ~ age, data = d[d$group == 1,])) #
+summary(lm(actupmesor ~ age, data = d[d$group == 1,])) #
 summary(lm(actdownmesor ~ age, data = d[d$group == 1,])) #NS
 
 summary(lm(RA ~ age, data = d[d$group == 1,])) #NS
 summary(lm(IS ~ age, data = d[d$group == 1,])) #NS
-summary(lm(IV ~ age, data = d[d$group == 1,])) # p = 0.08
+summary(lm(IV ~ age, data = d[d$group == 1,])) #NS
+
+plot(d$age[d$group == 1], d$actamp[d$group == 1], xlab = "Age", ylab = "Amplitude")
+plot(d$age[d$group == 1], d$fact[d$group == 1], xlab = "Age", ylab = "F-statistic")
+plot(d$age[d$group == 1], d$actupmesor[d$group == 1], xlab = "Age", ylab = "Up-Mesor")
 
 #Younger Adults
 summary(lm(actamp ~ age, data = d[d$group == 0,])) #NS
 summary(lm(fact ~ age, data = d[d$group == 0,])) #NS
 summary(lm(actupmesor ~ age, data = d[d$group == 0,])) #p = 0.0272
 summary(lm(actdownmesor ~ age, data = d[d$group == 0,])) #p = 0.0206
+
+plot(d$age[d$group == 0], d$actupmesor[d$group == 0], xlab = "Age", ylab = "Up-Mesor")
+plot(d$age[d$group == 0], d$actdownmesor[d$group == 0], xlab = "Age", ylab = "Down-Mesor")
+
 
 summary(lm(RA ~ age, data = d[d$group == 0,])) #NS
 summary(lm(IS ~ age, data = d[d$group == 0,])) #NS
@@ -380,6 +389,7 @@ summary(lm(fpn_efficiency_x ~ group + IV, data = d)) # **
 summary(lm(fpn_clustering_x ~ group + IV, data = d))
 summary(lm(fpn_participation_x ~ group + IV, data = d))
 
+plot(d$IV, d$fpn_efficiency_x, xlab = "Intradaily Variability", ylab = "FPN Efficiency")
 #---------------------------------------------------------
 
 summary(lm(fpn_modularity_x ~ group * RA, data = d))
@@ -645,28 +655,51 @@ ggplot(data = d3.mlt) +
 ```{r}
 ggplot(data = d) + 
   ggtitle('DMN Participation Coefficient and Amplitude') + 
-  geom_point(aes(x = actamp, y = dmn_participation_x, group = group, color = group), size=2) + 
-  stat_smooth(aes(x = actamp, y = dmn_participation_x, group = group, color = group), method = 'lm', se = FALSE, fullrange = FALSE) +
+  geom_point(aes(x = actamp, y = dmn_participation_x, group = groupname, color = groupname), size=2) + 
+  stat_smooth(aes(x = actamp, y = dmn_participation_x, group = groupname, color = groupname), method = 'lm', se = FALSE, fullrange = FALSE) +
   theme_minimal() +
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
   xlab('Amplitude') + ylab('DMN Participation Coefficient') 
 
 ggplot(data = d) + 
   ggtitle('DMN Participation Coefficient and Interdaily Stability') + 
-  geom_point(aes(x = IS, y = dmn_participation_x, group = group, color = group), size=2) + 
-  stat_smooth(aes(x = IS, y = dmn_participation_x, group = group, color = group), method = 'lm', se = FALSE, fullrange = FALSE) +
+  geom_point(aes(x = IS, y = dmn_participation_x, group = groupname, color = groupname), size=2) + 
+  stat_smooth(aes(x = IS, y = dmn_participation_x, group = groupname, color = groupname), method = 'lm', se = FALSE, fullrange = FALSE) +
   theme_minimal() +
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
   xlab('IS') + ylab('DMN Participation Coefficient') 
 
 ggplot(data = d) + 
   ggtitle('DMN Participation Coefficient and Total Sleep Time') + 
-  geom_point(aes(x = sleep_time, y = dmn_participation_x, group = group, color = group), size=2) + 
-  stat_smooth(aes(x = sleep_time, y = dmn_participation_x, group = group, color = group), method = 'lm', se = FALSE, fullrange = FALSE) +
+  geom_point(aes(x = sleep_time, y = dmn_participation_x, group = groupname, color = groupname), size=2) + 
+  stat_smooth(aes(x = sleep_time, y = dmn_participation_x, group = groupname, color = groupname), method = 'lm', se = FALSE, fullrange = FALSE) +
   theme_minimal() +
   scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
   xlab('Sleep Time (min)') + ylab('DMN Participation Coefficient') + 
   scale_x_continuous(limits = c(125, 550))
+
+ggplot(data = d) + 
+  ggtitle('DMN Participation Coefficient and F-Statistic') + 
+  geom_point(aes(x = fact, y = dmn_participation_x, group = group, color = group), size=2) + 
+  stat_smooth(aes(x = fact, y = dmn_participation_x, group = group, color = group), method = 'lm', formula = y ~ poly(x, 3), se = FALSE, fullrange = FALSE) +
+  theme_minimal() +
+  scale_color_manual(values = brewer.pal(8, "Paired")[7:8]) +
+  xlab('F-statistic') + ylab('DMN Participation Coefficient')
+
+lm1 <- lm(dmn_participation_x ~ fact, data = d[d$group == 1, ])
+AIC(lm1)
+d_n <- dplyr::select(d, dmn_participation_x, fact, group)
+d_n <- d_n[complete.cases(d_n) == TRUE,]
+
+lm2 <- lm(dmn_participation_x ~ poly(fact, 3) + group, data = d_n)
+AIC(lm2)
+
+d_n <- dplyr::select(d, fact, cvlt_sdelay_recall_zscore)
+d_n <- d_n[complete.cases(d_n) == TRUE,]
+
+lm2 <- lm(cvlt_sdelay_recall_zscore ~ poly(fact, 3), data = d_n)
+summary(lm2)
+AIC(lm2)
 
 ```
 
