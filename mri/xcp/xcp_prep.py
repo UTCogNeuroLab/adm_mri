@@ -41,7 +41,7 @@ func_cohort = list(cohorts(func_files, 20))
 
 for cohort in range(0,len(func_cohort)):
     df = []
-    df = pd.DataFrame([sub_cohort[cohort], anat_cohort[cohort], func_cohort[cohort]])
+    df = pd.DataFrame([sub_cohort[cohort], anat_cohort[cohort], func_cohort[cohort])
     df = df.transpose()
     df.columns = ['id0', 'antsct', 'img']
     df.to_csv(os.path.join(xcp_dir, 'adm_cohort_%03d.csv' % cohort), sep = ',', header = True, index = False)
