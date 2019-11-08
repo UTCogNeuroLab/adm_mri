@@ -13,14 +13,18 @@ os.path.exists(xcp_dir)
 # id0,antsct,img
 # sub-1,xcp_output/sub-1/struc,fmriprep/sub-1/func/sub-1_task-rest_space-T1w_desc-preproc_bold.nii.gz
 
-func_files = sorted(glob.glob(fmriprep_dir + "/sub-?????/func/*task-REST_run-01_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz"))
+imgs = sorted(glob.glob(fmriprep_dir + "/sub-?????/func/*task-REST_run-01_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz"))
 
 subjects = []
 anat_files = []
-for file in sorted(func_files):
-    sub = file.split('sub-',1)[1][0:5]
+func_files = []
+for img in sorted(imgs):
+    sub = img.split('sub-',1)[1][0:5]
     subjects.append(sub)
-    anat_files.append(os.path.join(fmriprep_dir, 'sub-%s' % sub, 'anat', 'sub-%s_desc-preproc_T1w.nii.gz' % sub))
+
+    anat_files.append(os.path.join('/fmriprep', 'sub-%s' % sub, 'anat', 'sub-%s_desc-preproc_T1w.nii.gz' % sub))
+
+    func_files.append(img.split('mcm5324', 1)[1])
 
 
 def cohorts(l, n):
