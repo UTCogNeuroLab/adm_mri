@@ -292,3 +292,12 @@ save('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/dsnmat_age_ef_int.mat
 %% Save out adjacency matrix
 global nbs; adj=nbs.NBS.con_mat{2}+nbs.NBS.con_mat{2}'; dlmwrite('adj_fact-int-2.txt',full(adj),'delimiter',' ','precision','%d')
 
+%% Participation
+P = []; A = [];
+for i = 1:length(bct.wb.participation)
+    A = {mean(cat(3,bct.wb.participation{i,3:6}),3)};
+    P(i,:) = cell2mat(A);
+end
+
+P_table = table(record_id, P);
+writetable(P_table, 'participation.csv');
