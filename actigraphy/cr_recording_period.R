@@ -266,6 +266,7 @@ plot_circadian_measures <- function(all_results) {
   return(p)
 }
 
+#this function in progress
 plot_group_circadian_measures <- function(results1, results2, group1, group2) {
   tmp <- unlist(results1, F)
   tmp$Group <- group1
@@ -287,6 +288,7 @@ plot_group_circadian_measures <- function(results1, results2, group1, group2) {
   
   return(p)
 }
+
 # location of processed actigraphy files
 work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed'
 files <- list.files(work_dir, pattern = '.csv', full.names = TRUE)
@@ -308,9 +310,9 @@ oa_results <- optimize_recording_period(oa_files, nsample, recording_period)
 # plot results
 ya_plot <- plot_circadian_measures(ya_results)
 ya_plot
-ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/ya_recording_period_effect-2.png', ya_plot)
+ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/ya_recording_period_effect-2.png', ya_plot, width = 13, height = 7)
 
 oa_plot <- plot_circadian_measures(oa_results)
 oa_plot
-ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/oa_recording_period_effect-2.png', oa_plot)
+ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/oa_recording_period_effect-2.png', oa_plot, width = 13, height = 7)
 
