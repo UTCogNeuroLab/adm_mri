@@ -1,13 +1,21 @@
 import os
+from datetime import date
 import pandas as pd
 import datetime as dt
 import logging
+
+today = date.today()
 
 from pathlib import Path
 home_dir = str(Path.home())
 work_dir = os.path.join(home_dir, 'Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy')
 in_dir= os.path.join(work_dir, 'raw')
-out_dir = os.path.join(work_dir, 'processed')
+out_dir = os.path.join(work_dir, 'processed_' + today.strftime("%Y-%m-%d"))
+
+if os.path.isdir(out_dir):
+    print("ouput directory exists")
+else:
+    os.mkdir(out_dir)
 
 #settings
 recording_period_min = 10 #10 days
@@ -18,8 +26,7 @@ log_file = os.path.join(work_dir, 'logs', 'log_' + str(dt.datetime.now().date())
 
 logging.basicConfig(filename=log_file, filemode='a', format='%(asctime)s - %(message)s', level=logging.INFO)
 
-
-def clean_actig(in_file, out_dir, recording_period_min, interpolate_limit):
+def clean_actig(in_file, out_dir, recording_period_min, interpolate_limit, truncate=False):
 
     record_id = in_file[0:5]
     print('record %s' % record_id)
@@ -65,7 +72,7 @@ def clean_actig(in_file, out_dir, recording_period_min, interpolate_limit):
         logging.warning('----- discard: insufficient recording period')
         error = error + 1
 
-    else:
+    if truncate == True:
         data = data[data.index > end_time - dt.timedelta(days = recording_period_min) - dt.timedelta(seconds = 30)]
         start_time = data.index[0]
         period = end_time - start_time

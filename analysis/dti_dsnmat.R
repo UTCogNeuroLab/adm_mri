@@ -1,6 +1,7 @@
 library(readr)
 library(dplyr)
 library(readxl)
+library(writexl)
 
 #load data
 dti = c()
@@ -30,9 +31,9 @@ dsnmat$age[dsnmat$record_id == "40878"] = 71
 dsnmat_ya <- dsnmat[dsnmat$record_id < 40000, ]
 dsnmat_oa <- dsnmat[dsnmat$record_id > 40000, ]
 
-write_csv(dsnmat, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data.csv')
-write_csv(dsnmat_ya, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data_ya.csv')
-write_csv(dsnmat_oa, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data_oa.csv')
+writexl::write_xlsx(dsnmat, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data.xlsx')
+writexl::write_xlsx(dsnmat_ya, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data_ya.xlsx')
+writexl::write_xlsx(dsnmat_oa, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_data_oa.xlsx')
 
 #demean every column
 id <- select(dsnmat, record_id, files)
@@ -57,9 +58,7 @@ dsnmat_demeaned_ya <- cbind(id_ya, dsnmat_demeaned_ya)
 dsnmat_demeaned_oa <- cbind(id_oa, dsnmat_demeaned_oa)
 
 #save as csv for input into fsl_gui
-write_csv(dsnmat_demeaned, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_data.csv')
-write_csv(dsnmat_demeaned_ya, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_ya_data.csv')
-write_csv(dsnmat_demeaned_oa, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_oa_data.csv')
-
-
+writexl::write_xlsx(dsnmat_demeaned, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_data.xlsx')
+writexl::write_xlsx(dsnmat_demeaned_ya, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_ya_data.xlsx')
+writexl::write_xlsx(dsnmat_demeaned_oa, '/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/dsnmat_demeaned_oa_data.xlsx')
 

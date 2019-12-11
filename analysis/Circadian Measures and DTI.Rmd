@@ -237,7 +237,17 @@ boot <- corxplor::cor_boot(x = oa_cor_data, y = NULL, use = "pairwise", method =
 boot
 ```
 
+
 ```{r}
+summary(lm(fa_mean_4 ~ cowat_zscore + actalph, data = oa_data))
+```
+
+
+
+```{r}
+pvt <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/pvt/pvt_stats_2019-12-11.csv")
+head(pvt)
+
 ccvol <- read_delim("/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/freesurfer/aseg_table.txt", delim = "\t")
 head(ccvol)
 
@@ -245,21 +255,22 @@ library(stringr)
 ccvol$CC_Total <- ccvol$CC_Anterior + ccvol$CC_Central + ccvol$CC_Mid_Anterior + ccvol$CC_Mid_Posterior + ccvol$CC_Posterior
 ccvol$record_id <- substr(ccvol$`Measure:volume`, 5, 9)
 ccvol$record_id
+
 d2 <- merge(d, ccvol, by = "record_id")
+d2 <- merge(d2, pvt, by = "record_id")
 
-
-oa_data <- filter(d2, Group == "Older Adults")
-oa_cor_data <- select(oa_data, IS:RA, actamp:fact, matches("cc_"))
-oa_mat <- cor(oa_cor_data)
-corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
-
-summary(lm(CC_Total ~ actalph + age, data = oa_data))
+alpha = 0.05
 
 oa_data <- filter(d2, Group == "Older Adults")
-oa_cor_data <- select(oa_data, matches("zscore|z_score"), matches("cc_"))
+oa_cor_data <- select(oa_data, age, IS:RA, actamp:fact, matches("cc_"), rt_mean, fs)
 oa_mat <- cor(oa_cor_data)
+oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
 corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
 
+```
+
+
+```{r}
 library(beset)
 stepdata <- select(oa_data, age, IS:RA, actalph:fact, -actwidthratio, CC_Total)
 
@@ -268,6 +279,35 @@ summary(mod_cc, n_folds = 51) #559
 summary(mod_cc, n_folds = 51, oneSE = FALSE) #558
 plot(mod_cc, n_folds = 51, oneSE = FALSE)
 #actalph predicts all FA, MD, and volume of CC
+```
+
+```{r}
+library(beset)
+stepdata <- select(oa_data, age, IS:RA, actalph:fact, -actwidthratio, CC_Total, rt_mean)
+
+mod_cc <- beset_lm(rt_mean ~ ., data = stepdata, n_folds = 51, force_in = "age")
+summary(mod_cc, n_folds = 51) #559
+summary(mod_cc, n_folds = 51, oneSE = FALSE) #558
+plot(mod_cc, n_folds = 51, oneSE = FALSE)
+#actalph predicts all FA, MD, and volume of CC
+```
+
+
+
+
+```{r}
+alpha = 0.05
+
+oa_cor_data <- select(oa_data, matches("zscore|z_score"), matches("cc_"))
+oa_mat <- cor(oa_cor_data)
+oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
+corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
+
+```
+
+
+```{r}
+
 
 summary(lm(CC_Total ~ age + RA + actalph, data = oa_data))
 
@@ -277,14 +317,9 @@ oa_data %>%
   stat_smooth(aes(x = actalph, y = CC_Total), method = "lm") + 
   scale_color_manual(values = c("blue")) +
   xlab("Width (alpha)") + ylab("Corpus Callosum Volume") 
-
 ```
 
 
-
-```{r}
-summary(lm(fa_mean_4 ~ cowat_zscore + actalph, data = oa_data))
-```
 
 
 ```{r junk, include = FALSE}
