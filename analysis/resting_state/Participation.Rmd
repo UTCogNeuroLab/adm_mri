@@ -1,0 +1,87 @@
+---
+title: "Participation"
+author: "Megan McMahon"
+date: "12/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(reshape2)
+library(tidyverse)
+library(corrr)
+
+pcoef <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/rest/bct/participation_nodewise_r.csv')
+neuro <- read_csv("Box/CogNeuroLab/Aging Decision Making R01/Data/Neuropsych/AgingDecMemNeuropsyc_DATA_2019-06-12_0708.csv")
+
+pcoef <- select(pcoef, record_id, matches("PFC"))
+pcoef <- merge(pcoef, dplyr::select(neuro, record_id, vc_zscore, cvlt_ldelay_recall_zscore, cowat_zscore, ds_zscore, trails_b_z_score), by = 'record_id')
+pcoef$ef_zscore <- (pcoef$trails_b_z_score + pcoef$ds_zscore )/2
+pcoef$Group <- factor(ifelse(pcoef$record_id < 40000, 0, 1))
+OA_cor_data <- filter(pcoef, record_id > 40000)
+YA_cor_data <- filter(pcoef, record_id < 40000)
+
+```
+
+```{r}
+focus_cog_OA <- OA_cor_data %>%
+  correlate(method = "spearman") %>%
+  focus(vc_zscore, ds_zscore, trails_b_z_score, cvlt_ldelay_recall_zscore, cowat_zscore, ef_zscore)
+## 
+## Correlation method: 'spearman'
+## Missing treated using: 'pairwise.complete.obs'
+focus_cog_YA <- YA_cor_data %>%
+  correlate(method = "spearman") %>%
+  focus(vc_zscore, ds_zscore, trails_b_z_score, ef_zscore)
+## 
+## Correlation method: 'spearman'
+## Missing treated using: 'pairwise.complete.obs'
+focus_cog_OA.mlt <- melt(focus_cog_OA, id.vars = 'rowname')
+focus_cog_YA.mlt <- melt(focus_cog_YA, id.vars = 'rowname')
+focus_cog <- merge(focus_cog_YA.mlt, focus_cog_OA.mlt, by = c("rowname", "variable"))
+
+ggplot(data = na.omit(focus_cog_OA.mlt[abs(focus_cog_OA.mlt$value) > 0.27,]), aes(x = value, y = rowname)) + 
+  geom_point(color = 'red') + 
+  geom_point(data = drop_na(focus_cog_YA.mlt[abs(focus_cog_YA.mlt$value) > 0.27,]), color = 'blue') + 
+  facet_grid( ~ variable,  scales='fixed')
+```
+
+
+```{r}
+pcoef$PFC_mean <- rowMeans(select(pcoef, matches("PFC")))
+pcoef %>%
+  select(matches("PFC")) %>%
+  select(matches("RH")) %>%
+  rowMeans() -> pcoef$R_PFC_mean
+
+pcoef %>%
+  select(matches("PFC")) %>%
+  select(matches("LH")) %>%
+  rowMeans() -> pcoef$L_PFC_mean
+
+sc_melt <- melt(select(pcoef, Group, R_PFC_mean, matches("zscore|z_score")) , id.vars = c("Group", "R_PFC_mean"))
+sc_melt %>%
+  ggplot(aes(color = Group, group = Group)) +
+  geom_point(aes(x = R_PFC_mean, y = value, color = Group, group = Group)) + 
+  stat_smooth(aes(x = R_PFC_mean, y = value, color = Group, group = Group), method = "lm") +
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap(. ~ variable) + ylim(-2,2)
+
+sc_melt <- melt(select(pcoef, Group, L_PFC_mean, matches("zscore|z_score")) , id.vars = c("Group", "L_PFC_mean"))
+sc_melt %>%
+  ggplot(aes(color = Group, group = Group)) +
+  geom_point(aes(x = L_PFC_mean, y = value, color = Group, group = Group)) + 
+  stat_smooth(aes(x = L_PFC_mean, y = value, color = Group, group = Group), method = "lm") +
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap(. ~ variable) + ylim(-2,2)
+
+sc_melt <- melt(select(pcoef, Group, PFC_mean, matches("zscore|z_score")) , id.vars = c("Group", "PFC_mean"))
+sc_melt %>%
+  ggplot(aes(color = Group, group = Group)) +
+  geom_point(aes(x = PFC_mean, y = value, color = Group, group = Group)) + 
+  stat_smooth(aes(x = PFC_mean, y = value, color = Group, group = Group), method = "lm") +
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap(. ~ variable) + ylim(-2,2)
+```
+

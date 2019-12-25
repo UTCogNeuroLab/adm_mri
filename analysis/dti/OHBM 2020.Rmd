@@ -1,0 +1,173 @@
+---
+title: "OHBM 2020"
+author: "Megan McMahon"
+date: "12/16/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(readr)
+library(corrplot)
+library(reshape2)
+library(car)
+library(beset)
+
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-13.RData")
+
+ya_data <- d[d$Group == "Young Adults", ]
+oa_data <- d[d$Group == "Older Adults", ]
+```
+
+## Older adults
+```{r}
+#mean diffusivity
+#alpha
+stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, md_mean_cc)
+mod <- beset_lm(md_mean_cc ~ ., data = stepdata, n_folds = 35, force_in = "age")
+summary(mod, oneSE = FALSE, n_folds = 35) 
+summary(lm(md_mean_cc ~ actalph + age, data = oa_data))
+#fractional anisotropy
+#fact
+stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, fa_mean_cc)
+mod <- beset_lm(fa_mean_cc ~ ., data = stepdata, n_folds = 35, force_in = "age")
+summary(mod, oneSE = FALSE, n_folds = 35) 
+summary(lm(fa_mean_cc ~ actalph + age, data = oa_data))
+#volume
+#hodgepodge
+stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, CC_Total)
+mod <- beset_lm(CC_Total ~ ., data = stepdata, n_folds = 35)
+summary(mod, oneSE = FALSE, n_folds = 35) 
+summary(lm(CC_Total ~ age + actalph, data = oa_data))
+```
+
+## Young adults
+```{r}
+#mean diffusivity
+#alpha
+stepdata <- select(ya_data, age, actalph:fact, -rsqact, -actwidthratio, md_mean_cc)
+mod <- beset_lm(md_mean_cc ~ ., data = stepdata, n_folds = 29)
+summary(mod, oneSE = FALSE, n_folds = 29) 
+summary(lm(md_mean_cc ~ actalph, data = ya_data))
+#fractional anisotropy
+#fact
+stepdata <- select(ya_data, age, actalph:fact, -rsqact, -actwidthratio, fa_mean_cc)
+mod <- beset_lm(fa_mean_cc ~ ., data = stepdata, n_folds = 29)
+summary(mod, oneSE = FALSE, n_folds = 29) 
+summary(lm(fa_mean_cc ~ fact, data = ya_data))
+#volume
+#hodgepodge
+stepdata <- select(ya_data, age, actalph:fact, -rsqact, -actwidthratio, CC_Total)
+mod <- beset_lm(CC_Total ~ ., data = stepdata, n_folds = 29)
+summary(mod, oneSE = FALSE, n_folds = 29) 
+summary(lm(CC_Total ~ IS + IV + actalph + fact, data = ya_data))
+```
+
+
+```{r}
+d2 <- d
+
+#both - different width effects on md
+d2 %>%
+  subset(!is.na(actalph)) %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = actalph, y = md_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = actalph, y = md_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("blue", "red")) +
+  xlab("Width (alpha)") + ylab("CC Mean Diffusivity") + xlim(-1,-.15) +
+  ggsave("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/ohbm2020/both-alpha-md.png", width = 3, height = 2.5)
+
+#older adults
+d2 %>%
+  subset(!is.na(actalph)) %>%
+  filter(Group == "Older Adults") %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = actalph, y = md_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = actalph, y = md_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("red")) +
+  xlab("Width (alpha)") + ylab("CC Mean Diffusivity") + xlim(-1,0) +
+  theme(legend.position = "none") +
+  ggsave("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/ohbm2020/oa-alpha-md.png", width = 3, height = 2.5, dpi = 300)
+
+d2 %>%
+  subset(!is.na(actalph)) %>%
+  filter(Group == "Older Adults") %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = actalph, y = fa_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = actalph, y = fa_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("red")) +
+  xlab("Width (alpha)") + ylab("CC Fractional Anisotropy") + xlim(-1,0) +
+  theme(legend.position = "none") +
+  ggsave("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/ohbm2020/oa-alpha-fa.png", width = 3, height = 2.5, dpi = 300)
+
+#young adults
+d2 %>%
+  subset(!is.na(actalph)) %>%
+  filter(Group == "Young Adults") %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = actalph, y = md_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = actalph, y = md_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("blue")) +
+  xlab("Width (alpha)") + ylab("CC Mean Diffusivity") + xlim(-1,-.15) +
+  theme(legend.position = "none") + 
+  ggsave("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/ohbm2020/ya-alpha-md.png", width = 3, height = 2.5, dpi = 300)
+
+d2 %>%
+  subset(!is.na(fact)) %>%
+  filter(Group == "Young Adults") %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = fact, y = fa_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = fact, y = fa_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("blue")) +
+  xlab("Robustness (F-statistic)") + ylab("CC Fractional Anisotropy") + xlim(500,8500) +
+  theme(legend.position = "none") +
+  ggsave("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/ohbm2020/ya-fact-fa.png", width = 3, height = 2.5, dpi = 300)
+```
+
+```{r}
+d2 %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = age, y = fa_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = age, y = fa_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("blue", "red")) +
+  xlab("Age") + ylab("CC Fractional Anisotropy") +
+  theme(legend.position = "none") 
+
+d2 %>%
+  select(Group, fa_mean_3, fa_mean_4, fa_mean_5, age) %>%
+  melt(id.vars = c("Group", "age")) %>%
+  ggplot(aes(color = Group, group = Group)) +
+  geom_point(aes(x = age, y = value, group = Group, color = Group)) +
+  stat_smooth(aes(x = age, y = value, group = Group, color= Group), method = "lm") + 
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap(Group ~ variable, scales = "free_x") +
+  xlab("Age") + ylab("Fractional Anisotropy") 
+
+d2 %>%
+  ggplot(aes(group = Group, color = Group)) +
+  geom_point(aes(x = age, y = md_mean_cc, group = Group, color = Group)) +
+  stat_smooth(aes(x = age, y = md_mean_cc, group = Group, color= Group), method = "lm") +
+  theme_classic() +
+  scale_color_manual(values = c("blue", "red")) +
+  xlab("Age") + ylab("CC Mean Diffusivity") +
+  theme(legend.position = "none") 
+
+d2 %>%
+  select(Group, md_mean_3, md_mean_4, md_mean_5, age) %>%
+  melt(id.vars = c("Group", "age")) %>%
+  ggplot(aes(color = Group, group = Group)) +
+  geom_point(aes(x = age, y = value, group = Group, color = Group)) +
+  stat_smooth(aes(x = age, y = value, group = Group, color= Group), method = "lm") + 
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap(Group ~ variable, scales = "free_x") +
+  xlab("Age") + ylab("Mean Diffusivity") 
+```
+
