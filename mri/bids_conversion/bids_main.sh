@@ -1,18 +1,28 @@
 #!/bin/bash
-#set -x
-##BIDS conversion script for ADM neuroimaging data
-##@kimray
-
 export WORKING_DIR=/Volumes/schnyer/Aging_DecMem/Scan_Data
 export SOURCE_DIR="$WORKING_DIR"/RAW
 export BIDS_DIR="$WORKING_DIR"/BIDS
 export PYDEFACEPATH="/Users/PSYC-mcm5324/pydeface/scripts"
 
-##Choose Participant
 echo -en '\n'
 echo "Which participant?"
 read PARTIC
 
+# Run heudiconv
+docker run --rm -it -v \
+/Volumes/schnyer/Aging_DecMem/Scan_Data:/base nipy/heudiconv:latest \
+-d /base/RAW/Adm_{subject}/*/*/*.dcm \
+-o /base/BIDS \
+-f /base/BIDS/derivatives/code/heuristic.py \
+-c dcm2niix --overwrite -b \
+-s "$PARTIC"
+wait
+
+# Run pydeface
+python3 "$PYDEFACEPATH"/pydeface.py "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w.nii.gz
+wait
+
+# Fix fieldmaps
 ##Find raw dicom directories
 FMAP_RAW=`find $SOURCE_DIR/Adm_"$PARTIC" -maxdepth 1 \( -iname '*FIELD_MAPPING*' -o -iname '*Field_mapping*' \) -print | sort -r | tail -1`
 echo "$FMAP_RAW"
@@ -81,5 +91,3 @@ done
 wait
 
 python3 fix_jsons.py "$PARTIC"
-
-#zip -vr $SOURCE_DIR/Adm_"$PARTIC".zip $SOURCE_DIR/Adm_"$PARTIC"/* -x "*.DS_Store"
