@@ -290,7 +290,7 @@ plot_group_circadian_measures <- function(results1, results2, group1, group2) {
 }
 
 # location of processed actigraphy files
-work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed'
+work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2019-12-11'
 files <- list.files(work_dir, pattern = '.csv', full.names = TRUE)
 
 # separate out younger and older adults
@@ -298,14 +298,17 @@ ya_files <- files[startsWith(basename(files), "3")]
 oa_files <- files[startsWith(basename(files), "4")]
 
 # number of subjects to include
-nsample = 10
+#nsample = 10
+nsample = length(files)
 
 # recording period of 3-10 days
-recording_period = seq(3, 9, by = 1)
+#recording_period = seq(3, 9, by = 1)
+recording_period = 10
 
 # calculate circadian measures based on different recording periods
-ya_results <- optimize_recording_period(ya_files, nsample, recording_period)
-oa_results <- optimize_recording_period(oa_files, nsample, recording_period)
+#ya_results <- optimize_recording_period(ya_files, nsample, recording_period)
+#oa_results <- optimize_recording_period(oa_files, nsample, recording_period)
+new_results <- optimize_recording_period(files, nsample, recording_period)
 
 # plot results
 ya_plot <- plot_circadian_measures(ya_results)

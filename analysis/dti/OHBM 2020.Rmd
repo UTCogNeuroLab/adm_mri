@@ -15,7 +15,10 @@ library(reshape2)
 library(car)
 library(beset)
 
-load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-13.RData")
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
+#save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
+
+#d[d$record_id == 40160, c("actamp", "actbeta", "actphi", "actmin", "actmesor", "actupmesor", "actdownmesor", "actalph", "actwidthratio", "rsqact", "fact", "fnlrgact")] <- NA
 
 ya_data <- d[d$Group == "Young Adults", ]
 oa_data <- d[d$Group == "Older Adults", ]
@@ -25,21 +28,22 @@ oa_data <- d[d$Group == "Older Adults", ]
 ```{r}
 #mean diffusivity
 #alpha
-stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, md_mean_cc)
-mod <- beset_lm(md_mean_cc ~ ., data = stepdata, n_folds = 35, force_in = "age")
-summary(mod, oneSE = FALSE, n_folds = 35) 
+stepdata <- select(oa_data, record_id, age, actalph:fact, -rsqact, -actwidthratio, md_mean_cc)
+sum(complete.cases(stepdata))
+mod <- beset_lm(md_mean_cc ~ ., data = stepdata, n_folds = sum(complete.cases(stepdata)), force_in = "age")
+summary(mod, oneSE = FALSE, n_folds = sum(complete.cases(stepdata))) 
 summary(lm(md_mean_cc ~ actalph + age, data = oa_data))
 #fractional anisotropy
 #fact
 stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, fa_mean_cc)
-mod <- beset_lm(fa_mean_cc ~ ., data = stepdata, n_folds = 35, force_in = "age")
-summary(mod, oneSE = FALSE, n_folds = 35) 
+mod <- beset_lm(fa_mean_cc ~ ., data = stepdata, n_folds = sum(complete.cases(stepdata)), force_in = "age")
+summary(mod, oneSE = FALSE, n_folds = sum(complete.cases(stepdata))) 
 summary(lm(fa_mean_cc ~ actalph + age, data = oa_data))
 #volume
 #hodgepodge
 stepdata <- select(oa_data, age, actalph:fact, -rsqact, -actwidthratio, CC_Total)
-mod <- beset_lm(CC_Total ~ ., data = stepdata, n_folds = 35)
-summary(mod, oneSE = FALSE, n_folds = 35) 
+mod <- beset_lm(CC_Total ~ ., data = stepdata, n_folds = sum(complete.cases(stepdata)))
+summary(mod, oneSE = FALSE, n_folds = sum(complete.cases(stepdata))) 
 summary(lm(CC_Total ~ age + actalph, data = oa_data))
 ```
 
