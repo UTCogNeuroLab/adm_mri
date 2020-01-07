@@ -2,44 +2,25 @@
 
 Using data collected on a Siemens Skyra 3T, we convert DICOMS to NIFTI, organize data into BIDS format, use MRIQC for quality analysis, and run fMRIprep for minimal preprocessing.
 
-The following commands are given as an example for subject number 30004.
+The following commands are given as an example for subject number 30000. 
 
-Make sure subject's raw DICOM files are in ~/Scan_Data/RAW/{subject ID}
+## Download raw scan data from Osirix
+
+The directory containing raw scan data should be moved to `/Volumes/schnyer/Aging_DecMem/Scan_Data/RAW`.
 
 ## BIDS conversion
 
-Open Terminal and run:
+1. BIDS conversion with Heudiconv
 
-```
-sh /Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/01_BIDS_conversion_ADM.sh 30004
-```
+**CURRENTLY TESTING**
 
-#### Rename DICOM folders if subject had multiple fieldmaps
+`docker run --rm -it -v /Volumes/schnyer/Aging_DecMem/Scan_Data:/base nipy/heudiconv:latest -d /base/RAW/Adm-{subject}/*/*/*.dcm -o /base/BIDS/ -f convertall -s 30000 -c none --overwrite`
 
-Go to the subject's raw file directory ~/Scan_Data/RAW/{subject ID} and check for instances where there are more than 2 FIELD_MAPPING directories.\
+2. Convert fieldmaps
 
-If there are more than 2, each of these FIELD_MAPPING directories will need to be renamed such that the first two corresponding to the first fieldmap are called "FIELD_MAPPING_RUN1_0004" and "FIELD_MAPPING_RUN1_0005", the second two directories corresponding to the second fieldmap are called "FIELD_MAPPING_RUN2_0015" and ""FIELD_MAPPING_RUN2_0016".\
+`sh bids_conversion/fix_fmaps.sh`
 
-Note that the number suffixes should *not* change (these numbers given here are just for an example :) ).
-
-#### DICOM to NIFTI conversion for multiple fieldmaps
-
-In Terminal, run:
-
-```
-/Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/02_BIDS_multfmaps.sh 30004
-```
-
-#### Add "Intended for" to fieldmap json files
-This documents which functional files correspond to each fieldmap.
-
-In Terminal, run:
-
-```
-sh /Volumes/schnyer/Aging_DecMem/Scan_Data/Scripts/03_BIDS_intendedfor.sh 30004
-```
-
-## BIDS Validator
+3. BIDS Validator
 Upload the BIDS directory to the [BIDS Validator website](http://bids-standard.github.io/bids-validator/) and check to make sure there are no errors.
 
 ## mriqc
@@ -52,7 +33,7 @@ To run mriqc:
 Currently using a fd threshold of 0.25 mm for rsfMRI and 0.50 mm for task fMRI
 
 ```
-docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out participant --fd_thres 0.25 --no-sub -vvv --participant_label 30004 
+docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out participant --fd_thres 0.25 --no-sub -vvv --participant_label 30000 
 ```
 *Group level command*
 
@@ -61,7 +42,7 @@ docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v
 ```
 
 #### Update excel sheet with information about scan quality
-Review group mriqc report and copy values to ~/Scan_Data/AgingDataProgress.xlsx
+Review group mriqc report and copy values to the Google Sheet, which is available at `/Volumes/schnyer/Aging_DecMem/Scan_Data/AgingDataProgress.xlsx`
 
 ## fmriprep
 Requires [Docker](https://docs.docker.com/engine/installation/).\
@@ -76,8 +57,7 @@ pip install --user --upgrade fmriprep-docker
 ```
 To run fmriprep:
 
-In Terminal, run:
 ```
 export FS_LICENSE=/Users/PSYC-mcm5324/Applications/freesurfer/license.txt
-fmriprep-docker /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/     /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/fmriprep/     participant -w Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/ --notrack --ignore slicetiming -v --participant_label 30004
+fmriprep-docker /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/     /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/fmriprep/     participant -w Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/ --notrack --ignore slicetiming -v --participant_label 30000
 ```
