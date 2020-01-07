@@ -3,13 +3,21 @@ This research is supported by the National Institute on Aging of the National In
 
 **Note:** If GitHub isn't displaying notebooks, you can view them using the [Jupyter Notebook Viewer](https://nbviewer.jupyter.org/).
 
-## actigraphy
-Includes processing script and scripts for calculation of circadian measures.
+## Actigraphy
+- Processing script for actigraphy data
+- Script for computing rest-activity measures using the extended cosinor method [(Marler et al., 2006)](https://doi.org/10.1002/sim.2466)
+- Visualize actigraphy data plots
+- Determine variability in an individual's rest-activity measures based on the duration of the recording period
 
-## mri
-Includes scripts for BIDS conversion and preprocessing.
+## MRI
+- BIDS conversion
+- Instructions for running fmriprep and mriqc
+- DTI preprocessing
+- Example job submission script for running fmriprep on tacc
 
-## analysis
-Includes scripts for functional connectivity and behavioral analyses.
+## PVT
+For psychomotor vigilance task analysis. We use PC-PVT [(Khitrov et al., 2014)](https://www.ncbi.nlm.nih.gov/pubmed/?term=23709163).
 
+## Analysis
+Scripts for current and past projects!
 
