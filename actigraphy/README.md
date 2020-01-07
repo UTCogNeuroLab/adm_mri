@@ -3,7 +3,7 @@
 
 Phillips Respironics Actiware 6.0 with Actiwatch 2.0 \
 
-## 1) actigraphy_analysis.py
+## 1) actigraph_prep.py
 After exporting data from Actiware as csv, this script removes NaN values at the beginning and end of the period, since this is when the watch was being fitted to or retrieved from the participant. It also will interpolate up to 5 minutes of missing activity values.
 
 ## 2) cr_recording_period.R
