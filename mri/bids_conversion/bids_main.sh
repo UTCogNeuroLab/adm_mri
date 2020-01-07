@@ -19,7 +19,13 @@ docker run --rm -it -v \
 wait
 
 # Run pydeface
-python3 "$PYDEFACEPATH"/pydeface.py "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w.nii.gz
+/Users/PSYC-mcm5324/pydeface/scripts/pydeface.py "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w.nii.gz
+if [ ! -z "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w_defaced.nii.gz ]; then
+  mv "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w_defaced.nii.gz "$BIDS_DIR"/sub-"$PARTIC"/anat/*T1w.nii.gz
+else
+  echo "pydeface unsuccessful"
+fi
+
 wait
 
 # Fix fieldmaps
@@ -36,9 +42,7 @@ if [ ! -d "$BIDS_DIR"/"sub-"$PARTIC""/fmap ] && [ ! -z "$FMAP_RAW" ] && [ ! -z "
     mkdir -p "$BIDS_DIR"/"sub-"$PARTIC""/fmap
 fi
 
-##Convert dicoms to nifti
-
-##Convert FMAP dicoms
+##Convert fieldmap dicoms to nifti
 if [ ! -z "$FMAP_RAW" ]; then
     echo -en "\n\n\nConverting fieldmap for "$PARTIC"...\n\n\n"
     FMAP_FILE="fieldmap"
@@ -47,9 +51,8 @@ if [ ! -z "$FMAP_RAW" ]; then
 
 fi
 
-#Fix naming
-#Meg McMahon
-#phase
+##Fix naming
+###phase
 a=1
 for i in `ls "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"$FMAP_FILE"_e2_ph*.nii.gz`; do
 
@@ -64,7 +67,7 @@ done
 wait
 
 
-#magnitude 1
+###magnitude 1
 a=1
 for i in `ls "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"$FMAP_FILE"_e1*.nii.gz`; do
     MAG1_NIFTI=$(printf "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"sub-"$PARTIC""_run-%02d_magnitude1.nii.gz "$a")
@@ -77,7 +80,7 @@ for i in `ls "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"$FMAP_FILE"_e1*.nii.gz`; do
 done
 wait
 
-#magnitude 2
+###magnitude 2
 a=1
 for i in `ls "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"$FMAP_FILE"_e2*.nii.gz`; do
 
@@ -90,4 +93,13 @@ for i in `ls "$BIDS_DIR"/"sub-"$PARTIC""/fmap/"$FMAP_FILE"_e2*.nii.gz`; do
 done
 wait
 
+#Add intended for to fieldmap json files
 python3 fix_jsons.py "$PARTIC"
+
+#zip raw folder to save space
+zip -vr $SOURCE_DIR/Adm_"$PARTIC".zip $SOURCE_DIR/Adm_"$PARTIC"/* -x "*.DS_Store"
+if [ ! -z $SOURCE_DIR/Adm_"$PARTIC".zip ]; then
+  rm -rf $SOURCE_DIR/Adm_"$PARTIC"/
+else
+  echo "pydeface unsuccessful"
+fi
