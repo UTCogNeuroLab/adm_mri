@@ -1,6 +1,8 @@
 # Age-related changes in aspects of the rest-activity cycle and their relationship to memory and decision-making performance
 This research is supported by the National Institute on Aging of the National Institutes of Health under award number R01AG043425.
 
+The purpose of this project is to investigate changes in cognitive functions associated with aging and examine how these effects are mediated by sleep-wake cycles. 
+
 **Note:** If GitHub isn't displaying notebooks, you can view them using the [Jupyter Notebook Viewer](https://nbviewer.jupyter.org/).
 
 ## Actigraphy
