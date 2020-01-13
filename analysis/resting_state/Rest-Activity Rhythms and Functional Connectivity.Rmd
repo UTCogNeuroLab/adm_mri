@@ -5,6 +5,14 @@ date: "5/23/2019"
 output: html_document
 ---
 
+# Contents
+* [Differences in functional connectivity measures across age groups]
+* [Rest-activity measures and cognition]
+* [*1]
+* [Network measures and cognition]
+* [*2]
+* [Rest-activity measures and functional connectivity networks]
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -14,7 +22,7 @@ library(reshape2)
 library(corrplot)
 library(beset)
 
-load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-24.RData")
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-13.RData")
 
 cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -23,7 +31,41 @@ cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 # d <- merge(d, bct, by = "record_id", all = TRUE)
 # d$actquot <- d$actamp/d$actmesor
 # d$Group <- factor(ifelse(d$record_id < 40000, 0, 1), labels = c("Young Adults", "Older Adults"))
-# save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-24.RData")
+
+# mem <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/memmatch_results.csv")
+# mem$X1 <- NULL
+# 
+# mem %>%
+#   group_by(record_id, cond) %>%
+#   summarise_each(funs(mean(., na.rm = TRUE)), isCorrect) %>%
+#   spread(cond, isCorrect) -> acc
+# 
+# colnames(acc) <- paste0("acc_cond_", colnames(acc))
+# 
+# mem %>%
+#   group_by(record_id, cond) %>%
+#   summarise_each(funs(mean(., na.rm = TRUE)), RT_c) %>%
+#   spread(cond, RT_c) -> rt
+# 
+# colnames(rt) <- paste0("rt_cond_", colnames(rt))
+# 
+# d <- merge(d, acc, by.x = "record_id", by.y = "acc_cond_record_id")
+# d <- merge(d, rt, by.x = "record_id", by.y = "rt_cond_record_id")
+# save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
+#
+# rpx <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/Combined Export File.csv")
+# 
+# rpx %>%
+#   filter(interval_type == "Sleep Summary", interval_number == "Average(n)") %>%
+#   select(-data_start_date, -data_start_time, -start_date, -start_time, -end_date, -end_time) -> rpx_mean
+# 
+# head(rpx_mean)
+# 
+# d <- merge(d, select(rpx_mean, subject_id, sleep_time, total_ac, onset_latency, efficiency), by.x = "record_id", by.y = "subject_id", all = TRUE)
+# d$sleep_efficiency <- d$efficiency
+# d$efficiency <- NULL
+# 
+# save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-13.RData")
 
 ya_data <- d[d$Group == "Young Adults",]
 oa_data <- d[d$Group == "Older Adults",]
@@ -31,10 +73,7 @@ oa_data <- d[d$Group == "Older Adults",]
 ```
 
 
-# Comparing FC Metrics by Age Group 
-**Whole brain**. Older adults have significantly higher participation coefficient, significantly lower global efficiency.
-**DMN**. Older adults have lower efficiency and lower modularity within the default mode network.
-**FPN**. Older adults have greater participation coefficient and betweeness centrality within the frontoparietal control network.
+# Differences in functional connectivity measures across age groups
 
 ```{r}
 d %>%
@@ -139,22 +178,213 @@ ggplot(d, aes(x = Group, y = fpn_betweenness_x, color = Group)) +
   labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
 ```
 
+# Rest-activity measures and cognition
 
-## Correlation Plots
+## Older Adults
 ```{r}
 alpha = 0.05
 
-oa_cor <- select(oa_data, age, IS:RA, actquot, actamp:fact, matches("wb_|dmn_|fpn_"), trails_b_z_score)
+oa_cor <- select(oa_data, age, IS:RA, actquot, actamp:fact, matches("zscore|z_score|time_trails"))
+oa_cor <- oa_cor[complete.cases(oa_cor), ]
+oa_mat <- cor(oa_cor)
+oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
+corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
+```
+```{r}
+alpha = 0.05
+
+oa_cor <- select(oa_data, age, sleep_time, onset_latency, sleep_efficiency, matches("zscore|z_score|time_trails"))
 oa_cor <- oa_cor[complete.cases(oa_cor), ]
 oa_mat <- cor(oa_cor)
 oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
 corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
 ```
 
+
+```{r}
+oa_data %>%
+  select(age, IS, matches("zscore|z_score")) %>%
+  melt(id.vars = "IS") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = IS, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("IS and Neuropsych Measures")
+
+oa_data %>%
+  select(age, fact, matches("zscore|z_score")) %>%
+  melt(id.vars = "fact") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = fact, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("F-statistic and Neuropsych Measures")
+
+oa_data %>%
+  select(age, RA, matches("zscore|z_score")) %>%
+  melt(id.vars = "RA") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = RA, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("RA and Neuropsych Measures")
+
+oa_data %>%
+  select(age, IV, matches("zscore|z_score")) %>%
+  melt(id.vars = "IV") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = IV, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("IV and Neuropsych Measures")
+
+oa_data %>%
+  select(age, sleep_time, matches("zscore|z_score")) %>%
+  melt(id.vars = "sleep_time") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = sleep_time, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("Sleep Time and Neuropsych Measures")
+
+oa_data %>%
+  select(age, sleep_efficiency, matches("zscore|z_score")) %>%
+  melt(id.vars = "sleep_efficiency") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = sleep_efficiency, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("Sleep Efficiency and Neuropsych Measures")
+```
+
+Trails B
+```{r}
+alpha = 0.05 
+
+oa_cor <- select(oa_data, age, IS:RA, actquot, actamp:fact, sleep_time, sleep_efficiency, trails_b_z_score)
+oa_cor <- oa_cor[complete.cases(oa_cor), ]
+oa_mat <- cor(oa_cor)
+oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
+corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
+```
+
+
+```{r}
+oa_data$TMT <- ifelse(oa_data$trails_b_z_score < median(oa_data$trails_b_z_score, na.rm = TRUE), "Low", "High")
+ya_data$TMT <- ifelse(ya_data$trails_b_z_score < median(ya_data$trails_b_z_score, na.rm = TRUE), "Low", "High")
+alpha = 0.05 
+
+oa_data %>%
+  na.omit(TMT) %>%
+  select(age, IS:RA, actamp, actquot, fact, actalph, TMT) %>%
+  melt(id.vars = "TMT") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_boxplot(aes(x = TMT, y = value)) +
+  facet_wrap(. ~ variable, scales = "free_y") + 
+  ggtitle("Rest-activity measures by TMT performance")
+```
+
+Out of curiosity from DTI...
+```{r}
+oa_data %>%
+  select(age, actalph, matches("zscore|z_score|time_trails")) %>%
+  melt(id.vars = "actalph") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = actalph, y = value)) +
+  facet_wrap(. ~ variable, scales = "free_y") + 
+  ggtitle("actalph and Neuropsych Measures")
+```
+
+## Young Adults
+
 ```{r}
 alpha = 0.05
 
-ya_cor <- select(ya_data, age, IS:RA, actquot, actamp:fact, matches("wb_|dmn_|fpn_"), trails_b_z_score)
+ya_cor <- select(ya_data, age, IS:RA, actquot, actamp:fact, vc_zscore, ds_zscore, trails_a_z_score, trails_b_z_score)
+ya_cor <- ya_cor[complete.cases(ya_cor), ]
+ya_mat <- cor(ya_cor)
+ya_res <- cor.mtest(ya_mat, conf.level = (1-alpha))
+corrplot(ya_mat, p.mat = ya_res$p, sig.level = alpha, insig = "blank", type = "upper")
+```
+
+```{r}
+alpha = 0.05
+
+ya_cor <- select(ya_data, age, sleep_time, onset_latency, sleep_efficiency, vc_zscore, ds_zscore, trails_a_z_score, trails_b_z_score)
+ya_cor <- ya_cor[complete.cases(ya_cor), ]
+ya_mat <- cor(ya_cor)
+ya_res <- cor.mtest(ya_mat, conf.level = (1-alpha))
+corrplot(ya_mat, p.mat = ya_res$p, sig.level = alpha, insig = "blank", type = "upper")
+```
+
+## *1
+
+```{r}
+summary(lm(trails_b_z_score ~ sleep_efficiency, data = ya_data)) # p = 0.0468, B < 0 ? 
+summary(lm(trails_b_z_score ~ Group*sleep_efficiency, data = d)) # *
+
+summary(lm(trails_b_z_score ~ sleep_time, data = ya_data)) # p = 0.0472, B < 0 ? 
+summary(lm(trails_b_z_score ~ Group*sleep_time, data = d)) # .
+```
+
+# Network measures and cognition
+
+## Older Adults
+```{r}
+alpha = 0.05
+
+oa_cor <- select(oa_data, age, matches("wb_|dmn_|fpn_"),matches("zscore|z_score"))
+oa_cor <- oa_cor[complete.cases(oa_cor), ]
+oa_mat <- cor(oa_cor)
+oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
+corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
+```
+
+
+```{r}
+oa_data %>%
+  select(age, dmn_participation_x, matches("zscore|z_score")) %>%
+  melt(id.vars = "dmn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = dmn_participation_x, y = value)) +
+  stat_smooth(aes(x = dmn_participation_x, y = value), method = "lm") +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("DMN Participation and Neuropsych Measures")
+```
+
+```{r}
+summary(lm(ds_zscore ~ dmn_participation_x, data = oa_data)) #NS
+summary(lm(ds_zscore ~ Group*dmn_participation_x, data = d)) #NS
+```
+
+
+```{r}
+oa_data %>%
+  select(age, fpn_participation_x, matches("zscore|z_score")) %>%
+  melt(id.vars = "fpn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = fpn_participation_x, y = value)) +
+  stat_smooth(aes(x = fpn_participation_x, y = value), method = "lm") +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("FPN Participation and Neuropsych Measures")
+```
+
+```{r}
+summary(lm(trails_b_z_score ~ fpn_participation_x, data = oa_data)) # p = 0.0569
+
+```
+
+
+## Young Adults
+
+```{r}
+alpha = 0.05
+
+ya_cor <- select(ya_data, age, matches("wb_|dmn_|fpn_"), vc_zscore, ds_zscore, trails_a_z_score, trails_b_z_score)
 ya_cor <- ya_cor[complete.cases(ya_cor), ]
 ya_mat <- cor(ya_cor)
 ya_res <- cor.mtest(ya_mat, conf.level = (1-alpha))
@@ -162,117 +392,78 @@ corrplot(ya_mat, p.mat = ya_res$p, sig.level = alpha, insig = "blank", type = "u
 ```
 
 
-## Rest-activity measure associations with Trails B performance
-- **Older adults**. Lower CR minimum and later up-mesor predict greater TMT-B scores in older adults controlling for age
-- **Young adults**. Greater duration of peak activity (lower width (alpha)) and greater rhythm robustness (F-statistic) predict higher TMT-B scores
-
 ```{r}
-stepdata <- select(oa_data, age, actamp:fact, -rsqact, -actwidthratio, trails_b_z_score)
-sum(complete.cases(stepdata))
-mod <- beset_lm(trails_b_z_score ~ ., data = stepdata, n_folds = sum(complete.cases(stepdata)))
-summary(mod, oneSE = FALSE, n_folds = sum(complete.cases(stepdata))) 
-lm11 <- lm(trails_b_z_score ~ age + actmin + actupmesor, data = oa_data)
-summary(lm11)
-validate(lm11)
+ya_data %>%
+  select(age, fpn_participation_x, vc_zscore, ds_zscore, trails_a_z_score, trails_b_z_score) %>%
+  melt(id.vars = "fpn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = fpn_participation_x, y = value)) +
+  facet_wrap (. ~ variable, scales = "free_y") + 
+  ggtitle("FPN Participation and Neuropsych Measures")
 ```
+## *2
 
 ```{r}
-stepdata <- select(ya_data, age, actamp:fact, -rsqact, -actwidthratio, trails_b_z_score)
-sum(complete.cases(stepdata))
-mod <- beset_lm(trails_b_z_score ~ ., data = stepdata, n_folds = sum(complete.cases(stepdata)))
-summary(mod, oneSE = FALSE, n_folds = sum(complete.cases(stepdata))) 
-lm01 <- lm(trails_b_z_score ~ actalph + fact, data = ya_data)
-summary(lm01)
-validate(lm01)
-```
-
-## Rest-activity measure associations with participation coefficient
-Participation coefficient is a measure of integration. It describes how much a given node "participates" in networks outside of its own.
-
-- Greater rhythm robustness (F-statistic) related to greater mean participation coefficient at the whole brain level in older adults
-```{r}
-summary(lm(trails_b_z_score ~ fpn_participation_x*Group, data = d))
-
-d %>%
-  filter(trails_b_z_score >= -2) %>%
-  ggplot(aes(group = Group, color = Group)) +
-  geom_point(aes(x = fpn_participation_x, y = trails_b_z_score, group = Group, color = Group)) +
-  stat_smooth(aes(x = fpn_participation_x, y = trails_b_z_score, group = Group, color= Group), method = "lm") +
-  theme_classic() +
-  scale_color_manual(values = c("blue", "red")) +
-  xlab("FPN Participation Coefficient") + ylab("TMT-B z-score") 
-
+summary(lm(trails_b_z_score ~ fpn_participation_x, data = ya_data)) #NS
+summary(lm(trails_b_z_score ~ Group*fpn_participation_x, data = d)) #p = 0.0161
 ```
 
 
+# Rest-activity measures and functional connectivity networks
+
+## Older Adults
 ```{r}
 alpha = 0.05
 
-oa_cor <- select(oa_data, age, matches("wb_|dmn_|fpn_"), matches("zscore|z_score"))
+oa_cor <- select(oa_data, age, IS:RA, actamp:fact, actquot, matches("wb_|dmn_|fpn_"))
 oa_cor <- oa_cor[complete.cases(oa_cor), ]
 oa_mat <- cor(oa_cor)
 oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
 corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
 ```
+
+```{r}
+oa_data %>%
+  select(age, IS:RA, actamp, actalph, actupmesor, fact, fpn_participation_x) %>%
+  melt(id.vars = "fpn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = value, y = fpn_participation_x)) +
+  facet_wrap (. ~ variable, scales = "free_x")
+```
+
 
 
 ```{r}
-summary(lm(cvlt_zscore ~ fpn_participation_x, oa_data)) #NS
-d %>%
-  ggplot(aes(group = Group, color = Group)) +
-  geom_point(aes(x = fpn_participation_x, y = cvlt_zscore, group = Group, color = Group)) +
-  stat_smooth(aes(x = fpn_participation_x, y = cvlt_zscore, group = Group, color= Group), method = "lm") +
-  theme_classic() +
-  scale_color_manual(values = c("blue", "red")) +
-  xlab("FPN Participation Coefficient") + ylab("CVLT z-score") 
+oa_data %>%
+  select(age, IS:RA, actamp, actalph, actupmesor, fact, dmn_participation_x) %>%
+  melt(id.vars = "dmn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = value, y = dmn_participation_x)) +
+  facet_wrap (. ~ variable, scales = "free_x")
 ```
 
 
-## Participation
+
+## Young Adults
 ```{r}
-alpha = 0.05
-
-oa_cor <- select(oa_data, age, IS:RA, actquot, actamp:fact, matches("participation"))
-oa_cor <- oa_cor[complete.cases(oa_cor), ]
-oa_mat <- cor(oa_cor)
-oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
-corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
-
-
-oa_cor <- select(oa_data, age, matches("participation"), matches("zscore|z_score"))
-oa_cor <- oa_cor[complete.cases(oa_cor), ]
-oa_mat <- cor(oa_cor)
-oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
-corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
+ya_data %>%
+  select(age, IS:RA, actamp, actalph, actupmesor, fact, fpn_participation_x) %>%
+  melt(id.vars = "fpn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = value, y = fpn_participation_x)) +
+  facet_wrap (. ~ variable, scales = "free_x")
 ```
-
 
 ```{r}
-d %>%
-  ggplot(aes(group = Group, color = Group)) +
-  geom_point(aes(x = dmn_participation_x, y =vc_zscore, group = Group, color = Group)) +
-  stat_smooth(aes(x = dmn_participation_x, y = vc_zscore, group = Group, color= Group), method = "lm") +
-  theme_classic() +
-  scale_color_manual(values = c("blue", "red")) +
-  xlab("DMN Participation Coefficient") + ylab("Vocabulary z-score") 
+ya_data %>%
+  select(age, IS:RA, actamp, actalph, actupmesor, fact, dmn_participation_x) %>%
+  melt(id.vars = "dmn_participation_x") %>%
+  ggplot() +
+  theme_minimal() +
+  geom_point(aes(x = value, y = dmn_participation_x)) +
+  facet_wrap (. ~ variable, scales = "free_x")
 ```
-
-
-## Global Efficiency
-```{r}
-alpha = 0.05
-
-oa_cor <- select(oa_data, age, IS:RA, actquot, actamp:fact, matches("efficiency"))
-oa_cor <- oa_cor[complete.cases(oa_cor), ]
-oa_mat <- cor(oa_cor)
-oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
-corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
-
-
-oa_cor <- select(oa_data, age, matches("efficiency"), matches("zscore|z_score"))
-oa_cor <- oa_cor[complete.cases(oa_cor), ]
-oa_mat <- cor(oa_cor)
-oa_res <- cor.mtest(oa_mat, conf.level = (1-alpha))
-corrplot(oa_mat, p.mat = oa_res$p, sig.level = alpha, insig = "blank", type = "upper")
-```
-

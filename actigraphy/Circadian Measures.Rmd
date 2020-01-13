@@ -19,7 +19,7 @@ library(dplyr)
 
 ```{r setup, echo = FALSE}
 work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/'
-proc_dir <- paste0(work_dir, 'processed')
+proc_dir <- paste0(work_dir, 'processed_2019-12-11')
 
 files <- list.files(proc_dir, pattern = '.csv', full.names = TRUE)
 record_id <- substr(basename(files),1, 5)
@@ -40,7 +40,8 @@ cr_np <- cbind(record_id, cr_np)
 
 ```{r Cosinor Method Circadian Measures}
 #results = c()
-for (filename in files[100:length(files)]){
+
+for (filename in files){
   d=read.csv(filename, header=TRUE, sep=',', na.string=' ')
   colnames(d) <- c('time', 'activity')
   d$record_id <- stringr::str_sub(basename(filename), 1, 5)
@@ -199,5 +200,5 @@ colnames(results)=c('record_id','actamp','actbeta','actphi','actmin','actmesor',
 
 cr_results <- merge(cr_np, results, by='record_id', all = TRUE)
 
-write.csv(cr_results, file=(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Data/CR/circadian_rhythms_', format(Sys.time(), '%Y-%m-%d'), '.csv')),row.names=FALSE)
+#write.csv(cr_results, file=(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Data/CR/circadian_rhythms_', format(Sys.time(), '%Y-%m-%d'), '.csv')),row.names=FALSE)
 ```
