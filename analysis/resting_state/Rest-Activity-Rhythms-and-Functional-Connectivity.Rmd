@@ -209,7 +209,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = IS, y = value)) +
+  stat_smooth(aes(x = IS, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("IS and Neuropsych Measures")
 
 oa_data %>%
@@ -218,7 +220,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = fact, y = value)) +
+  stat_smooth(aes(x = fact, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("F-statistic and Neuropsych Measures")
 
 oa_data %>%
@@ -227,7 +231,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = RA, y = value)) +
+  stat_smooth(aes(x = RA, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("RA and Neuropsych Measures")
 
 oa_data %>%
@@ -236,7 +242,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = IV, y = value)) +
+  stat_smooth(aes(x = IV, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("IV and Neuropsych Measures")
 
 oa_data %>%
@@ -245,7 +253,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = sleep_time, y = value)) +
+  stat_smooth(aes(x = sleep_time, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("Sleep Time and Neuropsych Measures")
 
 oa_data %>%
@@ -254,7 +264,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = sleep_efficiency, y = value)) +
+  stat_smooth(aes(x = sleep_efficiency, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("Sleep Efficiency and Neuropsych Measures")
 ```
 
@@ -294,7 +306,9 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = actalph, y = value)) +
+  stat_smooth(aes(x = actalph, y = value)) +
   facet_wrap(. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("actalph and Neuropsych Measures")
 ```
 
@@ -353,6 +367,7 @@ oa_data %>%
   geom_point(aes(x = dmn_participation_x, y = value)) +
   stat_smooth(aes(x = dmn_participation_x, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("DMN Participation and Neuropsych Measures")
 ```
 
@@ -371,6 +386,7 @@ oa_data %>%
   geom_point(aes(x = fpn_participation_x, y = value)) +
   stat_smooth(aes(x = fpn_participation_x, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("FPN Participation and Neuropsych Measures")
 ```
 
@@ -400,7 +416,9 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = fpn_participation_x, y = value)) +
+  stat_smooth(aes(x = fpn_participation_x, y = value)) +
   facet_wrap (. ~ variable, scales = "free_y") + 
+  ylab("z-score") +
   ggtitle("FPN Participation and Neuropsych Measures")
 ```
 
@@ -432,6 +450,8 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = fpn_participation_x)) +
+  stat_smooth(aes(x = value, y = fpn_participation_x)) +
+  xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 
@@ -444,6 +464,8 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = dmn_participation_x)) +
+  stat_smooth(aes(x = value, y = dmn_participation_x)) +
+  xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 
@@ -457,6 +479,8 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = fpn_participation_x)) +
+  stat_smooth(aes(x = value, y = fpn_participation_x)) +
+  xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 
@@ -467,6 +491,8 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = dmn_participation_x)) +
+  stat_smooth(aes(x = value, y = dmn_participation_x)) +
+  xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 
@@ -511,7 +537,8 @@ focus_cog <- merge(focus_ya.mlt, focus_oa.mlt, by = c("rowname", "variable"))
 ggplot(data = na.omit(focus_oa.mlt[abs(focus_oa.mlt$value) > 0.35,]), aes(x = value, y = rowname)) + 
   geom_point(color = 'red') + 
   geom_point(data = drop_na(focus_ya.mlt[abs(focus_ya.mlt$value) > 0.35,]), color = 'blue') + 
-  facet_grid( ~ variable,  scales='fixed')
+  facet_grid( ~ variable,  scales='fixed') +
+  ylab("node label") + xlab("r2 value")
 ```
 
 
