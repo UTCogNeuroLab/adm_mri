@@ -209,7 +209,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = IS, y = value)) +
-  stat_smooth(aes(x = IS, y = value)) +
+  stat_smooth(aes(x = IS, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("IS and Neuropsych Measures")
@@ -220,7 +220,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = fact, y = value)) +
-  stat_smooth(aes(x = fact, y = value)) +
+  stat_smooth(aes(x = fact, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("F-statistic and Neuropsych Measures")
@@ -231,7 +231,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = RA, y = value)) +
-  stat_smooth(aes(x = RA, y = value)) +
+  stat_smooth(aes(x = RA, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("RA and Neuropsych Measures")
@@ -242,7 +242,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = IV, y = value)) +
-  stat_smooth(aes(x = IV, y = value)) +
+  stat_smooth(aes(x = IV, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("IV and Neuropsych Measures")
@@ -253,7 +253,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = sleep_time, y = value)) +
-  stat_smooth(aes(x = sleep_time, y = value)) +
+  stat_smooth(aes(x = sleep_time, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("Sleep Time and Neuropsych Measures")
@@ -264,7 +264,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = sleep_efficiency, y = value)) +
-  stat_smooth(aes(x = sleep_efficiency, y = value)) +
+  stat_smooth(aes(x = sleep_efficiency, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("Sleep Efficiency and Neuropsych Measures")
@@ -306,7 +306,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = actalph, y = value)) +
-  stat_smooth(aes(x = actalph, y = value)) +
+  stat_smooth(aes(x = actalph, y = value), method = "lm") +
   facet_wrap(. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("actalph and Neuropsych Measures")
@@ -416,7 +416,7 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = fpn_participation_x, y = value)) +
-  stat_smooth(aes(x = fpn_participation_x, y = value)) +
+  stat_smooth(aes(x = fpn_participation_x, y = value), method = "lm") +
   facet_wrap (. ~ variable, scales = "free_y") + 
   ylab("z-score") +
   ggtitle("FPN Participation and Neuropsych Measures")
@@ -450,7 +450,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = fpn_participation_x)) +
-  stat_smooth(aes(x = value, y = fpn_participation_x)) +
+  stat_smooth(aes(x = value, y = fpn_participation_x), method = "lm") +
   xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
@@ -464,7 +464,7 @@ oa_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = dmn_participation_x)) +
-  stat_smooth(aes(x = value, y = dmn_participation_x)) +
+  stat_smooth(aes(x = value, y = dmn_participation_x), method = "lm") +
   xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
@@ -479,7 +479,7 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = fpn_participation_x)) +
-  stat_smooth(aes(x = value, y = fpn_participation_x)) +
+  stat_smooth(aes(x = value, y = fpn_participation_x), method = "lm") +
   xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
@@ -491,7 +491,7 @@ ya_data %>%
   ggplot() +
   theme_minimal() +
   geom_point(aes(x = value, y = dmn_participation_x)) +
-  stat_smooth(aes(x = value, y = dmn_participation_x)) +
+  stat_smooth(aes(x = value, y = dmn_participation_x), method = "lm") +
   xlab("rest-activity measure") +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
