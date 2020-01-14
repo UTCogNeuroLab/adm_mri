@@ -12,6 +12,7 @@ output: html_document
 * [Network measures and cognition]
 * [*2]
 * [Rest-activity measures and functional connectivity networks]
+* [Nodewise Participation Coefficient]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
