@@ -42,19 +42,70 @@ truncate <- function(d, ndays, end_times){
   return(d_truncated)
 }
 
-plot_actigraphy <- function(d, SR, resolution){
-  # d is actigraphy data from read_actig_file function
-  # SR is sampling rate in 1/min (eg., for 30 second epochs, SR = 2)
-  # resolution is for plot - number of hours to gather activity values across
-  #d=read.csv(filename, header=TRUE, sep=',', na.string=' ', stringsAsFactors = FALSE)
+get_dates <- function(d){
+  dates = unique(as.Date(d$time))
+  return(dates)
+}
+
+plot_actigraphy <- function(d, date=NULL, print=TRUE){
+  #date format is "2018-10-24"
+  library(scales)
   
-  ggplot(data = d, aes(x = time, y = activity)) +
-    geom_col() + 
-    facet_wrap(. ~ day(time))
-  p.act <- ggplot(d[seq(1, nrow(d), resolution*SR*60), ], aes(x = datetime, y = activity)) +
-    geom_step() +
-    theme_classic() +
-    ggtitle(record_id[i])
+  if (is.null(date)){
+    
+    p.act <- ggplot(data = d, aes(x = as_datetime(time), y = activity)) + 
+      geom_point(size = 0.7) + 
+      scale_x_datetime(breaks = "day") +
+      theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      xlab("Date") + ylab("Activity") +
+      ggtitle(d$record_id[1])
+    
+  } else if (is.numeric(date)) {
+    print(paste0("grabbing day ", date))
+    
+    dates = get_dates(d)
+    date = dates[date]
+    
+    if (length(date) > 1){
+      
+      d2 <- d[(date(d$time) <= date[length(date)]), ]
+      d2 <- d2[date(d2$time) >= date[1],]
+      
+      p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.7) + 
+        scale_x_datetime(breaks = "day") +
+        theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d2$record_id[1])
+      
+    } else {
+      dates = get_dates(d)
+      date = dates[date]
+      
+      d2 <- d[date(d$time) == date,]
+      
+      p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.7) + 
+        scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
+        theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d2$record_id[1])
+    }
+    
+  } else if (is.Date(as.Date(date))) {
+    
+    print(paste0("it's a date! ", date))
+    
+    d2 <- d[date(d$time) == date,]
+    
+    p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+      geom_point(size = 0.7) + 
+      scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
+      theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      xlab("Date") + ylab("Activity") +
+      ggtitle(d2$record_id[1])
+    
+  } 
   
   return(p.act)
 }
