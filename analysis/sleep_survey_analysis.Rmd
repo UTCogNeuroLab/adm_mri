@@ -1,0 +1,60 @@
+---
+title: "Sleep Survey Analysis"
+author: "Megan McMahon"
+date: "2/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(tidyverse)
+
+```
+
+Load sleep data from the redcap export. Use the command head() to preview the dataset.
+Clean the data so that:
+- The record IDs are reformatted to match sleep variable dataset (imported later)
+- Sex and gender are inputted consistently
+
+```{r}
+d <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/AgingDecMem-SleepSurveyData_DATA_2019-09-04_0929.csv")
+d <- select(d, -matches("redcap"))
+
+d$record_id <- str_pad(d$record_id, pad = "0", side = "left", width = 4)
+d$record_id <- ifelse(d$age <= 30, paste0("3", d$record_id), paste0("4", d$record_id))
+d$sex <- factor(ifelse(stringr::str_detect(d$sex, "f|F", negate = FALSE), 0, 1), labels = c("Female", "Male"))
+d$age <- as.numeric(d$age)
+
+head(d)
+
+```
+
+
+This is aggregating sadness, happiness, stress, and rumination by their mean for each subject across the study period, and activity types by each day by their sum across the recording period.
+
+To Do: Sums should be adjusted for length of participation in the study - can divide by total number of days of participation. 
+
+```{r}
+d <- d %>% 
+  fill(record_id, age, sex) %>%
+  filter(!is.na(sad))
+
+head(d)
+
+d2 <- merge(select(d, record_id, sex, age), aggregate(. ~ record_id, data=select(d, -sex, -age, -sad, -happy, -stress_a11e49, -ruminate), FUN=sum), by = "record_id", include.all = FALSE) %>%
+  distinct()
+
+head(d2)
+
+d3 <- merge(d2, aggregate(. ~ record_id, data=select(d, record_id, sad, happy, stress_a11e49, ruminate), FUN=mean), by = "record_id")
+
+head(d3)
+
+```
+
+```{r}
+
+```
+

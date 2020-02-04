@@ -1,0 +1,187 @@
+---
+title: "Actigraphy Plots"
+author: "Megan McMahon"
+date: "1/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lubridate)
+library(tidyverse)
+library(reshape2)
+library(RColorBrewer)
+library(stringr)
+library(gridExtra)
+library(scales)
+
+find_act_file <- function(directory, record_id){
+  files <- list.files(directory, pattern = '.csv', full.names = TRUE)
+  
+  # separate out younger and older adults
+  filename <- files[startsWith(basename(files), as.character(record_id))]
+  
+  return(filename)
+}
+
+read_actig_file <- function(filename) {
+  # read actigraphy file - csv format, 2 columns, datetime and activity
+  d=read.csv(filename, header=TRUE, sep=',', na.string=' ', stringsAsFactors = FALSE)
+  colnames(d) <- c('time', 'activity')
+  d$record_id <- stringr::str_sub(basename(filename), 1, 5)
+  d$total_recording_period <- ymd_hms(tail(d$time, 1), tz="UTC") - ymd_hms(head(d$time, 1), tz="UTC")
+  return(d)
+}
+
+get_watch_end_times <- function(csvsave = FALSE){
+  end_times = read.csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Redcap/AgingDecMem-WatchInformation_DATA_2019-12-08_0806.csv", stringsAsFactors = FALSE)
+  end_times = select(end_times, record_id, actigraph_off)
+  
+  end_times$record_id = str_pad(end_times$record_id, 3, pad = "0")
+  end_times$actigraph_off = ymd_hm(end_times$actigraph_off)
+  end_times <- end_times[!is.na(end_times$actigraph_off), ]
+  
+  if (csvsave == TRUE){
+    write.csv(end_times, "~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/WatchOffs.csv")
+  }
+  
+  return(end_times)
+}
+
+truncate <- function(d, ndays, end_times){
+  # truncate to number of days desired for recording period
+  # also removes values after recorded end time
+  end = ymd_hms(end_times$actigraph_off[end_times$record_id == str_sub(d$record_id[1], -3, -1)], tz = "UTC")
+  d <- d[d$time < end,]
+  start = ymd_hms(tail(d$time, 1), tz="UTC") - days(ndays)
+  d_truncated <- d[d$time >= start,]
+  return(d_truncated)
+}
+
+get_dates <- function(d){
+  dates = unique(as.Date(d$time))
+  return(dates)
+}
+
+#TO DO: change dates to day 1, 2, 3, etc.
+plot_actigraphy <- function(d, date=NULL, add_table=FALSE, print=TRUE){
+  #date format is "2018-10-24"
+  
+  if (is.null(date)){
+    
+    if (add_table == TRUE){
+      
+      cr <- filter(cr_data, record_id == d$record_id[1]) %>% 
+        select(-record_id) %>%
+        gather()
+      
+      ####################################
+      if (dim(cr)[1] == 0){
+        
+        cr <- data.frame(rep(NA, length(colnames(cr_data))))
+        rownames(cr) <- colnames(cr_data)
+      }
+      
+      tbl <- tableGrob(cr, rows = NULL, cols = NULL, theme = ttheme_minimal())
+      
+      plt <- ggplot(data = d, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.4) + 
+        scale_x_datetime(breaks = "day") +
+        theme_minimal() + theme(axis.text.x = element_blank()) +
+        #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d$record_id[1])
+      
+      
+      p.act <- grid.arrange(plt, tbl, ncol=2, as.table=TRUE, heights=c(3,1))
+      
+      
+      
+    } else {
+      
+      p.act <- ggplot(data = d, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.4) + 
+        scale_x_datetime(breaks = "day") +
+        theme_minimal() + theme(axis.text.x = element_blank()) +
+        #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d$record_id[1])
+    }
+    
+  } else if (is.numeric(date)) {
+    print(paste0("grabbing day ", date))
+    
+    dates = get_dates(d)
+    date = dates[date]
+    
+    if (length(date) > 1){
+      
+      d2 <- d[(date(d$time) <= date[length(date)]), ]
+      d2 <- d2[date(d2$time) >= date[1],]
+      
+      p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.4) + 
+        scale_x_datetime(breaks = "day") +
+        theme_minimal() + theme(axis.text.x = element_blank()) +
+        #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d2$record_id[1])
+      
+    } else {
+      dates = get_dates(d)
+      date = dates[date]
+      
+      d2 <- d[date(d$time) == date,]
+      
+      p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+        geom_point(size = 0.4) + 
+        scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
+        theme_minimal() + theme(axis.text.x = element_blank()) +
+        #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+        xlab("Date") + ylab("Activity") +
+        ggtitle(d2$record_id[1])
+    }
+    
+  } else if (is.Date(as.Date(date))) {
+    
+    print(paste0("it's a date! ", date))
+    
+    d2 <- d[date(d$time) == date,]
+    
+    p.act <- ggplot(data = d2, aes(x = as_datetime(time), y = activity)) + 
+      geom_point(size = 0.4) + 
+      scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
+      theme_minimal() + theme(axis.text.x = element_blank()) +
+      #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      xlab("Date") + ylab("Activity") +
+      ggtitle(d2$record_id[1])
+    
+  } 
+  
+  return(p.act)
+}
+
+
+act_plot_all <- function(file, ndays, date=NULL, add_table=FALSE, save=FALSE){
+  d <- read_actig_file(file)
+  end_times <- get_watch_end_times()
+  d <- truncate(d, 10, end_times)
+  p <- plot_actigraphy(d, add_table = TRUE)
+}
+
+```
+
+
+```{r, include = TRUE}
+work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2019-12-11'
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-27.RData")
+cr_data <- dplyr::select(d, record_id, actamp:fact, IS:RA)
+
+rm(d)
+files <- list.files(work_dir, pattern = '.csv', full.names = TRUE)
+
+for (file in files) {
+  p <- act_plot_all(file, 10, date=NULL, add_table=FALSE)
+}
+
+```
