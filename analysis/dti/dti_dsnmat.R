@@ -4,12 +4,15 @@ library(readxl)
 library(writexl)
 
 #load data
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-30.RData")
+
+cr <- select(d, record_id, actamp:fact, IS:RA)
+cr$actquot <- cr$actamp/cr$actmesor
+cr <- cr[complete.cases(cr) == TRUE,]
+
 dti = c()
 dti$files = list.files("/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss/origdata/")
 dti$record_id = substr(dti$files, 5, 9)
-
-cr <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Data/CR/circadian_rhythms_2019-09-07.csv')
-cr$actquot <- cr$actamp/cr$actmesor
 
 neuro <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Data/Neuropsych/AgingDecMemNeuropsyc_DATA_2019-06-12_0708.csv')
 
