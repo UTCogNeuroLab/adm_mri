@@ -146,3 +146,6 @@ fslmeants -i all_MD.nii.gz -m mask_sca_1mm_bin -o meants_MD_sca.txt
 
 #https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=fsl;a059b10c.1409
 #https://www.brown.edu/carney/mri/researchers/analysis-pipelines/dti#step6
+SUBJECTS_DIR=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/freesurfer/
+sublist=`ls /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/freesurfer/ | xargs -n 1 basename | grep sub-`
+asegstats2table --subjects $sublist --meas volume --skip --segno 251 252 253 254 255 --tablefile aseg_stats_cc.txt
