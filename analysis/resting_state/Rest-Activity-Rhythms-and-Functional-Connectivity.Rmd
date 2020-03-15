@@ -21,9 +21,9 @@ library(readr)
 library(tidyverse)
 library(reshape2)
 library(corrplot)
-library(beset)
+#library(beset)
 
-load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-13.RData")
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
 
 cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -73,110 +73,334 @@ oa_data <- d[d$Group == "Older Adults",]
 
 ```
 
+# PsychFest Graphs
+```{r}
+
+
+d %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = IS)) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  xlab(element_blank()) + ylab("Interdaily Stability") +
+  theme(legend.position="none", text = element_text(size=20))
+  ggsave('~/Box/PsychFest/IS-group.png', dpi = 300)
+
+dd %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = actamp)) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  xlab(element_blank()) + ylab("Amplitude") +
+  theme(legend.position="none", text = element_text(size=20)) +
+  ggsave('~/Box/PsychFest/amp-group.png', dpi = 300)
+
+dd %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = actphi)) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  xlab(element_blank()) + ylab("Acrophase") +
+  theme(legend.position="none", text = element_text(size=20)) +
+  ggsave('~/Box/PsychFest/phi-group.png', dpi = 300)
+
+t.test(actalph ~ Group, data = d) # 0.02
+t.test(actbeta ~ Group, data = d) # 0.04495
+t.test(actphi ~ Group, data = d) # <<<<
+t.test(IS ~ Group, data = d) # <<<
+d$actquot <- d$actamp / d$actmesor
+t.test(actquot ~ Group, data = d) # 0.03
+
+
+###
+
+summary(lm(dmn_participation_x ~ actamp*Group, data = dd))
+
+lm1 <- lm(dmn_participation_x ~ actamp, data = d[d$Group == 'Older Adults',])
+lm2 <- lm(dmn_participation_x ~ actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+lm3 <- lm(dmn_participation_x ~ actamp3 + actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+
+AIC(lm1)
+AIC(lm2)
+AIC(lm3) # best
+
+d %>%
+  filter(actamp < 2.5) %>%
+  ggplot() + 
+  geom_point(aes(x = actquot, y = dmn_participation_x, group = Group, color = Group)) + 
+  stat_smooth(aes(x = actquot, y = dmn_participation_x, group = Group, color = Group), method = 'lm', se = FALSE) + 
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="none", text = element_text(size=20)) +
+  facet_wrap(. ~ Group) +
+  xlab('Amplitude') + ylab('DMN Participation') +
+  ggsave('~/Box/PsychFest/amp_dmn_participation_2.png', dpi = 300)
+
+
+d <- dd
+
+
+d$actamp2 = d$actamp^2
+d$actamp3 = d$actamp^3
+d$actamp4 = d$actamp^4
+
+summary(lm(fpn_participation_x ~ age, data = d[d$Group == 'Young Adults',])) #NS
+summary(lm(fpn_participation_x ~ age, data = d[d$Group == 'Older Adults',])) #NS
+
+lm1 <- lm(fpn_participation_x ~ actamp, data = d[d$Group == 'Young Adults',])
+lm2 <- lm(fpn_participation_x ~ actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+lm3 <- lm(fpn_participation_x ~ actamp3 + actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+lm4 <- lm(fpn_participation_x ~ actamp4 + actamp3 + actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+
+AIC(lm1)
+AIC(lm2)
+AIC(lm3) #best, NS
+AIC(lm4)
+
+summary(lm2) #NS 
+
+lm1 <- lm(fpn_participation_x ~ actamp, data = d[d$Group == 'Older Adults',])
+lm2 <- lm(fpn_participation_x ~ actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+lm3 <- lm(fpn_participation_x ~ actamp3 + actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+lm4 <- lm(fpn_participation_x ~ actamp4 + actamp3 + actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+
+AIC(lm1)
+AIC(lm2)
+AIC(lm3) # best
+AIC(lm4)
+
+summary(lm4)
+
+d %>%
+  drop_na(Group) %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = fpn_participation_x, group = Group, color = Group)) + 
+  stat_smooth(data = subset(d, Group == 'Older Adults'), aes(x = actamp, y = fpn_participation_x, group = Group, color = Group), formula = y ~ poly(x, 3), method = 'lm', se = FALSE) + 
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="none", text = element_text(size=20)) +
+  facet_wrap(. ~ Group, scales = 'free_y') +
+  xlab('Amplitude') + ylab('FPN Participation') 
+  ggsave('~/Box/PsychFest/amp_fpn_participation.png', dpi = 300)
+
+summary(lm(dmn_participation_x ~ age, data = d[d$Group == 'Young Adults',])) #NS
+summary(lm(dmn_participation_x ~ age, data = d[d$Group == 'Older Adults',])) #NS
+###
+
+lm1 <- lm(dmn_participation_x ~ actamp, data = d[d$Group == 'Young Adults',])
+lm2 <- lm(dmn_participation_x ~ actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+lm3 <- lm(dmn_participation_x ~ actamp3 + actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+lm4 <- lm(dmn_participation_x ~ actamp4 + actamp3 + actamp2 + actamp, data = d[d$Group == 'Young Adults',])
+
+AIC(lm1) #best
+AIC(lm2)
+AIC(lm3)
+AIC(lm4)
+
+summary(lm1) #
+
+lm1 <- lm(dmn_participation_x ~ actamp, data = d[d$Group == 'Older Adults',])
+lm2 <- lm(dmn_participation_x ~ actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+lm3 <- lm(dmn_participation_x ~ actamp3 + actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+lm4 <- lm(dmn_participation_x ~ actamp4 + actamp3 + actamp2 + actamp, data = d[d$Group == 'Older Adults',])
+
+AIC(lm1)
+AIC(lm2)
+AIC(lm3) # best
+AIC(lm4)
+
+summary(lm3)
+
+d %>%
+  drop_na(Group) %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = dmn_participation_x, group = Group, color = Group)) + 
+  stat_smooth(data = subset(d, Group == 'Young Adults'), aes(x = actamp, y = dmn_participation_x, group = Group, color = Group), formula = y ~ poly(x, 1), method = 'lm', se = FALSE) + 
+  stat_smooth(data = subset(d, Group == 'Older Adults'), aes(x = actamp, y = dmn_participation_x, group = Group, color = Group), formula = y ~ poly(x, 3), method = 'lm', se = FALSE) + 
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="none", text = element_text(size=20)) +
+  facet_wrap(. ~ Group, scales = 'free_y') +
+  xlab('Amplitude') + ylab('DMN Participation') +
+  ggsave('~/Box/PsychFest/amp_dmn_participation.png', dpi = 300)
+
+## np
+np <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Data/Neuropsych/AgingDecMemNeuropsyc_DATA_2019-06-12_0708.csv')
+d_np <- merge(d, np, by = 'record_id')
+d_np <- filter(d_np, actamp < 3)
+
+d_np$ef <- (d_np$ds_zscore + d_np$trails_b_z_score)/2
+
+d_np %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = ef, group = Group, color = Group)) + 
+  stat_smooth(data = d_np, aes(x = actamp, y = ef, group = Group, color = Group), formula = y ~ poly(x, 2), method = 'lm', se = FALSE) + 
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="none", text = element_text(size=20)) +
+  facet_wrap(. ~ Group, scales = 'free_y') +
+  xlab('Amplitude') + ylab('Executive Function')
+
+summary(lm(ef ~ actamp*Group, d_np))
+lm1 <- lm(ef ~ actamp, d_np)
+lm2 <- lm(ef ~ actamp2 + actamp, d_np)
+lm3 <- lm(ef ~ actamp3 + actamp2 + actamp, d_np)
+lm4 <- lm(ef ~ actamp4 + actamp3 + actamp2 + actamp, d_np)
+
+
+AIC(lm1)
+AIC(lm2)
+AIC(lm3)
+AIC(lm4)
+
+summary(lm2)
+
+plot(lm2)
+
+d_np %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = EF_group, y = fact)) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  xlab(element_blank()) + ylab("Amplitude") +
+  theme(legend.position="none", text = element_text(size=20))
+```
+
 
 # Differences in functional connectivity measures across age groups
 
 ```{r}
-d %>%
-  select(Group, matches("wb_")) %>%
-  na.omit() %>%
-  melt(id.vars = "Group") %>%
-  ggplot(aes(color = Group, group = Group)) + 
-  geom_boxplot(aes(x = Group, y = value), size=1.2) + 
-  facet_wrap( . ~ variable, scales = "free_y") +
-  theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) + 
-  scale_x_discrete(labels = c("YA", "OA")) + 
-  ggtitle("Whole Brain")
+cr <- read_csv('~/Box/CogNeuroLab/Aging Decision Making R01/Data/graph_metrics.csv')
 
-d %>%
-  select(Group, matches("dmn_")) %>%
-  na.omit() %>%
-  melt(id.vars = "Group") %>%
-  ggplot(aes(color = Group, group = Group)) + 
-  geom_boxplot(aes(x = Group, y = value), size=1.2) + 
-  facet_wrap( . ~ variable, scales = "free_y") +
-  theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) + 
-  scale_x_discrete(labels = c("YA", "OA")) +
-  ggtitle("Default Mode Network")
 
-d %>%
-  select(Group, matches("fpn_")) %>%
+cr %>%
+  select(Group, matches("wb_|dmn_|fpn_")) %>%
   na.omit() %>%
-  melt(id.vars = "Group") %>%
-  ggplot(aes(color = Group, group = Group)) + 
-  geom_boxplot(aes(x = Group, y = value), size=1.2) + 
-  facet_wrap( . ~ variable, scales = "free_y") +
-  theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) + 
-  scale_x_discrete(labels = c("YA", "OA")) +
-  ggtitle("Control Network")
+  melt(id.vars = "Group") -> d.melt
 
-t <- t.test(wb_participation_x ~ Group, data = d) ##
+d.melt$network = rep(0, length(d.melt$network))
+d.melt$network = ifelse(str_detect(d.melt$variable, "wb_"), "Whole Brain", d.melt$network)
+d.melt$network = ifelse(str_detect(d.melt$variable, "dmn_"), "Default Mode Network", d.melt$network)
+d.melt$network = ifelse(str_detect(d.melt$variable, "fpn_"), "Frontoparietal Network", d.melt$network)
+d.melt$network
+
+d.melt$variable <- str_to_title(sapply( str_split(d.melt$variable, "_", 3), "[", 2 ))
+d.melt$Group <- factor(d.melt$Group, levels = c("Young Ad.meltults", "Old.melter Ad.meltults"))
+
+
+d.melt %>%
+  filter(network == 'Whole Brain') %>%
+  filter(variable %in% c('Efficiency', 'modularity', 'Participation')) %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = value)) + 
+  facet_wrap( . ~ variable, scales = "free_y") +
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  scale_x_d.meltiscrete(labels = c("YA", "OA")) + 
+  xlab(element_blank()) + ylab(element_blank()) +
+  theme(legend.position="bottom") +
+  ggtitle("Whole Brain") +
+  ggsave('~/Box/PsychFest/wb_boxplot.png', d.meltpi = 300)
+
+d.melt %>%
+  filter(network == 'Frontoparietal Network') %>%
+  filter(variable %in% c('Efficiency', 'modularity', 'Participation')) %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = value)) + 
+  facet_wrap( . ~ variable, scales = "free_y") +
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  scale_x_d.meltiscrete(labels = c("YA", "OA")) + 
+  xlab(element_blank()) + ylab(element_blank()) +
+  theme(legend.position="bottom") +
+  ggtitle("Frontoparietal Network") +
+  ggsave('~/Box/PsychFest/fpn_boxplot.png', d.meltpi = 300)
+
+d.melt %>%
+  filter(network == 'Default Mode Network') %>%
+  filter(variable %in% c('Efficiency', 'modularity', 'Participation')) %>%
+  ggplot(aes(fill = Group, group = Group)) + 
+  geom_boxplot(aes(x = Group, y = value)) + 
+  facet_wrap( . ~ variable, scales = "free_y") +
+  theme_minimal() + 
+  scale_fill_brewer(palette="Set1") + 
+  scale_x_d.meltiscrete(labels = c("YA", "OA")) + 
+  xlab(element_blank()) + ylab(element_blank()) +
+  theme(legend.position="bottom") +
+  ggtitle("Default Mode Network") +
+  ggsave('~/Box/PsychFest/d.meltmn_boxplot.png', d.meltpi = 300)
+
+t <- t.test(wb_participation_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = wb_participation_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = wb_participation_x, color = Group)) +
   geom_boxplot() + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Participation \n Coefficient") + 
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
 
-t <- t.test(wb_efficiency_x ~ Group, data = d) ##
+t <- t.test(wb_efficiency_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = wb_efficiency_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = wb_efficiency_x, color = Group)) +
   geom_boxplot(size = 1.2) + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Global \n Efficiency") + 
   theme(axis.text=element_text(size=12), plot.caption = element_text(size = 12)) +
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
 
-t <- t.test(dmn_efficiency_x ~ Group, data = d) ##
+t <- t.test(dmn_efficiency_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = dmn_efficiency_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = dmn_efficiency_x, color = Group)) +
   geom_boxplot(size = 1.2) + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Global \n Efficiency") + 
   theme(axis.text=element_text(size=12), plot.caption = element_text(size = 12)) +
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
 
-t <- t.test(dmn_modularity_x ~ Group, data = d) ##
+t <- t.test(d.meltmn_modularity_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = dmn_modularity_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = d.meltmn_modularity_x, color = Group)) +
   geom_boxplot(size = 1.2) + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Global \n Efficiency") + 
   theme(axis.text=element_text(size=12), plot.caption = element_text(size = 12)) +
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
 
-t <- t.test(fpn_participation_x ~ Group, data = d) ##
+t <- t.test(fpn_participation_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = fpn_participation_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = fpn_participation_x, color = Group)) +
   geom_boxplot(size = 1.2) + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Global \n Efficiency") + 
   theme(axis.text=element_text(size=12), plot.caption = element_text(size = 12)) +
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
 
-t <- t.test(fpn_betweenness_x ~ Group, data = d) ##
+t <- t.test(fpn_betweenness_x ~ Group, d.meltata = d.melt) ##
 t
-ggplot(d, aes(x = Group, y = fpn_betweenness_x, color = Group)) +
+ggplot(d.melt, aes(x = Group, y = fpn_betweenness_x, color = Group)) +
   geom_boxplot(size = 1.2) + 
   theme_classic() + 
-  scale_colour_manual(values=c("blue", "red")) +
-  scale_x_discrete(labels=c("YA", "OA")) + 
+  scale_colour_manual(values=c("blue", "red.melt")) +
+  scale_x_d.meltiscrete(labels=c("YA", "OA")) + 
   xlab("Age Group") + ylab("Global \n Efficiency") + 
   theme(axis.text=element_text(size=12), plot.caption = element_text(size = 12)) +
-  labs(caption = (paste("t = ", round(t$statistic, 3), "p = ", round(t$p.value, 3))))
+  labs(caption = (paste("t = ", round.melt(t$statistic, 3), "p = ", round.melt(t$p.value, 3))))
+```
+
+
+```{r}
+
 ```
 
 # Rest-activity measures and cognition
@@ -455,6 +679,61 @@ oa_data %>%
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 
+```{r}
+
+d %>%
+  select(record_id, Group, age, IS, matches('Efficiency|Modularity|Participation')) %>%
+  melt(id.vars = c('Group', 'record_id', 'IS')) %>%
+  ggplot() + 
+  geom_point(aes(x = IS, y = value, group = Group, color = Group)) + 
+  facet_wrap( . ~ variable, scales = "free_y") +
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="bottom") +
+  ggtitle("Rest-Activity Stability and Network Metrics")
+```
+
+```{r}
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IS, y = dmn_participation_x, group = Group, color = Group)) + 
+  stat_smooth(aes(x = IS, y = dmn_participation_x, group = Group, color = Group), method = 'lm') + 
+  theme_minimal() + 
+  scale_color_brewer(palette="Set1") + 
+  theme(legend.position="bottom", text = element_text(size=20)) +
+  xlab('Interdaily Stability') + ylab('DMN Participation') + 
+  ggsave('~/Box/PsychFest/IS_dmn_participation.png', dpi = 300)
+```
+
+```{r}
+summary(lm(wb_modularity_x ~ actamp*Group, data = d))
+summary(lm(wb_modularity_x ~ actamp, data = d))
+summary(lm(wb_modularity_x ~ IS*Group, data = d))
+summary(lm(wb_modularity_x ~ IS, data = d))
+
+summary(lm(dmn_participation_x ~ actamp*Group, data = d)) #####
+summary(lm(dmn_participation_x ~ actamp*Group, data = d[d$actamp < 2.5,])) #####
+summary(lm(dmn_participation_x ~ IS*Group, data = d)) #####
+
+summary(lm(dmn_efficiency_x ~ actamp*Group, data = d))
+summary(lm(dmn_efficiency_x ~ actamp, data = d))
+summary(lm(dmn_efficiency_x ~ actamp*Group, data = d[d$actamp < 2.5,])) 
+summary(lm(dmn_efficiency_x ~ actamp, data = d[d$actamp < 2.5,])) 
+summary(lm(dmn_efficiency_x ~ IS*Group, data = d))
+summary(lm(dmn_efficiency_x ~ IS, data = d))
+
+summary(lm(fpn_participation_x ~ actamp*Group, data = d)) #####
+summary(lm(fpn_participation_x ~ actamp*Group, data = d[d$actamp < 2.5,])) #####
+summary(lm(fpn_participation_x ~ IS*Group, data = d))
+summary(lm(fpn_participation_x ~ IS, data = d))
+
+summary(lm(fpn_efficiency_x ~ actamp*Group, data = d))
+summary(lm(fpn_efficiency_x ~ actamp*Group, data = d[d$actamp < 2.5,]))
+summary(lm(fpn_efficiency_x ~ IS*Group, data = d))
+
+
+```
+
 
 
 ```{r}
@@ -466,6 +745,7 @@ oa_data %>%
   geom_point(aes(x = value, y = dmn_participation_x)) +
   stat_smooth(aes(x = value, y = dmn_participation_x), method = "lm") +
   xlab("rest-activity measure") +
+  scale_color_manual(palette = 'Set1') +
   facet_wrap (. ~ variable, scales = "free_x")
 ```
 

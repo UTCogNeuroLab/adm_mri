@@ -354,7 +354,7 @@ nsample = length(files)
 
 # recording period of 3-10 days
 #recording_period = seq(3, 9, by = 1)
-recording_period = 10
+recording_period = 7
 
 # calculate circadian measures based on different recording periods
 #ya_results <- optimize_recording_period(ya_files, nsample, recording_period)
@@ -364,9 +364,9 @@ new_results <- optimize_recording_period(files, nsample, recording_period)
 # plot results
 ya_plot <- plot_circadian_measures(ya_results)
 ya_plot
-ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/ya_recording_period_effect-2.png', ya_plot, width = 13, height = 7)
+ggsave(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/ya_recording_period_effect-', sys.Date(), '.png'), ya_plot, width = 13, height = 7)
 
 oa_plot <- plot_circadian_measures(oa_results)
 oa_plot
-ggsave('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/oa_recording_period_effect-2.png', oa_plot, width = 13, height = 7)
+ggsave(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/oa_recording_period_effect-', sys.Date(), '.png'), oa_plot, width = 13, height = 7)
 
