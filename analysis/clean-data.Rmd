@@ -1,0 +1,156 @@
+---
+title: "OHBM Data"
+author: "Megan McMahon"
+date: "2/2/2020"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(tidyverse)
+library(readr)
+library(corrplot)
+library(reshape2)
+library(car)
+library(beset)
+library(psych)
+library(broom)
+library(purrr)
+
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-27.RData")
+
+#load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
+
+#save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2019-12-25.RData")
+
+#d[d$record_id == 40160, c("actamp", "actbeta", "actphi", "actmin", "actmesor", "actupmesor", "actdownmesor", "actalph", "actwidthratio", "rsqact", "fact", "fnlrgact")] <- NA
+
+# d <- d[, ! grepl("CC_", names(d))]
+
+# 
+# d$EstimatedTotalIntraCranialVol <- NULL
+# 
+# d <- merge(d, volume, by = "record_id", include.all = TRUE)
+# save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-27.RData")
+
+d <-  read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/AgingDecMem_DATA_2019-11-11_0935.csv")
+d2 <- dplyr::select(d, record_id, profes, years_educ, edu, sex, age)
+
+d2 <- d2 %>%
+  gather(var, val, profes, years_educ, edu, sex, age) %>% 
+  filter(!is.na(val)) %>% 
+  spread(var, val)
+
+head(d2)
+
+d2$record_id <- str_pad(d2$record_id, pad = "0", side = "left", width = 4)
+d2$record_id <- ifelse(d2$age <= 30, paste0("3", d2$record_id), paste0("4", d2$record_id))
+
+d2$sex <- factor(ifelse(stringr::str_detect(d2$sex, "f|F", negate = FALSE), 0, 1), labels = c("Female", "Male"))
+
+head(d2)
+
+d2 <- select(d2, -edu)
+
+load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-30.RData")
+d <- merge(select(d, -X, -age, -Measure.volume), d2, by = "record_id", include.all = TRUE)
+
+save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-30.RData")
+```
+
+
+```{r}
+volume <- read_delim("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/dti/aseg_stats_cc.txt", delim = "\t")
+volume$record_id <- substr(volume$`Measure:volume`, 5, 9)
+head(volume)
+```
+
+
+## CC volume
+
+```{r}
+d %>%
+  select(matches("CC_"), EstimatedTotalIntraCranialVol, -matches("acc_cond")) %>% 
+  psych::describe(quant=c(.25,.75)) %>%
+  as_tibble(rownames="rowname") %>%
+  select(var=rowname, min, max, mean, sd) %>%
+  print()
+```
+
+
+## ICV normalization
+Brehmera et al. (2020)
+adjusted HC volume = raw HC volume – b X (ICV–average ICV)
+where b is the slope of regression of the raw HC volume on ICV. 
+
+```{r}
+
+ICVnorm <- function(d, x){
+  
+  f <- paste(x, "~ EstimatedTotalIntraCranialVol")
+  b <- as.numeric((lm(f, d))$coefficients[2])
+  d[x] = d[x] - b * (d$EstimatedTotalIntraCranialVol - mean(d$EstimatedTotalIntraCranialVol, na.rm = TRUE))
+  
+  return(d)
+}
+
+cols <- names(d[,grepl("CC_", names(d))])
+for (col in cols){
+  d <- ICVnorm(d, col)
+}
+
+
+d[cols]
+
+```
+
+
+
+## Actiware Sleep Measures
+
+```{r}
+pr <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/Combined Export File.csv")
+head(pr)
+```
+
+```{r}
+pr %>%
+  dplyr::filter(grepl('Sleep Summary', interval_type)) %>%
+  dplyr::filter(interval_number == "Average(n)") %>%
+  select(subject_id, duration, total_ac, onset_latency, efficiency, wake_time, percent_wake, sleep_time, percent_sleep, percent_immobile) -> pr_sleep
+
+pr %>%
+  dplyr::filter(grepl('Active Summary', interval_type)) %>%
+  dplyr::filter(interval_number == "Average(n)") %>%
+  select(subject_id, duration, total_ac, wake_time, percent_wake, sleep_time, percent_sleep, percent_immobile) -> pr_activity
+
+pr %>%
+  dplyr::filter(grepl('Active Summary', interval_type)) %>%
+  dplyr::filter(interval_number == "Maximum(n)") %>%
+  select(subject_id, duration, total_ac, wake_time, percent_wake, sleep_time, percent_sleep, percent_immobile) -> pr_activity_max
+
+pr_new1 <- merge(pr_sleep, pr_activity, by = "subject_id", suffixes = c(".sleep", ".active"))
+
+head(pr_new1)
+
+```
+
+
+```{r}
+d <- merge(d, pr_new1, by.x = "record_id", by.y = "subject_id", include.all = TRUE)
+
+d <- merge(d, pr_activity_max, by.x = "record_id", by.y = "subject_id", suffixes = c("", ".max"), include.all = TRUE)
+
+d <- d %>%
+  distinct(record_id, .keep_all = TRUE) %>%
+  filter(! record_id == 30242) %>% #missing actigraphy data
+  filter(! record_id == 30412) #missing actigraphy data
+
+head(d)
+
+ya_data <- d[d$Group == "Young Adults", ]
+oa_data <- d[d$Group == "Older Adults", ]
+
+save(d, file = "~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-30.RData")
+```
