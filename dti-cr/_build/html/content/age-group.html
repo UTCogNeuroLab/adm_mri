@@ -1,0 +1,5264 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Age Group Effects &#8212; DTI-CR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/togglebutton.js"></script>
+    <script type="text/javascript" src="../_static/clipboard.min.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/mystnb.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript">var togglebuttonSelector = '.toggle, .secondtoggle, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">DTI-CR</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="../intro.html">Welcome to your Jupyter Book</a>
+  </li>
+  <li class="">
+    <a href="../content.html">Content in Jupyter Book</a>
+  </li>
+  <li class="">
+    <a href="../syntax.html">Jupyter Book markdown syntax</a>
+  </li>
+</ul>
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse" data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu" aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation" title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i class="fas fa-download"></i></button>
+
+            
+            <div class="dropdown-buttons">
+                <!-- ipynb file if we had a myst markdown file -->
+                
+                <!-- Download raw file -->
+                <a class="dropdown-buttons" href="../_sources/content/age-group.ipynb.txt"><button type="button" class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip" data-placement="left">.ipynb</button></a>
+                <!-- Download PDF via print -->
+                <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF" onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+            </div>
+            
+        </div>
+
+        <!-- Edit this page -->
+        
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+            <div class="dropdown-buttons">
+                
+                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/age-group.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#glm-setup" class="nav-link">GLM Setup</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tbss-analysis" class="nav-link">TBSS Analysis</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#age-group-differences-in-wm" class="nav-link">Age Group Differences in WM</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#rerun-age-group-differences-t-test-using-jhu-atlas-as-mask" class="nav-link">Rerun age group differences t-test using JHU atlas as mask</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#rerun-interaction-model-with-jhu-mask" class="nav-link">Rerun interaction model with JHU mask</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#fa-skeleton" class="nav-link">FA Skeleton</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="age-group-effects">
+<h1>Age Group Effects<a class="headerlink" href="#age-group-effects" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="glm-setup">
+<h2>GLM Setup<a class="headerlink" href="#glm-setup" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/data/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;dataset_2020-04-09.csv&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;record_id&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">d</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_id</th>
+      <th>actamp</th>
+      <th>actbeta</th>
+      <th>actphi</th>
+      <th>actmin</th>
+      <th>actmesor</th>
+      <th>actupmesor</th>
+      <th>actdownmesor</th>
+      <th>actalph</th>
+      <th>actwidthratio</th>
+      <th>...</th>
+      <th>cowat_zscore</th>
+      <th>cowat_perseveration</th>
+      <th>cowat_errors</th>
+      <th>time_trails_a</th>
+      <th>error_trails_a</th>
+      <th>trails_a_z_score</th>
+      <th>time_trails_b</th>
+      <th>error_trails_b</th>
+      <th>trails_b_z_score</th>
+      <th>neuropsych_scoring_complete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>30003</td>
+      <td>1.389856</td>
+      <td>21.815009</td>
+      <td>14.373034</td>
+      <td>0.541285</td>
+      <td>1.236213</td>
+      <td>6.117306</td>
+      <td>22.628763</td>
+      <td>-0.556815</td>
+      <td>0.687977</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>0.0</td>
+      <td>-1.756914</td>
+      <td>97.0</td>
+      <td>0.0</td>
+      <td>-3.784870</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>30004</td>
+      <td>1.630892</td>
+      <td>4.438790</td>
+      <td>15.128163</td>
+      <td>0.000000</td>
+      <td>0.815446</td>
+      <td>6.927406</td>
+      <td>23.328920</td>
+      <td>-0.544804</td>
+      <td>0.683396</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>25.0</td>
+      <td>0.0</td>
+      <td>-0.068886</td>
+      <td>59.0</td>
+      <td>0.0</td>
+      <td>-0.673139</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>30008</td>
+      <td>1.610484</td>
+      <td>7.306045</td>
+      <td>15.569911</td>
+      <td>0.139627</td>
+      <td>0.944868</td>
+      <td>7.708287</td>
+      <td>23.431534</td>
+      <td>-0.468304</td>
+      <td>0.655135</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>27.0</td>
+      <td>0.0</td>
+      <td>-0.592431</td>
+      <td>60.0</td>
+      <td>1.0</td>
+      <td>-0.869188</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>30009</td>
+      <td>1.951245</td>
+      <td>7.026165</td>
+      <td>14.377649</td>
+      <td>0.081641</td>
+      <td>1.057264</td>
+      <td>6.388996</td>
+      <td>22.366302</td>
+      <td>-0.497424</td>
+      <td>0.665721</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>0.0</td>
+      <td>-1.216992</td>
+      <td>61.0</td>
+      <td>0.0</td>
+      <td>-0.834951</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>30012</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>1.0</td>
+      <td>-1.216992</td>
+      <td>54.0</td>
+      <td>0.0</td>
+      <td>-0.268608</td>
+      <td>2.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 742 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">oa_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">oa_files</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;/tbss_oa/origdata&#39;</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
+<span class="n">oa_files</span><span class="p">[</span><span class="s1">&#39;record_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">oa_files</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">oa_files</span> <span class="o">=</span> <span class="n">oa_files</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">oa_files</span> <span class="o">=</span> <span class="n">oa_files</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;record_id&#39;</span><span class="p">)</span>
+
+<span class="n">oa_df</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">oa_df</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Older Adults&#39;</span><span class="p">]</span>
+<span class="n">oa_df</span> <span class="o">=</span> <span class="n">oa_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;record_id&#39;</span><span class="p">)</span>
+
+<span class="n">oa_dsn</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">oa_dsn</span> <span class="o">=</span> <span class="n">oa_files</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">oa_df</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">oa_dsn</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(57, 741)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ya_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ya_files</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;/tbss_ya/origdata&#39;</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
+<span class="n">ya_files</span><span class="p">[</span><span class="s1">&#39;record_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ya_files</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">ya_files</span> <span class="o">=</span> <span class="n">ya_files</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ya_files</span> <span class="o">=</span> <span class="n">ya_files</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;record_id&#39;</span><span class="p">)</span>
+
+<span class="n">ya_df</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ya_df</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Young Adults&#39;</span><span class="p">]</span>
+<span class="n">ya_df</span> <span class="o">=</span> <span class="n">ya_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;record_id&#39;</span><span class="p">)</span>
+
+<span class="n">ya_dsn</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ya_dsn</span> <span class="o">=</span> <span class="n">ya_files</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ya_df</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ya_dsn</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(46, 741)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="tbss-analysis">
+<h2>TBSS Analysis<a class="headerlink" href="#tbss-analysis" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Concatenate all_FA images</p></li>
+<li><p>Run fsl randomise looking for interaction of age group x RAR amplitude</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span>
+
+<span class="n">fslmerge</span> <span class="o">-</span><span class="n">h</span>
+
+<span class="n">printf</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Young Adults All FA</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="n">fslinfo</span> <span class="n">tbss_ya</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA</span>
+
+<span class="n">printf</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Older Adults All FA</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="n">fslinfo</span> <span class="n">tbss_oa</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
+Usage: fslmerge &lt;-x/y/z/t/a/tr&gt; &lt;output&gt; &lt;file1 file2 .......&gt; [tr value in seconds]
+     -t : concatenate images in time
+     -x : concatenate images in the x direction
+     -y : concatenate images in the y direction
+     -z : concatenate images in the z direction
+     -a : auto-choose: single slices -&gt; volume, volumes -&gt; 4D (time series)
+     -tr : concatenate images in time and set the output image tr to the final option value
+
+Young Adults All FA
+data_type	FLOAT32
+dim1		182
+dim2		218
+dim3		182
+dim4		46
+datatype	16
+pixdim1		1.000000
+pixdim2		1.000000
+pixdim3		1.000000
+pixdim4		1.000000
+cal_max		0.000000
+cal_min		0.000000
+file_type	NIFTI-1+
+
+Older Adults All FA
+data_type	FLOAT32
+dim1		182
+dim2		218
+dim3		182
+dim4		57
+datatype	16
+pixdim1		1.000000
+pixdim2		1.000000
+pixdim3		1.000000
+pixdim4		1.000000
+cal_max		0.000000
+cal_min		0.000000
+file_type	NIFTI-1+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span>
+
+<span class="n">fslmerge</span> <span class="o">-</span><span class="n">t</span> <span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span> <span class="n">tbss_ya</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA</span> <span class="n">tbss_oa</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span>
+
+<span class="n">fslinfo</span> <span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>data_type	FLOAT32
+dim1		182
+dim2		218
+dim3		182
+dim4		103
+datatype	16
+pixdim1		1.000000
+pixdim2		1.000000
+pixdim3		1.000000
+pixdim4		1.000000
+cal_max		0.000000
+cal_min		0.000000
+file_type	NIFTI-1+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">image</span>
+<span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+<span class="n">nii</span> <span class="o">=</span> <span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/all_FA_YA-OA.nii.gz&#39;</span>
+<span class="n">first_vol</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">index_img</span><span class="p">(</span><span class="n">nii</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_img</span><span class="p">(</span><span class="n">first_vol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x119949d90&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_11_1.png" src="../_images/age-group_11_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">fslmaths</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
+Usage: fslmaths [-dt &lt;datatype&gt;] &lt;first_input&gt; [operations and inputs] &lt;output&gt; [-odt &lt;datatype&gt;]
+
+Datatype information:
+ -dt sets the datatype used internally for calculations (default float for all except double images)
+ -odt sets the output datatype ( default is float )
+ Possible datatypes are: char short int float double input
+ &quot;input&quot; will set the datatype to that of the original image
+
+Binary operations:
+  (some inputs can be either an image or a number)
+ -add   : add following input to current image
+ -sub   : subtract following input from current image
+ -mul   : multiply current image by following input
+ -div   : divide current image by following input
+ -rem   : modulus remainder - divide current image by following input and take remainder
+ -mas   : use (following image&gt;0) to mask current image
+ -thr   : use following number to threshold current image (zero anything below the number)
+ -thrp  : use following percentage (0-100) of ROBUST RANGE to threshold current image (zero anything below the number)
+ -thrP  : use following percentage (0-100) of ROBUST RANGE of non-zero voxels and threshold below
+ -uthr  : use following number to upper-threshold current image (zero anything above the number)
+ -uthrp : use following percentage (0-100) of ROBUST RANGE to upper-threshold current image (zero anything above the number)
+ -uthrP : use following percentage (0-100) of ROBUST RANGE of non-zero voxels and threshold above
+ -max   : take maximum of following input and current image
+ -min   : take minimum of following input and current image
+ -seed  : seed random number generator with following number
+ -restart : replace the current image with input for future processing operations
+ -save : save the current working image to the input filename
+
+Basic unary operations:
+ -exp   : exponential
+ -log   : natural logarithm
+ -sin   : sine function
+ -cos   : cosine function
+ -tan   : tangent function
+ -asin  : arc sine function
+ -acos  : arc cosine function
+ -atan  : arc tangent function
+ -sqr   : square
+ -sqrt  : square root
+ -recip : reciprocal (1/current image)
+ -abs   : absolute value
+ -bin   : use (current image&gt;0) to binarise
+ -binv  : binarise and invert (binarisation and logical inversion)
+ -fillh : fill holes in a binary mask (holes are internal - i.e. do not touch the edge of the FOV)
+ -fillh26 : fill holes using 26 connectivity
+ -index : replace each nonzero voxel with a unique (subject to wrapping) index number
+ -grid &lt;value&gt; &lt;spacing&gt; : add a 3D grid of intensity &lt;value&gt; with grid spacing &lt;spacing&gt;
+ -edge  : edge strength
+ -tfce &lt;H&gt; &lt;E&gt; &lt;connectivity&gt;: enhance with TFCE, e.g. -tfce 2 0.5 6 (maybe change 6 to 26 for skeletons)
+ -tfceS &lt;H&gt; &lt;E&gt; &lt;connectivity&gt; &lt;X&gt; &lt;Y&gt; &lt;Z&gt; &lt;tfce_thresh&gt;: show support area for voxel (X,Y,Z)
+ -nan   : replace NaNs (improper numbers) with 0
+ -nanm  : make NaN (improper number) mask with 1 for NaN voxels, 0 otherwise
+ -rand  : add uniform noise (range 0:1)
+ -randn : add Gaussian noise (mean=0 sigma=1)
+ -inm &lt;mean&gt; :  (-i i ip.c) intensity normalisation (per 3D volume mean)
+ -ing &lt;mean&gt; :  (-I i ip.c) intensity normalisation, global 4D mean)
+ -range : set the output calmin/max to full data range
+
+Matrix operations:
+ -tensor_decomp : convert a 4D (6-timepoint )tensor image into L1,2,3,FA,MD,MO,V1,2,3 (remaining image in pipeline is FA)
+
+Kernel operations (set BEFORE filtering operation if desired):
+ -kernel 3D : 3x3x3 box centered on target voxel (set as default kernel)
+ -kernel 2D : 3x3x1 box centered on target voxel
+ -kernel box    &lt;size&gt;     : all voxels in a cube of width &lt;size&gt; mm centered on target voxel
+ -kernel boxv   &lt;size&gt;     : all voxels in a cube of width &lt;size&gt; voxels centered on target voxel, CAUTION: size should be an odd number
+ -kernel boxv3  &lt;X&gt; &lt;Y&gt; &lt;Z&gt;: all voxels in a cuboid of dimensions X x Y x Z centered on target voxel, CAUTION: size should be an odd number
+ -kernel gauss  &lt;sigma&gt;    : gaussian kernel (sigma in mm, not voxels)
+ -kernel sphere &lt;size&gt;     : all voxels in a sphere of radius &lt;size&gt; mm centered on target voxel
+ -kernel file   &lt;filename&gt; : use external file as kernel
+
+Spatial Filtering operations: N.B. all options apart from -s use the default kernel or that _previously_ specified by -kernel
+ -dilM    : Mean Dilation of non-zero voxels
+ -dilD    : Modal Dilation of non-zero voxels
+ -dilF    : Maximum filtering of all voxels
+ -dilall  : Apply -dilM repeatedly until the entire FOV is covered
+ -ero     : Erode by zeroing non-zero voxels when zero voxels found in kernel
+ -eroF    : Minimum filtering of all voxels
+ -fmedian : Median Filtering 
+ -fmean   : Mean filtering, kernel weighted (conventionally used with gauss kernel)
+ -fmeanu  : Mean filtering, kernel weighted, un-normalised (gives edge effects)
+ -s &lt;sigma&gt; : create a gauss kernel of sigma mm and perform mean filtering
+ -subsamp2  : downsamples image by a factor of 2 (keeping new voxels centred on old)
+ -subsamp2offc  : downsamples image by a factor of 2 (non-centred)
+
+Dimensionality reduction operations:
+  (the &quot;T&quot; can be replaced by X, Y or Z to collapse across a different dimension)
+ -Tmean   : mean across time
+ -Tstd    : standard deviation across time
+ -Tmax    : max across time
+ -Tmaxn   : time index of max across time
+ -Tmin    : min across time
+ -Tmedian : median across time
+ -Tperc &lt;percentage&gt; : nth percentile (0-100) of FULL RANGE across time
+ -Tar1    : temporal AR(1) coefficient (use -odt float and probably demean first)
+
+Basic statistical operations:
+ -pval    : Nonparametric uncorrected P-value, assuming timepoints are the permutations; first timepoint is actual (unpermuted) stats image
+ -pval0   : Same as -pval, but treat zeros as missing data
+ -cpval   : Same as -pval, but gives FWE corrected P-values
+ -ztop    : Convert Z-stat to (uncorrected) P
+ -ptoz    : Convert (uncorrected) P to Z
+ -rank    : Convert data to ranks (over T dim)
+ -ranknorm: Transform to Normal dist via ranks
+
+Multi-argument operations:
+ -roi &lt;xmin&gt; &lt;xsize&gt; &lt;ymin&gt; &lt;ysize&gt; &lt;zmin&gt; &lt;zsize&gt; &lt;tmin&gt; &lt;tsize&gt; : zero outside roi (using voxel coordinates). Inputting -1 for a size will set it to the full image extent for that dimension.
+ -bptf  &lt;hp_sigma&gt; &lt;lp_sigma&gt; : (-t in ip.c) Bandpass temporal filtering; nonlinear highpass and Gaussian linear lowpass (with sigmas in volumes, not seconds); set either sigma&lt;0 to skip that filter
+ -roc &lt;AROC-thresh&gt; &lt;outfile&gt; [4Dnoiseonly] &lt;truth&gt; : take (normally binary) truth and test current image in ROC analysis against truth. &lt;AROC-thresh&gt; is usually 0.05 and is limit of Area-under-ROC measure FP axis. &lt;outfile&gt; is a text file of the ROC curve (triplets of values: FP TP threshold). If the truth image contains negative voxels these get excluded from all calculations. If &lt;AROC-thresh&gt; is positive then the [4Dnoiseonly] option needs to be set, and the FP rate is determined from this noise-only data, and is set to be the fraction of timepoints where any FP (anywhere) is seen, as found in the noise-only 4d-dataset. This is then controlling the FWE rate. If &lt;AROC-thresh&gt; is negative the FP rate is calculated from the zero-value parts of the &lt;truth&gt; image, this time averaging voxelwise FP rate over all timepoints. In both cases the TP rate is the average fraction of truth=positive voxels correctly found.
+
+Combining 4D and 3D images:
+ If you apply a Binary operation (one that takes the current image and a new image together), when one is 3D and the other is 4D,
+ the 3D image is cloned temporally to match the temporal dimensions of the 4D image.
+
+e.g. fslmaths inputVolume -add inputVolume2 output_volume
+     fslmaths inputVolume -add 2.5 output_volume
+     fslmaths inputVolume -add 2.5 -mul inputVolume2 output_volume
+
+     fslmaths 4D_inputVolume -Tmean -mul -1 -add 4D_inputVolume demeaned_4D_inputVolume
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span>
+
+<span class="n">fslmaths</span> <span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span> <span class="o">-</span><span class="n">Tmean</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.25</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA_mask</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_img</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/all_FA_YA-OA_mask.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1194bab10&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_14_1.png" src="../_images/age-group_14_1.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GLM#Two_Groups_with_continuous_covariate_interaction">FSL GLM 2 groups, continuous covariate interaction</a> <br></p>
+<p><a class="reference external" href="http://mumford.fmripower.org/mean_centering/">Mumford Brain Stats</a></p>
+</div>
+<div class="section" id="age-group-differences-in-wm">
+<h2>Age Group Differences in WM<a class="headerlink" href="#age-group-differences-in-wm" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span>
+
+<span class="n">design_ttest2</span> <span class="n">dsn_ttest</span> <span class="mi">46</span> <span class="mi">57</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span>
+
+<span class="n">randomise</span> <span class="o">-</span><span class="n">i</span> <span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span> <span class="o">-</span><span class="n">o</span> <span class="n">tbss_agegroup</span> <span class="o">-</span><span class="n">m</span> <span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA_mask</span> <span class="o">-</span><span class="n">d</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">mat</span> <span class="o">-</span><span class="n">t</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">con</span> <span class="o">-</span><span class="n">n</span> <span class="mi">500</span> <span class="o">--</span><span class="n">T2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>randomise options: -i all_FA_YA-OA -o tbss_agegroup -m all_FA_YA-OA_mask -d dsn_ttest.mat -t dsn_ttest.con -n 500 --T2 
+Loading Data: 
+Data loaded
+4.44068e+29 permutations required for exhaustive test of t-test 1
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_tfce_tstat1 is: 9033.68
+4.44068e+29 permutations required for exhaustive test of t-test 2
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_tfce_tstat2 is: 121286
+Finished, exiting.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">ls</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">tbss_agegroup</span><span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_tfce_corrp_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_tfce_corrp_tstat2.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_tstat2.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_agegroup_tfce_corrp_tstat1.nii.gz&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &gt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x129b1c710&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_20_1.png" src="../_images/age-group_20_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_agegroup_tfce_corrp_tstat2.nii.gz&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &lt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x12a031f90&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_21_1.png" src="../_images/age-group_21_1.png" />
+</div>
+</div>
+<p>Why are we seeing areas of greater FA in older adults relative to young adults?</p>
+<ol class="simple">
+<li><p>Checked all_FA image - First all_FA for OA corresponds to #47 of concatenated all_FA</p></li>
+<li><p>Checked design matrix, matches</p></li>
+<li><p>Checked contrast, matches</p></li>
+<li><p>Rerun with JHU as WM mask?</p></li>
+</ol>
+<div class="section" id="rerun-age-group-differences-t-test-using-jhu-atlas-as-mask">
+<h3>Rerun age group differences t-test using JHU atlas as mask<a class="headerlink" href="#rerun-age-group-differences-t-test-using-jhu-atlas-as-mask" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">roi</span><span class="o">/</span>
+
+<span class="n">fslmaths</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">fsl</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">atlases</span><span class="o">/</span><span class="n">JHU</span><span class="o">/</span><span class="n">JHU</span><span class="o">-</span><span class="n">ICBM</span><span class="o">-</span><span class="n">labels</span><span class="o">-</span><span class="mi">1</span><span class="n">mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">jhumask</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_img</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;roi/jhumask.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x123908ad0&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_25_1.png" src="../_images/age-group_25_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span>
+
+<span class="n">randomise</span> <span class="o">-</span><span class="n">i</span> <span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span> <span class="o">-</span><span class="n">o</span> <span class="n">tbss_agegroup_jhu</span> <span class="o">-</span><span class="n">m</span> <span class="o">../../</span><span class="n">roi</span><span class="o">/</span><span class="n">jhumask</span> <span class="o">-</span><span class="n">d</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">mat</span> <span class="o">-</span><span class="n">t</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">con</span> <span class="o">-</span><span class="n">n</span> <span class="mi">500</span> <span class="o">--</span><span class="n">T2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>randomise options: -i all_FA_YA-OA -o tbss_agegroup_jhu -m ../../roi/jhumask -d dsn_ttest.mat -t dsn_ttest.con -n 500 --T2 
+Loading Data: 
+Data loaded
+4.44068e+29 permutations required for exhaustive test of t-test 1
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_jhu_tfce_tstat1 is: 5885.89
+4.44068e+29 permutations required for exhaustive test of t-test 2
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_jhu_tfce_tstat2 is: 33601.7
+Finished, exiting.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">ls</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">tbss_agegroup_jhu</span><span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_jhu_tfce_corrp_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_jhu_tfce_corrp_tstat2.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_jhu_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_agegroup_jhu_tstat2.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_agegroup_jhu_tfce_corrp_tstat1.nii.gz&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &gt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x12686f790&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_28_1.png" src="../_images/age-group_28_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_agegroup_jhu_tfce_corrp_tstat2.nii.gz&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &lt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1263bff10&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_29_1.png" src="../_images/age-group_29_1.png" />
+</div>
+</div>
+<p>Still seeing some regions where OA FA &gt; YA FA?</p>
+</div>
+<div class="section" id="rerun-interaction-model-with-jhu-mask">
+<h3>Rerun interaction model with JHU mask<a class="headerlink" href="#rerun-interaction-model-with-jhu-mask" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span>
+
+<span class="n">randomise</span> <span class="o">-</span><span class="n">i</span> <span class="n">all_FA_YA</span><span class="o">-</span><span class="n">OA</span> <span class="o">-</span><span class="n">o</span> <span class="n">tbss_int_jhu</span> <span class="o">-</span><span class="n">m</span> <span class="o">../../</span><span class="n">roi</span><span class="o">/</span><span class="n">jhumask</span> <span class="o">-</span><span class="n">d</span> <span class="n">ya_oa_amp</span><span class="o">-</span><span class="n">ya_amp</span><span class="o">-</span><span class="n">oa</span><span class="o">.</span><span class="n">mat</span> <span class="o">-</span><span class="n">t</span> <span class="nb">int</span><span class="o">.</span><span class="n">con</span> <span class="o">-</span><span class="n">n</span> <span class="mi">500</span> <span class="o">--</span><span class="n">T2</span> <span class="o">-</span><span class="n">D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>randomise options: -i all_FA_YA-OA -o tbss_int_jhu -m ../../roi/jhumask -d ya_oa_amp-ya_amp-oa.mat -t int.con -n 500 --T2 -D 
+Loading Data: 
+Data loaded
+1.70561e+156 permutations required for exhaustive test of t-test 1
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_int_jhu_tfce_tstat1 is: 782182
+1.70561e+156 permutations required for exhaustive test of t-test 2
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_int_jhu_tfce_tstat2 is: 919248
+Finished, exiting.
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">Warning: Data demeaning selected, but at least one design column has non-zero mean - therefore invoking automatic demeaning of design matrix
+</pre>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">ls</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">tbss_int_jhu</span><span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_int_jhu_tfce_corrp_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_int_jhu_tfce_corrp_tstat2.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_int_jhu_tstat1.nii.gz
+/Volumes/G-DRIVE mobile/derivatives/tbss/stats/tbss_int_jhu_tstat2.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_int_jhu_tfce_corrp_tstat1.nii.gz&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &lt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1275a1b50&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_34_1.png" src="../_images/age-group_34_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/stats/tbss_int_jhu_tfce_corrp_tstat2.nii.gz&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &lt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x127743710&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_35_1.png" src="../_images/age-group_35_1.png" />
+</div>
+</div>
+<p>No significant interaction effect</p>
+</div>
+</div>
+<div class="section" id="fa-skeleton">
+<h2>FA Skeleton<a class="headerlink" href="#fa-skeleton" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">new</span>
+
+<span class="n">design_ttest2</span> <span class="n">dsn_ttest</span> <span class="mi">46</span> <span class="mi">57</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">new</span>
+
+<span class="n">randomise</span> <span class="o">-</span><span class="n">i</span> <span class="n">all_FA_skeletonised</span> <span class="o">-</span><span class="n">o</span> <span class="n">tbss_agegroup</span> <span class="o">-</span><span class="n">m</span> <span class="n">mean_FA_skeleton_mask</span> <span class="o">-</span><span class="n">d</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">mat</span> <span class="o">-</span><span class="n">t</span> <span class="n">dsn_ttest</span><span class="o">.</span><span class="n">con</span> <span class="o">-</span><span class="n">n</span> <span class="mi">500</span> <span class="o">--</span><span class="n">T2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>randomise options: -i all_FA_skeletonised -o tbss_agegroup -m mean_FA_skeleton_mask -d dsn_ttest.mat -t dsn_ttest.con -n 500 --T2 
+Loading Data: 
+Data loaded
+4.44068e+29 permutations required for exhaustive test of t-test 1
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_tfce_tstat1 is: 58651.4
+4.44068e+29 permutations required for exhaustive test of t-test 2
+Doing 500 random permutations
+Starting permutation 1 (Unpermuted data)
+Starting permutation 2
+Starting permutation 3
+Starting permutation 4
+Starting permutation 5
+Starting permutation 6
+Starting permutation 7
+Starting permutation 8
+Starting permutation 9
+Starting permutation 10
+Starting permutation 11
+Starting permutation 12
+Starting permutation 13
+Starting permutation 14
+Starting permutation 15
+Starting permutation 16
+Starting permutation 17
+Starting permutation 18
+Starting permutation 19
+Starting permutation 20
+Starting permutation 21
+Starting permutation 22
+Starting permutation 23
+Starting permutation 24
+Starting permutation 25
+Starting permutation 26
+Starting permutation 27
+Starting permutation 28
+Starting permutation 29
+Starting permutation 30
+Starting permutation 31
+Starting permutation 32
+Starting permutation 33
+Starting permutation 34
+Starting permutation 35
+Starting permutation 36
+Starting permutation 37
+Starting permutation 38
+Starting permutation 39
+Starting permutation 40
+Starting permutation 41
+Starting permutation 42
+Starting permutation 43
+Starting permutation 44
+Starting permutation 45
+Starting permutation 46
+Starting permutation 47
+Starting permutation 48
+Starting permutation 49
+Starting permutation 50
+Starting permutation 51
+Starting permutation 52
+Starting permutation 53
+Starting permutation 54
+Starting permutation 55
+Starting permutation 56
+Starting permutation 57
+Starting permutation 58
+Starting permutation 59
+Starting permutation 60
+Starting permutation 61
+Starting permutation 62
+Starting permutation 63
+Starting permutation 64
+Starting permutation 65
+Starting permutation 66
+Starting permutation 67
+Starting permutation 68
+Starting permutation 69
+Starting permutation 70
+Starting permutation 71
+Starting permutation 72
+Starting permutation 73
+Starting permutation 74
+Starting permutation 75
+Starting permutation 76
+Starting permutation 77
+Starting permutation 78
+Starting permutation 79
+Starting permutation 80
+Starting permutation 81
+Starting permutation 82
+Starting permutation 83
+Starting permutation 84
+Starting permutation 85
+Starting permutation 86
+Starting permutation 87
+Starting permutation 88
+Starting permutation 89
+Starting permutation 90
+Starting permutation 91
+Starting permutation 92
+Starting permutation 93
+Starting permutation 94
+Starting permutation 95
+Starting permutation 96
+Starting permutation 97
+Starting permutation 98
+Starting permutation 99
+Starting permutation 100
+Starting permutation 101
+Starting permutation 102
+Starting permutation 103
+Starting permutation 104
+Starting permutation 105
+Starting permutation 106
+Starting permutation 107
+Starting permutation 108
+Starting permutation 109
+Starting permutation 110
+Starting permutation 111
+Starting permutation 112
+Starting permutation 113
+Starting permutation 114
+Starting permutation 115
+Starting permutation 116
+Starting permutation 117
+Starting permutation 118
+Starting permutation 119
+Starting permutation 120
+Starting permutation 121
+Starting permutation 122
+Starting permutation 123
+Starting permutation 124
+Starting permutation 125
+Starting permutation 126
+Starting permutation 127
+Starting permutation 128
+Starting permutation 129
+Starting permutation 130
+Starting permutation 131
+Starting permutation 132
+Starting permutation 133
+Starting permutation 134
+Starting permutation 135
+Starting permutation 136
+Starting permutation 137
+Starting permutation 138
+Starting permutation 139
+Starting permutation 140
+Starting permutation 141
+Starting permutation 142
+Starting permutation 143
+Starting permutation 144
+Starting permutation 145
+Starting permutation 146
+Starting permutation 147
+Starting permutation 148
+Starting permutation 149
+Starting permutation 150
+Starting permutation 151
+Starting permutation 152
+Starting permutation 153
+Starting permutation 154
+Starting permutation 155
+Starting permutation 156
+Starting permutation 157
+Starting permutation 158
+Starting permutation 159
+Starting permutation 160
+Starting permutation 161
+Starting permutation 162
+Starting permutation 163
+Starting permutation 164
+Starting permutation 165
+Starting permutation 166
+Starting permutation 167
+Starting permutation 168
+Starting permutation 169
+Starting permutation 170
+Starting permutation 171
+Starting permutation 172
+Starting permutation 173
+Starting permutation 174
+Starting permutation 175
+Starting permutation 176
+Starting permutation 177
+Starting permutation 178
+Starting permutation 179
+Starting permutation 180
+Starting permutation 181
+Starting permutation 182
+Starting permutation 183
+Starting permutation 184
+Starting permutation 185
+Starting permutation 186
+Starting permutation 187
+Starting permutation 188
+Starting permutation 189
+Starting permutation 190
+Starting permutation 191
+Starting permutation 192
+Starting permutation 193
+Starting permutation 194
+Starting permutation 195
+Starting permutation 196
+Starting permutation 197
+Starting permutation 198
+Starting permutation 199
+Starting permutation 200
+Starting permutation 201
+Starting permutation 202
+Starting permutation 203
+Starting permutation 204
+Starting permutation 205
+Starting permutation 206
+Starting permutation 207
+Starting permutation 208
+Starting permutation 209
+Starting permutation 210
+Starting permutation 211
+Starting permutation 212
+Starting permutation 213
+Starting permutation 214
+Starting permutation 215
+Starting permutation 216
+Starting permutation 217
+Starting permutation 218
+Starting permutation 219
+Starting permutation 220
+Starting permutation 221
+Starting permutation 222
+Starting permutation 223
+Starting permutation 224
+Starting permutation 225
+Starting permutation 226
+Starting permutation 227
+Starting permutation 228
+Starting permutation 229
+Starting permutation 230
+Starting permutation 231
+Starting permutation 232
+Starting permutation 233
+Starting permutation 234
+Starting permutation 235
+Starting permutation 236
+Starting permutation 237
+Starting permutation 238
+Starting permutation 239
+Starting permutation 240
+Starting permutation 241
+Starting permutation 242
+Starting permutation 243
+Starting permutation 244
+Starting permutation 245
+Starting permutation 246
+Starting permutation 247
+Starting permutation 248
+Starting permutation 249
+Starting permutation 250
+Starting permutation 251
+Starting permutation 252
+Starting permutation 253
+Starting permutation 254
+Starting permutation 255
+Starting permutation 256
+Starting permutation 257
+Starting permutation 258
+Starting permutation 259
+Starting permutation 260
+Starting permutation 261
+Starting permutation 262
+Starting permutation 263
+Starting permutation 264
+Starting permutation 265
+Starting permutation 266
+Starting permutation 267
+Starting permutation 268
+Starting permutation 269
+Starting permutation 270
+Starting permutation 271
+Starting permutation 272
+Starting permutation 273
+Starting permutation 274
+Starting permutation 275
+Starting permutation 276
+Starting permutation 277
+Starting permutation 278
+Starting permutation 279
+Starting permutation 280
+Starting permutation 281
+Starting permutation 282
+Starting permutation 283
+Starting permutation 284
+Starting permutation 285
+Starting permutation 286
+Starting permutation 287
+Starting permutation 288
+Starting permutation 289
+Starting permutation 290
+Starting permutation 291
+Starting permutation 292
+Starting permutation 293
+Starting permutation 294
+Starting permutation 295
+Starting permutation 296
+Starting permutation 297
+Starting permutation 298
+Starting permutation 299
+Starting permutation 300
+Starting permutation 301
+Starting permutation 302
+Starting permutation 303
+Starting permutation 304
+Starting permutation 305
+Starting permutation 306
+Starting permutation 307
+Starting permutation 308
+Starting permutation 309
+Starting permutation 310
+Starting permutation 311
+Starting permutation 312
+Starting permutation 313
+Starting permutation 314
+Starting permutation 315
+Starting permutation 316
+Starting permutation 317
+Starting permutation 318
+Starting permutation 319
+Starting permutation 320
+Starting permutation 321
+Starting permutation 322
+Starting permutation 323
+Starting permutation 324
+Starting permutation 325
+Starting permutation 326
+Starting permutation 327
+Starting permutation 328
+Starting permutation 329
+Starting permutation 330
+Starting permutation 331
+Starting permutation 332
+Starting permutation 333
+Starting permutation 334
+Starting permutation 335
+Starting permutation 336
+Starting permutation 337
+Starting permutation 338
+Starting permutation 339
+Starting permutation 340
+Starting permutation 341
+Starting permutation 342
+Starting permutation 343
+Starting permutation 344
+Starting permutation 345
+Starting permutation 346
+Starting permutation 347
+Starting permutation 348
+Starting permutation 349
+Starting permutation 350
+Starting permutation 351
+Starting permutation 352
+Starting permutation 353
+Starting permutation 354
+Starting permutation 355
+Starting permutation 356
+Starting permutation 357
+Starting permutation 358
+Starting permutation 359
+Starting permutation 360
+Starting permutation 361
+Starting permutation 362
+Starting permutation 363
+Starting permutation 364
+Starting permutation 365
+Starting permutation 366
+Starting permutation 367
+Starting permutation 368
+Starting permutation 369
+Starting permutation 370
+Starting permutation 371
+Starting permutation 372
+Starting permutation 373
+Starting permutation 374
+Starting permutation 375
+Starting permutation 376
+Starting permutation 377
+Starting permutation 378
+Starting permutation 379
+Starting permutation 380
+Starting permutation 381
+Starting permutation 382
+Starting permutation 383
+Starting permutation 384
+Starting permutation 385
+Starting permutation 386
+Starting permutation 387
+Starting permutation 388
+Starting permutation 389
+Starting permutation 390
+Starting permutation 391
+Starting permutation 392
+Starting permutation 393
+Starting permutation 394
+Starting permutation 395
+Starting permutation 396
+Starting permutation 397
+Starting permutation 398
+Starting permutation 399
+Starting permutation 400
+Starting permutation 401
+Starting permutation 402
+Starting permutation 403
+Starting permutation 404
+Starting permutation 405
+Starting permutation 406
+Starting permutation 407
+Starting permutation 408
+Starting permutation 409
+Starting permutation 410
+Starting permutation 411
+Starting permutation 412
+Starting permutation 413
+Starting permutation 414
+Starting permutation 415
+Starting permutation 416
+Starting permutation 417
+Starting permutation 418
+Starting permutation 419
+Starting permutation 420
+Starting permutation 421
+Starting permutation 422
+Starting permutation 423
+Starting permutation 424
+Starting permutation 425
+Starting permutation 426
+Starting permutation 427
+Starting permutation 428
+Starting permutation 429
+Starting permutation 430
+Starting permutation 431
+Starting permutation 432
+Starting permutation 433
+Starting permutation 434
+Starting permutation 435
+Starting permutation 436
+Starting permutation 437
+Starting permutation 438
+Starting permutation 439
+Starting permutation 440
+Starting permutation 441
+Starting permutation 442
+Starting permutation 443
+Starting permutation 444
+Starting permutation 445
+Starting permutation 446
+Starting permutation 447
+Starting permutation 448
+Starting permutation 449
+Starting permutation 450
+Starting permutation 451
+Starting permutation 452
+Starting permutation 453
+Starting permutation 454
+Starting permutation 455
+Starting permutation 456
+Starting permutation 457
+Starting permutation 458
+Starting permutation 459
+Starting permutation 460
+Starting permutation 461
+Starting permutation 462
+Starting permutation 463
+Starting permutation 464
+Starting permutation 465
+Starting permutation 466
+Starting permutation 467
+Starting permutation 468
+Starting permutation 469
+Starting permutation 470
+Starting permutation 471
+Starting permutation 472
+Starting permutation 473
+Starting permutation 474
+Starting permutation 475
+Starting permutation 476
+Starting permutation 477
+Starting permutation 478
+Starting permutation 479
+Starting permutation 480
+Starting permutation 481
+Starting permutation 482
+Starting permutation 483
+Starting permutation 484
+Starting permutation 485
+Starting permutation 486
+Starting permutation 487
+Starting permutation 488
+Starting permutation 489
+Starting permutation 490
+Starting permutation 491
+Starting permutation 492
+Starting permutation 493
+Starting permutation 494
+Starting permutation 495
+Starting permutation 496
+Starting permutation 497
+Starting permutation 498
+Starting permutation 499
+Starting permutation 500
+Critical Value for: tbss_agegroup_tfce_tstat2 is: 36355.1
+Finished, exiting.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">more</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">new</span><span class="o">/</span><span class="n">dsn_ttest</span><span class="o">.</span><span class="n">mat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/NumWaves 2
+/NumPoints 103
+/PPheights 1 1
+/Matrix
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+1 0
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+0 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">more</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss</span><span class="o">/</span><span class="n">new</span><span class="o">/</span><span class="n">dsn_ttest</span><span class="o">.</span><span class="n">con</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/NumWaves 2
+/NumContrasts 2
+/PPheights 1 1
+/Matrix
+1 -1
+-1 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/new/tbss_agegroup_tfce_corrp_tstat1.nii.gz&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &gt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11631b590&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_42_1.png" src="../_images/age-group_42_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">scan_dir</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/&#39;</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span><span class="n">scan_dir</span> <span class="o">+</span> <span class="s1">&#39;tbss/new/tbss_agegroup_tfce_corrp_tstat2.nii.gz&#39;</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;YA &lt; OA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11559e350&gt;
+</pre></div>
+</div>
+<img alt="../_images/age-group_43_1.png" src="../_images/age-group_43_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Megan McMahon<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+  </body>
+</html>

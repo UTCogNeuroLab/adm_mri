@@ -1,0 +1,1471 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Preprocessing &#8212; DTI-CR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/togglebutton.js"></script>
+    <script type="text/javascript" src="../_static/clipboard.min.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/mystnb.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript">var togglebuttonSelector = '.toggle, .secondtoggle, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">DTI-CR</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="../intro.html">Welcome to your Jupyter Book</a>
+  </li>
+  <li class="">
+    <a href="../content.html">Content in Jupyter Book</a>
+  </li>
+  <li class="">
+    <a href="../syntax.html">Jupyter Book markdown syntax</a>
+  </li>
+</ul>
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse" data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu" aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation" title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i class="fas fa-download"></i></button>
+
+            
+            <div class="dropdown-buttons">
+                <!-- ipynb file if we had a myst markdown file -->
+                
+                <!-- Download raw file -->
+                <a class="dropdown-buttons" href="../_sources/content/tbss.ipynb.txt"><button type="button" class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip" data-placement="left">.ipynb</button></a>
+                <!-- Download PDF via print -->
+                <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF" onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+            </div>
+            
+        </div>
+
+        <!-- Edit this page -->
+        
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+            <div class="dropdown-buttons">
+                
+                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/tbss.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="preprocessing">
+<h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h1>
+<ol class="simple">
+<li><p>Run main.sh</p></li>
+<li><p>Inspect all subjects for model fit</p></li>
+</ol>
+</div>
+<div class="section" id="tbss">
+<h1>TBSS<a class="headerlink" href="#tbss" title="Permalink to this headline">¶</a></h1>
+<p>We performed analyses separately for older adults and young adults. These analyses were therefore conducted independently in separate directories, tbss_oa and tbss_ya.</p>
+<ol class="simple">
+<li><p>Move all FA and MD files from DTI preprocessing directory to a new tbss directory</p></li>
+<li><p>We will later rename all the MD files as FA for future TBSS steps. Do not get these mixed up with the actual FA data!</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa
+
+ls -d ${dtifit_dir}/sub-3*/
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30004/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30008/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30009/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30012/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30015/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30019/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30020/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30023/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30040/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30057/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30064/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30066/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30069/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30074/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30085/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30088/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30090/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30091/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30095/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30096/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30116/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30118/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30119/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30128/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30181/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30217/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30227/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30236/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30242/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30255/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30274/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30295/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30330/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30346/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30376/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30395/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30400/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30403/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30412/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30426/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30432/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30466/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30469/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30476/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30478/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30568/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30581/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30584/
+/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30588/
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+work_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives
+
+mkdir ${work_dir}/tbss_ya
+mkdir ${work_dir}/tbss_oa
+
+for sub_dir in `ls -d ${dtifit_dir}/sub-3*/`; do
+    subj=`echo &quot;$sub_dir&quot; | cut -d &#39;-&#39; -f 2 | rev | cut -c 2- | rev`
+    echo $subj
+    cp &quot;$sub_dir&quot;*FA.nii.gz ${work_dir}/tbss_ya/
+done
+
+for sub_dir in `ls -d ${dtifit_dir}/sub-4*/`; do
+    subj=`echo &quot;$sub_dir&quot; | cut -d &#39;-&#39; -f 2 | rev | cut -c 2- | rev`
+    echo $subj
+    cp &quot;$sub_dir&quot;*FA.nii.gz ${work_dir}/tbss_oa/
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>30004
+30008
+30009
+30012
+30015
+30019
+30020
+30023
+30040
+30057
+30064
+30066
+30069
+30074
+30085
+30088
+30090
+30091
+30095
+30096
+30116
+30118
+30119
+30128
+30181
+30217
+30227
+30236
+30242
+30255
+30274
+30295
+30330
+30346
+30376
+30395
+30400
+30403
+30412
+30426
+30432
+30466
+30469
+30476
+30478
+30568
+30570
+30581
+30584
+30588
+40160
+40170
+40175
+40288
+40351
+40490
+40496
+40512
+40515
+40516
+40519
+40520
+40522
+40524
+40547
+40550
+40564
+40601
+40608
+40615
+40619
+40623
+40624
+40629
+40638
+40649
+40650
+40653
+40655
+40656
+40658
+40664
+40665
+40668
+40672
+40685
+40694
+40720
+40728
+40738
+40743
+40750
+40758
+40767
+40768
+40769
+40773
+40775
+40777
+40778
+40779
+40782
+40784
+40796
+40803
+40811
+40855
+40861
+40876
+40878
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">mkdir: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya: File exists
+mkdir: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa: File exists
+cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/*FA.nii.gz: No such file or directory
+cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-40855/*FA.nii.gz: No such file or directory
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="tbss-1-preprocessing">
+<h2>TBSS 1 Preprocessing<a class="headerlink" href="#tbss-1-preprocessing" title="Permalink to this headline">¶</a></h2>
+<p>Erodes FA images and zeroes the end slices to remove likely outliers from the diffusion tensor fitting. Generates a report called slicesdir to allow for quick scanning to detect any major issues.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_ya</span>
+<span class="n">tbss_1_preproc</span> <span class="o">*</span><span class="n">FA</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>processing sub-30004_dti_FA
+processing sub-30008_dti_FA
+processing sub-30009_dti_FA
+processing sub-30012_dti_FA
+processing sub-30015_dti_FA
+processing sub-30019_dti_FA
+processing sub-30020_dti_FA
+processing sub-30023_dti_FA
+processing sub-30040_dti_FA
+processing sub-30057_dti_FA
+processing sub-30064_dti_FA
+processing sub-30066_dti_FA
+processing sub-30069_dti_FA
+processing sub-30074_dti_FA
+processing sub-30085_dti_FA
+processing sub-30088_dti_FA
+processing sub-30090_dti_FA
+processing sub-30091_dti_FA
+processing sub-30095_dti_FA
+processing sub-30096_dti_FA
+processing sub-30116_dti_FA
+processing sub-30118_dti_FA
+processing sub-30119_dti_FA
+processing sub-30128_dti_FA
+processing sub-30181_dti_FA
+processing sub-30217_dti_FA
+processing sub-30227_dti_FA
+processing sub-30236_dti_FA
+processing sub-30242_dti_FA
+processing sub-30255_dti_FA
+processing sub-30274_dti_FA
+processing sub-30295_dti_FA
+processing sub-30330_dti_FA
+processing sub-30346_dti_FA
+processing sub-30376_dti_FA
+processing sub-30395_dti_FA
+processing sub-30400_dti_FA
+processing sub-30403_dti_FA
+processing sub-30412_dti_FA
+processing sub-30426_dti_FA
+processing sub-30432_dti_FA
+processing sub-30466_dti_FA
+processing sub-30469_dti_FA
+processing sub-30476_dti_FA
+processing sub-30478_dti_FA
+processing sub-30568_dti_FA
+processing sub-30581_dti_FA
+processing sub-30584_dti_FA
+processing sub-30588_dti_FA
+Now running &quot;slicesdir&quot; to generate report of all input images
+Finished. To view, point your web browser at
+file:/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya/FA/slicesdir/index.html
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="nb">open</span> <span class="o">-</span><span class="n">a</span> <span class="s2">&quot;Google Chrome&quot;</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_ya</span><span class="o">/</span><span class="n">FA</span><span class="o">/</span><span class="n">slicesdir</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span>
+<span class="n">ls</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">5</span>
+
+<span class="n">tbss_1_preproc</span> <span class="o">*</span><span class="n">FA</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>sub-40160_dti_FA.nii.gz
+sub-40170_dti_FA.nii.gz
+sub-40175_dti_FA.nii.gz
+sub-40288_dti_FA.nii.gz
+sub-40351_dti_FA.nii.gz
+processing sub-40160_dti_FA
+processing sub-40170_dti_FA
+processing sub-40175_dti_FA
+processing sub-40288_dti_FA
+processing sub-40351_dti_FA
+processing sub-40490_dti_FA
+processing sub-40496_dti_FA
+processing sub-40512_dti_FA
+processing sub-40515_dti_FA
+processing sub-40516_dti_FA
+processing sub-40519_dti_FA
+processing sub-40520_dti_FA
+processing sub-40522_dti_FA
+processing sub-40524_dti_FA
+processing sub-40547_dti_FA
+processing sub-40550_dti_FA
+processing sub-40564_dti_FA
+processing sub-40601_dti_FA
+processing sub-40608_dti_FA
+processing sub-40615_dti_FA
+processing sub-40619_dti_FA
+processing sub-40623_dti_FA
+processing sub-40624_dti_FA
+processing sub-40629_dti_FA
+processing sub-40638_dti_FA
+processing sub-40649_dti_FA
+processing sub-40650_dti_FA
+processing sub-40653_dti_FA
+processing sub-40655_dti_FA
+processing sub-40656_dti_FA
+processing sub-40658_dti_FA
+processing sub-40664_dti_FA
+processing sub-40665_dti_FA
+processing sub-40668_dti_FA
+processing sub-40672_dti_FA
+processing sub-40685_dti_FA
+processing sub-40694_dti_FA
+processing sub-40720_dti_FA
+processing sub-40728_dti_FA
+processing sub-40738_dti_FA
+processing sub-40743_dti_FA
+processing sub-40750_dti_FA
+processing sub-40758_dti_FA
+processing sub-40767_dti_FA
+processing sub-40768_dti_FA
+processing sub-40769_dti_FA
+processing sub-40773_dti_FA
+processing sub-40775_dti_FA
+processing sub-40777_dti_FA
+processing sub-40778_dti_FA
+processing sub-40779_dti_FA
+processing sub-40782_dti_FA
+processing sub-40784_dti_FA
+processing sub-40796_dti_FA
+processing sub-40803_dti_FA
+processing sub-40811_dti_FA
+processing sub-40861_dti_FA
+processing sub-40876_dti_FA
+processing sub-40878_dti_FA
+Now running &quot;slicesdir&quot; to generate report of all input images
+Finished. To view, point your web browser at
+file:/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa/FA/slicesdir/index.html
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="nb">open</span> <span class="o">-</span><span class="n">a</span> <span class="s2">&quot;Google Chrome&quot;</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span><span class="o">/</span><span class="n">FA</span><span class="o">/</span><span class="n">slicesdir</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="note-02-20-2020">
+<h2>Note 02-20-2020<a class="headerlink" href="#note-02-20-2020" title="Permalink to this headline">¶</a></h2>
+<p>I removed subjects 30330, 30476, 30227, 40515, and 40516 from analysis due to artifact.</p>
+<p>FLIRT version 6.0</p>
+</div>
+<div class="section" id="tbss-2-registration">
+<h2>TBSS 2 Registration<a class="headerlink" href="#tbss-2-registration" title="Permalink to this headline">¶</a></h2>
+<p>Runs the nonlinear registration, aligning all FA images to a 1x1x1mm standard space. We will use the -n option, which aligns every FA image to every other one. In the next step, we will identify the “most representative” one, and use this as the target image. This target image is then affine-aligned into MNI152 standard space, and every image is transformed into 1x1x1mm MNI152 space by combining the nonlinear transform to the target FA image with the affine transform from that target to MNI152 space.</p>
+<p>This is highly computationally intensive, so we will run this on TACC to speed things up.</p>
+<p>From your local machine, enter this command to move the TBSS directories to TACC. You will need to enter your TACC password and verification code to complete the file transfer.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scp</span> <span class="pre">-r</span> <span class="pre">/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya</span> <span class="pre">username&#64;stampede2.tacc.utexas.edu:/path/to/destination/</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">scp</span> <span class="pre">-r</span> <span class="pre">/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa</span> <span class="pre">username&#64;stampede2.tacc.utexas.edu:/path/to/destination/</span></code></p>
+<p>Log into TACC using <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">username&#64;stampede2.tacc.utexas.edu</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">path/to/destination/tbss_ya</span></code></p>
+<p>From a login node, run the tbss_2_reg command: <br>
+<code class="docutils literal notranslate"><span class="pre">tbss_2_reg</span> <span class="pre">-n</span></code>.</p>
+<p>Do the same for older adults: <br>
+<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">path/to/destination/tbss_oa</span></code></p>
+<p>From a login node, run the tbss_2_reg command: <br>
+<code class="docutils literal notranslate"><span class="pre">tbss_2_reg</span> <span class="pre">-n</span></code></p>
+<p>This will submit 2 jobs to the queue. You can check the status of the jobs with <code class="docutils literal notranslate"><span class="pre">squeue</span> <span class="pre">-u</span> <span class="pre">username</span></code>. Wait for them to complete before moving forward.</p>
+<p>A quick check to make sure it ran properly is: <br>
+<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">tbss_ya/sub-30020*</span> <span class="pre">|</span> <span class="pre">wc</span> <span class="pre">-l</span></code></p>
+<p>For one subject, there should be (N subjects * 4) + 2 (FA and FA mask) files. In this case, we have 49 subjects, and 198 files.</p>
+</div>
+<div class="section" id="tbss-3-post-registration">
+<h2>TBSS 3 Post-registration<a class="headerlink" href="#tbss-3-post-registration" title="Permalink to this headline">¶</a></h2>
+<p>Applies the nonlinear transforms found in the previous stage to all subjects to bring them into standard space.
+This will first make the decision about which of the FA images is the most “typical”, for selection as the target image to apply all nonlinear transformations into the space of. This happens by taking each FA image in turn, and estimating the average amount of warping that was necessary to align all other images to it, then finding the one that had the smallest amount of average warping when used as a target.</p>
+<p>From the login node on TACC:</p>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/path/to/destination/tbss_ya</span></code> <br>
+<code class="docutils literal notranslate"><span class="pre">tbss_3_postreg</span> <span class="pre">-S</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/path/to/destination/tbss_oa</span></code> <br>
+<code class="docutils literal notranslate"><span class="pre">tbss_3_postreg</span> <span class="pre">-S</span></code></p>
+<p>We will get a message about what the best target subject is for each group. In this case, that was: <br></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>best target is sub-40782_dti_FA_FA - now registering this to standard space
+
+best target is sub-30255_dti_FA_FA - now registering this to standard space
+</pre></div>
+</div>
+<p>When that finishes up, we will need to transfer the results back to the local machine for inspection and to continue with analysis.</p>
+<p>From your local machine, this can be done with:</p>
+<p><code class="docutils literal notranslate"><span class="pre">scp</span> <span class="pre">-r</span> <span class="pre">username&#64;stampede2.tacc.utexas.edu:/path/to/destination/tbss_ya</span> <span class="pre">/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">scp</span> <span class="pre">-r</span> <span class="pre">username&#64;stampede2.tacc.utexas.edu:/path/to/destination/tbss_oa</span> <span class="pre">/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/</span> </code></p>
+<p>Again, you will need your TACC password and the verification code.</p>
+</div>
+<div class="section" id="qa">
+<h2>QA<a class="headerlink" href="#qa" title="Permalink to this headline">¶</a></h2>
+<p>Now check all_FA and mean_FA_mask for any outliers or artifacts.</p>
+<p>We restricted mean_FA_mask values to values between 0.2 and 1, since the mask output from tbss_3_postreg covers more than the white matter. This will reduce the area used in permutation testing with TFCE and increase the power of our analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span><span class="o">/</span><span class="n">stats</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.2</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr20</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.22</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr22</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.3</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr30</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_ya</span><span class="o">/</span><span class="n">stats</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.2</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr20</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.22</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr22</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">fslmaths</span> <span class="n">mean_FA</span> <span class="o">-</span><span class="n">thr</span> <span class="mf">0.3</span> <span class="o">-</span><span class="n">uthr</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">bin</span> <span class="n">mean_FA_mask_thr30</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span><span class="o">/</span><span class="n">stats</span>
+<span class="n">fsleyes</span> <span class="n">all_FA</span> <span class="o">-</span><span class="n">b</span> <span class="mi">0</span><span class="p">,</span><span class="mf">0.8</span> <span class="n">mean_FA_skeleton</span> <span class="o">-</span><span class="n">b</span> <span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span> <span class="o">-</span><span class="n">l</span> <span class="n">Green</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span>
+<span class="n">tbss_4_prestats</span> <span class="mf">0.22</span> <span class="c1">#replace 0.2 if need to change it</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>creating skeleton mask using threshold 0.22
+creating skeleton distancemap (for use in projection search)
+projecting all FA data onto skeleton
+
+now run stats - for example:
+randomise -i all_FA_skeletonised -o tbss -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_ya</span>
+<span class="n">tbss_4_prestats</span> <span class="mf">0.22</span> <span class="c1">#replace 0.2 if need to change it</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>creating skeleton mask using threshold 0.22
+creating skeleton distancemap (for use in projection search)
+projecting all FA data onto skeleton
+
+now run stats - for example:
+randomise -i all_FA_skeletonised -o tbss -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’re going to run TBSS on the MD, AD, and RD data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa
+
+mkdir ${tbss_dir}/MD
+mkdir ${tbss_dir}/AD
+mkdir ${tbss_dir}/RD
+
+for sub_dir in ${dtifit_dir}/sub-4*/; do
+    subj=`echo &quot;$sub_dir&quot; | cut -d &#39;-&#39; -f 2 | rev | cut -c 2- | rev`
+    echo $subj
+    cp &quot;$sub_dir&quot;*_MD.nii.gz ${tbss_dir}/MD/
+    cp &quot;$sub_dir&quot;*_L1.nii.gz ${tbss_dir}/AD/
+    fslmaths ${sub_dir}*_L2.nii.gz -add ${sub_dir}*_L3.nii.gz -div 2 ${tbss_dir}/RD/sub-${subj}_dti_RD.nii.gz
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>40160
+40170
+40175
+40288
+40351
+40490
+40496
+40512
+40515
+40516
+40519
+40520
+40522
+40524
+40547
+40550
+40564
+40601
+40608
+40615
+40619
+40623
+40624
+40629
+40638
+40649
+40650
+40653
+40655
+40656
+40658
+40664
+40665
+40668
+40672
+40685
+40694
+40720
+40728
+40738
+40743
+40750
+40758
+40767
+40768
+40769
+40773
+40775
+40777
+40778
+40779
+40782
+40784
+40796
+40803
+40811
+40855
+40861
+40876
+40878
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-40855/*_MD.nii.gz: No such file or directory
+cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-40855/*_L1.nii.gz: No such file or directory
+Image Exception : #63 :: No image files match: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-40855/*_L2
+libc++abi.dylib: terminating with uncaught exception of type std::runtime_error: No image files match: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-40855/*_L2
+bash: line 9: 66825 Abort trap: 6           fslmaths ${sub_dir}*_L2.nii.gz -add ${sub_dir}*_L3.nii.gz -div 2 ${tbss_dir}/RD/sub-${subj}_dti_RD.nii.gz
+</pre>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya
+
+mkdir ${tbss_dir}/MD
+mkdir ${tbss_dir}/AD
+mkdir ${tbss_dir}/RD
+
+for sub_dir in ${dtifit_dir}/sub-3*/; do
+    subj=`echo &quot;$sub_dir&quot; | cut -d &#39;-&#39; -f 2 | rev | cut -c 2- | rev`
+    echo $subj
+    cp &quot;$sub_dir&quot;*_MD.nii.gz ${tbss_dir}/MD/
+    cp &quot;$sub_dir&quot;*_L1.nii.gz ${tbss_dir}/AD/
+    fslmaths ${sub_dir}*_L2.nii.gz -add ${sub_dir}*_L3.nii.gz -div 2 ${tbss_dir}/RD/sub-${subj}_dti_RD.nii.gz
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>30004
+30008
+30009
+30012
+30015
+30019
+30020
+30023
+30040
+30057
+30064
+30066
+30069
+30074
+30085
+30088
+30090
+30091
+30095
+30096
+30116
+30118
+30119
+30128
+30181
+30217
+30227
+30236
+30242
+30255
+30274
+30295
+30330
+30346
+30376
+30395
+30400
+30403
+30412
+30426
+30432
+30466
+30469
+30476
+30478
+30568
+30570
+30581
+30584
+30588
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/*_MD.nii.gz: No such file or directory
+cp: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/*_L1.nii.gz: No such file or directory
+Image Exception : #63 :: No image files match: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/*_L2
+libc++abi.dylib: terminating with uncaught exception of type std::runtime_error: No image files match: /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep/sub-30570/*_L2
+bash: line 9: 67994 Abort trap: 6           fslmaths ${sub_dir}*_L2.nii.gz -add ${sub_dir}*_L3.nii.gz -div 2 ${tbss_dir}/RD/sub-${subj}_dti_RD.nii.gz
+</pre>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa
+
+cd ${tbss_dir}/MD/
+for file in `ls ${tbss_dir}/MD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+
+cd ${tbss_dir}/AD/
+for file in `ls ${tbss_dir}/AD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+
+cd ${tbss_dir}/RD/
+for file in `ls ${tbss_dir}/RD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>mv sub-40160_dti_MD.nii.gz sub-40160_dti_FA.nii.gz
+mv sub-40170_dti_MD.nii.gz sub-40170_dti_FA.nii.gz
+mv sub-40175_dti_MD.nii.gz sub-40175_dti_FA.nii.gz
+mv sub-40288_dti_MD.nii.gz sub-40288_dti_FA.nii.gz
+mv sub-40351_dti_MD.nii.gz sub-40351_dti_FA.nii.gz
+mv sub-40490_dti_MD.nii.gz sub-40490_dti_FA.nii.gz
+mv sub-40496_dti_MD.nii.gz sub-40496_dti_FA.nii.gz
+mv sub-40512_dti_MD.nii.gz sub-40512_dti_FA.nii.gz
+mv sub-40515_dti_MD.nii.gz sub-40515_dti_FA.nii.gz
+mv sub-40516_dti_MD.nii.gz sub-40516_dti_FA.nii.gz
+mv sub-40519_dti_MD.nii.gz sub-40519_dti_FA.nii.gz
+mv sub-40520_dti_MD.nii.gz sub-40520_dti_FA.nii.gz
+mv sub-40522_dti_MD.nii.gz sub-40522_dti_FA.nii.gz
+mv sub-40524_dti_MD.nii.gz sub-40524_dti_FA.nii.gz
+mv sub-40547_dti_MD.nii.gz sub-40547_dti_FA.nii.gz
+mv sub-40550_dti_MD.nii.gz sub-40550_dti_FA.nii.gz
+mv sub-40564_dti_MD.nii.gz sub-40564_dti_FA.nii.gz
+mv sub-40601_dti_MD.nii.gz sub-40601_dti_FA.nii.gz
+mv sub-40608_dti_MD.nii.gz sub-40608_dti_FA.nii.gz
+mv sub-40615_dti_MD.nii.gz sub-40615_dti_FA.nii.gz
+mv sub-40619_dti_MD.nii.gz sub-40619_dti_FA.nii.gz
+mv sub-40623_dti_MD.nii.gz sub-40623_dti_FA.nii.gz
+mv sub-40624_dti_MD.nii.gz sub-40624_dti_FA.nii.gz
+mv sub-40629_dti_MD.nii.gz sub-40629_dti_FA.nii.gz
+mv sub-40638_dti_MD.nii.gz sub-40638_dti_FA.nii.gz
+mv sub-40649_dti_MD.nii.gz sub-40649_dti_FA.nii.gz
+mv sub-40650_dti_MD.nii.gz sub-40650_dti_FA.nii.gz
+mv sub-40653_dti_MD.nii.gz sub-40653_dti_FA.nii.gz
+mv sub-40655_dti_MD.nii.gz sub-40655_dti_FA.nii.gz
+mv sub-40656_dti_MD.nii.gz sub-40656_dti_FA.nii.gz
+mv sub-40658_dti_MD.nii.gz sub-40658_dti_FA.nii.gz
+mv sub-40664_dti_MD.nii.gz sub-40664_dti_FA.nii.gz
+mv sub-40665_dti_MD.nii.gz sub-40665_dti_FA.nii.gz
+mv sub-40668_dti_MD.nii.gz sub-40668_dti_FA.nii.gz
+mv sub-40672_dti_MD.nii.gz sub-40672_dti_FA.nii.gz
+mv sub-40685_dti_MD.nii.gz sub-40685_dti_FA.nii.gz
+mv sub-40694_dti_MD.nii.gz sub-40694_dti_FA.nii.gz
+mv sub-40720_dti_MD.nii.gz sub-40720_dti_FA.nii.gz
+mv sub-40728_dti_MD.nii.gz sub-40728_dti_FA.nii.gz
+mv sub-40738_dti_MD.nii.gz sub-40738_dti_FA.nii.gz
+mv sub-40743_dti_MD.nii.gz sub-40743_dti_FA.nii.gz
+mv sub-40750_dti_MD.nii.gz sub-40750_dti_FA.nii.gz
+mv sub-40758_dti_MD.nii.gz sub-40758_dti_FA.nii.gz
+mv sub-40767_dti_MD.nii.gz sub-40767_dti_FA.nii.gz
+mv sub-40768_dti_MD.nii.gz sub-40768_dti_FA.nii.gz
+mv sub-40769_dti_MD.nii.gz sub-40769_dti_FA.nii.gz
+mv sub-40773_dti_MD.nii.gz sub-40773_dti_FA.nii.gz
+mv sub-40775_dti_MD.nii.gz sub-40775_dti_FA.nii.gz
+mv sub-40777_dti_MD.nii.gz sub-40777_dti_FA.nii.gz
+mv sub-40778_dti_MD.nii.gz sub-40778_dti_FA.nii.gz
+mv sub-40779_dti_MD.nii.gz sub-40779_dti_FA.nii.gz
+mv sub-40782_dti_MD.nii.gz sub-40782_dti_FA.nii.gz
+mv sub-40784_dti_MD.nii.gz sub-40784_dti_FA.nii.gz
+mv sub-40796_dti_MD.nii.gz sub-40796_dti_FA.nii.gz
+mv sub-40803_dti_MD.nii.gz sub-40803_dti_FA.nii.gz
+mv sub-40811_dti_MD.nii.gz sub-40811_dti_FA.nii.gz
+mv sub-40861_dti_MD.nii.gz sub-40861_dti_FA.nii.gz
+mv sub-40876_dti_MD.nii.gz sub-40876_dti_FA.nii.gz
+mv sub-40878_dti_MD.nii.gz sub-40878_dti_FA.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+dtifit_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/dtiprep
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya
+
+cd ${tbss_dir}/MD/
+for file in `ls ${tbss_dir}/MD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+
+cd ${tbss_dir}/AD/
+for file in `ls ${tbss_dir}/AD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+
+cd ${tbss_dir}/RD/
+for file in `ls ${tbss_dir}/RD/`
+do
+  subj=`echo &quot;$file&quot; | cut -c5-9`
+  echo mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+  mv &quot;$file&quot; &quot;sub-${subj}_dti_FA.nii.gz&quot;
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>mv sub-30004_dti_MD.nii.gz sub-30004_dti_FA.nii.gz
+mv sub-30008_dti_MD.nii.gz sub-30008_dti_FA.nii.gz
+mv sub-30009_dti_MD.nii.gz sub-30009_dti_FA.nii.gz
+mv sub-30012_dti_MD.nii.gz sub-30012_dti_FA.nii.gz
+mv sub-30015_dti_MD.nii.gz sub-30015_dti_FA.nii.gz
+mv sub-30019_dti_MD.nii.gz sub-30019_dti_FA.nii.gz
+mv sub-30020_dti_MD.nii.gz sub-30020_dti_FA.nii.gz
+mv sub-30023_dti_MD.nii.gz sub-30023_dti_FA.nii.gz
+mv sub-30040_dti_MD.nii.gz sub-30040_dti_FA.nii.gz
+mv sub-30057_dti_MD.nii.gz sub-30057_dti_FA.nii.gz
+mv sub-30064_dti_MD.nii.gz sub-30064_dti_FA.nii.gz
+mv sub-30066_dti_MD.nii.gz sub-30066_dti_FA.nii.gz
+mv sub-30069_dti_MD.nii.gz sub-30069_dti_FA.nii.gz
+mv sub-30074_dti_MD.nii.gz sub-30074_dti_FA.nii.gz
+mv sub-30085_dti_MD.nii.gz sub-30085_dti_FA.nii.gz
+mv sub-30088_dti_MD.nii.gz sub-30088_dti_FA.nii.gz
+mv sub-30090_dti_MD.nii.gz sub-30090_dti_FA.nii.gz
+mv sub-30091_dti_MD.nii.gz sub-30091_dti_FA.nii.gz
+mv sub-30095_dti_MD.nii.gz sub-30095_dti_FA.nii.gz
+mv sub-30096_dti_MD.nii.gz sub-30096_dti_FA.nii.gz
+mv sub-30116_dti_MD.nii.gz sub-30116_dti_FA.nii.gz
+mv sub-30118_dti_MD.nii.gz sub-30118_dti_FA.nii.gz
+mv sub-30119_dti_MD.nii.gz sub-30119_dti_FA.nii.gz
+mv sub-30128_dti_MD.nii.gz sub-30128_dti_FA.nii.gz
+mv sub-30181_dti_MD.nii.gz sub-30181_dti_FA.nii.gz
+mv sub-30217_dti_MD.nii.gz sub-30217_dti_FA.nii.gz
+mv sub-30227_dti_MD.nii.gz sub-30227_dti_FA.nii.gz
+mv sub-30236_dti_MD.nii.gz sub-30236_dti_FA.nii.gz
+mv sub-30242_dti_MD.nii.gz sub-30242_dti_FA.nii.gz
+mv sub-30255_dti_MD.nii.gz sub-30255_dti_FA.nii.gz
+mv sub-30274_dti_MD.nii.gz sub-30274_dti_FA.nii.gz
+mv sub-30295_dti_MD.nii.gz sub-30295_dti_FA.nii.gz
+mv sub-30330_dti_MD.nii.gz sub-30330_dti_FA.nii.gz
+mv sub-30346_dti_MD.nii.gz sub-30346_dti_FA.nii.gz
+mv sub-30376_dti_MD.nii.gz sub-30376_dti_FA.nii.gz
+mv sub-30395_dti_MD.nii.gz sub-30395_dti_FA.nii.gz
+mv sub-30400_dti_MD.nii.gz sub-30400_dti_FA.nii.gz
+mv sub-30403_dti_MD.nii.gz sub-30403_dti_FA.nii.gz
+mv sub-30412_dti_MD.nii.gz sub-30412_dti_FA.nii.gz
+mv sub-30426_dti_MD.nii.gz sub-30426_dti_FA.nii.gz
+mv sub-30432_dti_MD.nii.gz sub-30432_dti_FA.nii.gz
+mv sub-30466_dti_MD.nii.gz sub-30466_dti_FA.nii.gz
+mv sub-30469_dti_MD.nii.gz sub-30469_dti_FA.nii.gz
+mv sub-30476_dti_MD.nii.gz sub-30476_dti_FA.nii.gz
+mv sub-30478_dti_MD.nii.gz sub-30478_dti_FA.nii.gz
+mv sub-30568_dti_MD.nii.gz sub-30568_dti_FA.nii.gz
+mv sub-30581_dti_MD.nii.gz sub-30581_dti_FA.nii.gz
+mv sub-30584_dti_MD.nii.gz sub-30584_dti_FA.nii.gz
+mv sub-30588_dti_MD.nii.gz sub-30588_dti_FA.nii.gz
+mv sub-30004_dti_L1.nii.gz sub-30004_dti_FA.nii.gz
+mv sub-30008_dti_L1.nii.gz sub-30008_dti_FA.nii.gz
+mv sub-30009_dti_L1.nii.gz sub-30009_dti_FA.nii.gz
+mv sub-30012_dti_L1.nii.gz sub-30012_dti_FA.nii.gz
+mv sub-30015_dti_L1.nii.gz sub-30015_dti_FA.nii.gz
+mv sub-30019_dti_L1.nii.gz sub-30019_dti_FA.nii.gz
+mv sub-30020_dti_L1.nii.gz sub-30020_dti_FA.nii.gz
+mv sub-30023_dti_L1.nii.gz sub-30023_dti_FA.nii.gz
+mv sub-30040_dti_L1.nii.gz sub-30040_dti_FA.nii.gz
+mv sub-30057_dti_L1.nii.gz sub-30057_dti_FA.nii.gz
+mv sub-30064_dti_L1.nii.gz sub-30064_dti_FA.nii.gz
+mv sub-30066_dti_L1.nii.gz sub-30066_dti_FA.nii.gz
+mv sub-30069_dti_L1.nii.gz sub-30069_dti_FA.nii.gz
+mv sub-30074_dti_L1.nii.gz sub-30074_dti_FA.nii.gz
+mv sub-30085_dti_L1.nii.gz sub-30085_dti_FA.nii.gz
+mv sub-30088_dti_L1.nii.gz sub-30088_dti_FA.nii.gz
+mv sub-30090_dti_L1.nii.gz sub-30090_dti_FA.nii.gz
+mv sub-30091_dti_L1.nii.gz sub-30091_dti_FA.nii.gz
+mv sub-30095_dti_L1.nii.gz sub-30095_dti_FA.nii.gz
+mv sub-30096_dti_L1.nii.gz sub-30096_dti_FA.nii.gz
+mv sub-30116_dti_L1.nii.gz sub-30116_dti_FA.nii.gz
+mv sub-30118_dti_L1.nii.gz sub-30118_dti_FA.nii.gz
+mv sub-30119_dti_L1.nii.gz sub-30119_dti_FA.nii.gz
+mv sub-30128_dti_L1.nii.gz sub-30128_dti_FA.nii.gz
+mv sub-30181_dti_L1.nii.gz sub-30181_dti_FA.nii.gz
+mv sub-30217_dti_L1.nii.gz sub-30217_dti_FA.nii.gz
+mv sub-30227_dti_L1.nii.gz sub-30227_dti_FA.nii.gz
+mv sub-30236_dti_L1.nii.gz sub-30236_dti_FA.nii.gz
+mv sub-30242_dti_L1.nii.gz sub-30242_dti_FA.nii.gz
+mv sub-30255_dti_L1.nii.gz sub-30255_dti_FA.nii.gz
+mv sub-30274_dti_L1.nii.gz sub-30274_dti_FA.nii.gz
+mv sub-30295_dti_L1.nii.gz sub-30295_dti_FA.nii.gz
+mv sub-30330_dti_L1.nii.gz sub-30330_dti_FA.nii.gz
+mv sub-30346_dti_L1.nii.gz sub-30346_dti_FA.nii.gz
+mv sub-30376_dti_L1.nii.gz sub-30376_dti_FA.nii.gz
+mv sub-30395_dti_L1.nii.gz sub-30395_dti_FA.nii.gz
+mv sub-30400_dti_L1.nii.gz sub-30400_dti_FA.nii.gz
+mv sub-30403_dti_L1.nii.gz sub-30403_dti_FA.nii.gz
+mv sub-30412_dti_L1.nii.gz sub-30412_dti_FA.nii.gz
+mv sub-30426_dti_L1.nii.gz sub-30426_dti_FA.nii.gz
+mv sub-30432_dti_L1.nii.gz sub-30432_dti_FA.nii.gz
+mv sub-30466_dti_L1.nii.gz sub-30466_dti_FA.nii.gz
+mv sub-30469_dti_L1.nii.gz sub-30469_dti_FA.nii.gz
+mv sub-30476_dti_L1.nii.gz sub-30476_dti_FA.nii.gz
+mv sub-30478_dti_L1.nii.gz sub-30478_dti_FA.nii.gz
+mv sub-30568_dti_L1.nii.gz sub-30568_dti_FA.nii.gz
+mv sub-30581_dti_L1.nii.gz sub-30581_dti_FA.nii.gz
+mv sub-30584_dti_L1.nii.gz sub-30584_dti_FA.nii.gz
+mv sub-30588_dti_L1.nii.gz sub-30588_dti_FA.nii.gz
+mv sub-30004_dti_RD.nii.gz sub-30004_dti_FA.nii.gz
+mv sub-30008_dti_RD.nii.gz sub-30008_dti_FA.nii.gz
+mv sub-30009_dti_RD.nii.gz sub-30009_dti_FA.nii.gz
+mv sub-30012_dti_RD.nii.gz sub-30012_dti_FA.nii.gz
+mv sub-30015_dti_RD.nii.gz sub-30015_dti_FA.nii.gz
+mv sub-30019_dti_RD.nii.gz sub-30019_dti_FA.nii.gz
+mv sub-30020_dti_RD.nii.gz sub-30020_dti_FA.nii.gz
+mv sub-30023_dti_RD.nii.gz sub-30023_dti_FA.nii.gz
+mv sub-30040_dti_RD.nii.gz sub-30040_dti_FA.nii.gz
+mv sub-30057_dti_RD.nii.gz sub-30057_dti_FA.nii.gz
+mv sub-30064_dti_RD.nii.gz sub-30064_dti_FA.nii.gz
+mv sub-30066_dti_RD.nii.gz sub-30066_dti_FA.nii.gz
+mv sub-30069_dti_RD.nii.gz sub-30069_dti_FA.nii.gz
+mv sub-30074_dti_RD.nii.gz sub-30074_dti_FA.nii.gz
+mv sub-30085_dti_RD.nii.gz sub-30085_dti_FA.nii.gz
+mv sub-30088_dti_RD.nii.gz sub-30088_dti_FA.nii.gz
+mv sub-30090_dti_RD.nii.gz sub-30090_dti_FA.nii.gz
+mv sub-30091_dti_RD.nii.gz sub-30091_dti_FA.nii.gz
+mv sub-30095_dti_RD.nii.gz sub-30095_dti_FA.nii.gz
+mv sub-30096_dti_RD.nii.gz sub-30096_dti_FA.nii.gz
+mv sub-30116_dti_RD.nii.gz sub-30116_dti_FA.nii.gz
+mv sub-30118_dti_RD.nii.gz sub-30118_dti_FA.nii.gz
+mv sub-30119_dti_RD.nii.gz sub-30119_dti_FA.nii.gz
+mv sub-30128_dti_RD.nii.gz sub-30128_dti_FA.nii.gz
+mv sub-30181_dti_RD.nii.gz sub-30181_dti_FA.nii.gz
+mv sub-30217_dti_RD.nii.gz sub-30217_dti_FA.nii.gz
+mv sub-30227_dti_RD.nii.gz sub-30227_dti_FA.nii.gz
+mv sub-30236_dti_RD.nii.gz sub-30236_dti_FA.nii.gz
+mv sub-30242_dti_RD.nii.gz sub-30242_dti_FA.nii.gz
+mv sub-30255_dti_RD.nii.gz sub-30255_dti_FA.nii.gz
+mv sub-30274_dti_RD.nii.gz sub-30274_dti_FA.nii.gz
+mv sub-30295_dti_RD.nii.gz sub-30295_dti_FA.nii.gz
+mv sub-30330_dti_RD.nii.gz sub-30330_dti_FA.nii.gz
+mv sub-30346_dti_RD.nii.gz sub-30346_dti_FA.nii.gz
+mv sub-30376_dti_RD.nii.gz sub-30376_dti_FA.nii.gz
+mv sub-30395_dti_RD.nii.gz sub-30395_dti_FA.nii.gz
+mv sub-30400_dti_RD.nii.gz sub-30400_dti_FA.nii.gz
+mv sub-30403_dti_RD.nii.gz sub-30403_dti_FA.nii.gz
+mv sub-30412_dti_RD.nii.gz sub-30412_dti_FA.nii.gz
+mv sub-30426_dti_RD.nii.gz sub-30426_dti_FA.nii.gz
+mv sub-30432_dti_RD.nii.gz sub-30432_dti_FA.nii.gz
+mv sub-30466_dti_RD.nii.gz sub-30466_dti_FA.nii.gz
+mv sub-30469_dti_RD.nii.gz sub-30469_dti_FA.nii.gz
+mv sub-30476_dti_RD.nii.gz sub-30476_dti_FA.nii.gz
+mv sub-30478_dti_RD.nii.gz sub-30478_dti_FA.nii.gz
+mv sub-30568_dti_RD.nii.gz sub-30568_dti_FA.nii.gz
+mv sub-30581_dti_RD.nii.gz sub-30581_dti_FA.nii.gz
+mv sub-30584_dti_RD.nii.gz sub-30584_dti_FA.nii.gz
+mv sub-30588_dti_RD.nii.gz sub-30588_dti_FA.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<p>To run the tbss_non_FA script, I had to make one modification to get it to work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#for f in `$FSLDIR/bin/imglob *_FA.*` ; do #edited MCM 02-21-2020</span>
+<span class="k">for</span> f in  <span class="sb">`</span><span class="nv">$FSLDIR</span>/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*<span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_oa</span>
+<span class="c1">#tbss_non_FA MD</span>
+<span class="c1">#tbss_non_FA AD</span>
+<span class="n">tbss_non_FA</span> <span class="n">RD</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>using pre-chosen registration target: sub-40728_dti_FA_FA
+upsampling alternative images into standard space
+sub-40160_dti_FA
+sub-40170_dti_FA
+sub-40175_dti_FA
+sub-40288_dti_FA
+sub-40351_dti_FA
+sub-40490_dti_FA
+sub-40496_dti_FA
+sub-40512_dti_FA
+sub-40519_dti_FA
+sub-40520_dti_FA
+sub-40522_dti_FA
+sub-40524_dti_FA
+sub-40547_dti_FA
+sub-40550_dti_FA
+sub-40564_dti_FA
+sub-40601_dti_FA
+sub-40608_dti_FA
+sub-40615_dti_FA
+sub-40619_dti_FA
+sub-40623_dti_FA
+sub-40624_dti_FA
+sub-40629_dti_FA
+sub-40638_dti_FA
+sub-40649_dti_FA
+sub-40650_dti_FA
+sub-40653_dti_FA
+sub-40655_dti_FA
+sub-40656_dti_FA
+sub-40658_dti_FA
+sub-40664_dti_FA
+sub-40665_dti_FA
+sub-40668_dti_FA
+sub-40672_dti_FA
+sub-40685_dti_FA
+sub-40694_dti_FA
+sub-40720_dti_FA
+sub-40728_dti_FA
+sub-40738_dti_FA
+sub-40743_dti_FA
+sub-40750_dti_FA
+sub-40758_dti_FA
+sub-40767_dti_FA
+sub-40768_dti_FA
+sub-40769_dti_FA
+sub-40773_dti_FA
+sub-40775_dti_FA
+sub-40777_dti_FA
+sub-40778_dti_FA
+sub-40779_dti_FA
+sub-40782_dti_FA
+sub-40784_dti_FA
+sub-40796_dti_FA
+sub-40803_dti_FA
+sub-40811_dti_FA
+sub-40861_dti_FA
+sub-40876_dti_FA
+sub-40878_dti_FA
+merging all upsampled RD images into single 4D image
+projecting all_RD onto mean FA skeleton
+now run stats - for example:
+randomise -i all_RD_skeletonised -o tbss_RD -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">schnyer</span><span class="o">/</span><span class="n">Aging_DecMem</span><span class="o">/</span><span class="n">Scan_Data</span><span class="o">/</span><span class="n">BIDS</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">tbss_ya</span>
+<span class="n">tbss_non_FA</span> <span class="n">MD</span>
+<span class="n">tbss_non_FA</span> <span class="n">AD</span>
+<span class="n">tbss_non_FA</span> <span class="n">RD</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>using pre-chosen registration target: sub-30255_dti_FA_FA
+upsampling alternative images into standard space
+sub-30004_dti_FA
+sub-30008_dti_FA
+sub-30009_dti_FA
+sub-30012_dti_FA
+sub-30015_dti_FA
+sub-30019_dti_FA
+sub-30020_dti_FA
+sub-30023_dti_FA
+sub-30040_dti_FA
+sub-30057_dti_FA
+sub-30064_dti_FA
+sub-30066_dti_FA
+sub-30069_dti_FA
+sub-30074_dti_FA
+sub-30085_dti_FA
+sub-30088_dti_FA
+sub-30090_dti_FA
+sub-30091_dti_FA
+sub-30095_dti_FA
+sub-30096_dti_FA
+sub-30116_dti_FA
+sub-30118_dti_FA
+sub-30119_dti_FA
+sub-30128_dti_FA
+sub-30181_dti_FA
+sub-30217_dti_FA
+sub-30236_dti_FA
+sub-30242_dti_FA
+sub-30255_dti_FA
+sub-30274_dti_FA
+sub-30295_dti_FA
+sub-30346_dti_FA
+sub-30376_dti_FA
+sub-30395_dti_FA
+sub-30400_dti_FA
+sub-30403_dti_FA
+sub-30412_dti_FA
+sub-30426_dti_FA
+sub-30432_dti_FA
+sub-30466_dti_FA
+sub-30469_dti_FA
+sub-30478_dti_FA
+sub-30568_dti_FA
+sub-30581_dti_FA
+sub-30584_dti_FA
+sub-30588_dti_FA
+merging all upsampled MD images into single 4D image
+projecting all_MD onto mean FA skeleton
+now run stats - for example:
+randomise -i all_MD_skeletonised -o tbss_MD -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+using pre-chosen registration target: sub-30255_dti_FA_FA
+upsampling alternative images into standard space
+sub-30004_dti_FA
+sub-30008_dti_FA
+sub-30009_dti_FA
+sub-30012_dti_FA
+sub-30015_dti_FA
+sub-30019_dti_FA
+sub-30020_dti_FA
+sub-30023_dti_FA
+sub-30040_dti_FA
+sub-30057_dti_FA
+sub-30064_dti_FA
+sub-30066_dti_FA
+sub-30069_dti_FA
+sub-30074_dti_FA
+sub-30085_dti_FA
+sub-30088_dti_FA
+sub-30090_dti_FA
+sub-30091_dti_FA
+sub-30095_dti_FA
+sub-30096_dti_FA
+sub-30116_dti_FA
+sub-30118_dti_FA
+sub-30119_dti_FA
+sub-30128_dti_FA
+sub-30181_dti_FA
+sub-30217_dti_FA
+sub-30236_dti_FA
+sub-30242_dti_FA
+sub-30255_dti_FA
+sub-30274_dti_FA
+sub-30295_dti_FA
+sub-30346_dti_FA
+sub-30376_dti_FA
+sub-30395_dti_FA
+sub-30400_dti_FA
+sub-30403_dti_FA
+sub-30412_dti_FA
+sub-30426_dti_FA
+sub-30432_dti_FA
+sub-30466_dti_FA
+sub-30469_dti_FA
+sub-30478_dti_FA
+sub-30568_dti_FA
+sub-30581_dti_FA
+sub-30584_dti_FA
+sub-30588_dti_FA
+merging all upsampled AD images into single 4D image
+projecting all_AD onto mean FA skeleton
+now run stats - for example:
+randomise -i all_AD_skeletonised -o tbss_AD -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+using pre-chosen registration target: sub-30255_dti_FA_FA
+upsampling alternative images into standard space
+sub-30004_dti_FA
+sub-30008_dti_FA
+sub-30009_dti_FA
+sub-30012_dti_FA
+sub-30015_dti_FA
+sub-30019_dti_FA
+sub-30020_dti_FA
+sub-30023_dti_FA
+sub-30040_dti_FA
+sub-30057_dti_FA
+sub-30064_dti_FA
+sub-30066_dti_FA
+sub-30069_dti_FA
+sub-30074_dti_FA
+sub-30085_dti_FA
+sub-30088_dti_FA
+sub-30090_dti_FA
+sub-30091_dti_FA
+sub-30095_dti_FA
+sub-30096_dti_FA
+sub-30116_dti_FA
+sub-30118_dti_FA
+sub-30119_dti_FA
+sub-30128_dti_FA
+sub-30181_dti_FA
+sub-30217_dti_FA
+sub-30236_dti_FA
+sub-30242_dti_FA
+sub-30255_dti_FA
+sub-30274_dti_FA
+sub-30295_dti_FA
+sub-30346_dti_FA
+sub-30376_dti_FA
+sub-30395_dti_FA
+sub-30400_dti_FA
+sub-30403_dti_FA
+sub-30412_dti_FA
+sub-30426_dti_FA
+sub-30432_dti_FA
+sub-30466_dti_FA
+sub-30469_dti_FA
+sub-30478_dti_FA
+sub-30568_dti_FA
+sub-30581_dti_FA
+sub-30584_dti_FA
+sub-30588_dti_FA
+merging all upsampled RD images into single 4D image
+projecting all_RD onto mean FA skeleton
+now run stats - for example:
+randomise -i all_RD_skeletonised -o tbss_RD -m mean_FA_skeleton_mask -d design.mat -t design.con -n 500 --T2 -V
+(after generating design.mat and design.con)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="extract-mean-fa-md-ad-rd-in-roi">
+<h1>Extract mean FA, MD, AD, RD in ROI<a class="headerlink" href="#extract-mean-fa-md-ad-rd-in-roi" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya
+cd ${tbss_dir}/roi
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 5 ${tbss_dir}/roi/cc.nii.gz
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 3 ${tbss_dir}/roi/genu.nii.gz
+
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa
+cd ${tbss_dir}/roi
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 5 ${tbss_dir}/roi/cc.nii.gz
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 3 ${tbss_dir}/roi/genu.nii.gz
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+# cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_oa/stats
+# for mask in `ls ../../roi`; do
+# fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}-meants.txt
+# done
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_ya/stats
+for mask in `ls ../../roi`; do
+echo `fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}&quot;-meants&quot;.txt`
+done
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Megan McMahon<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+  </body>
+</html>
