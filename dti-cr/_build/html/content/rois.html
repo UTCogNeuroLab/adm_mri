@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Extract mean FA, MD, AD, RD in ROI &#8212; DTI-CR</title>
+    <title>ROIs &#8212; DTI-CR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
@@ -31,6 +31,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="TBSS Preprocessing" href="tbss.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="docsearch:language" content="en">
@@ -64,7 +65,17 @@
 
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   
-  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="intro.html">Introduction</a>
+  </li>
+  <li class="">
+    <a href="tbss.html">TBSS Preprocessing</a>
+  </li>
+  <li class="active">
+    <a href="">ROIs</a>
+  </li>
+</ul>
 </nav>
 
  <!-- To handle the deprecated key -->
@@ -109,7 +120,7 @@
         </div>
 
         <!-- Edit this page -->
-        
+        <a class="edit-button" href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/rois.ipynb"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" title="Edit this page"><i class="fas fa-pencil-alt"></i></button></a>
 
         <!-- Full screen (wrap in <a> to have style consistency -->
         <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
@@ -120,7 +131,7 @@
             <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
             <div class="dropdown-buttons">
                 
-                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/rois.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                <a class="binder-button" href="https://mybinder.org/v2/gh/UTCogNeuroLab/aging-study/master?urlpath=tree/dti-cr/content/rois.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
                 
                 
                 
@@ -129,13 +140,31 @@
         
     </div>
     <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
     <ul class="nav section-nav flex-column">
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#creating-rois-from-coordinates" class="nav-link">Creating ROIs from coordinates</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#selected-rois" class="nav-link">Selected ROIs</a>
+        </li>
+    
     </ul>
 </nav>
 
+
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/rois.ipynb">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
 
     </div>
 </div>
@@ -144,8 +173,9 @@
         
               <div>
                 
-  <div class="section" id="extract-mean-fa-md-ad-rd-in-roi">
-<h1>Extract mean FA, MD, AD, RD in ROI<a class="headerlink" href="#extract-mean-fa-md-ad-rd-in-roi" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="rois">
+<h1>ROIs<a class="headerlink" href="#rois" title="Permalink to this headline">¶</a></h1>
+<p>Extract mean FA from ROIs</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
@@ -180,9 +210,8 @@ done
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="creating-rois-from-coordinates">
-<h1>Creating ROIs from coordinates<a class="headerlink" href="#creating-rois-from-coordinates" title="Permalink to this headline">¶</a></h1>
+<h2>Creating ROIs from coordinates<a class="headerlink" href="#creating-rois-from-coordinates" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://andysbrainblog.blogspot.com/2013/04/fsl-tutorial-creating-rois-from.html">Andy’s Brain Blog</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -378,6 +407,7 @@ tissuepriors
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="selected-rois">
 <h2>Selected ROIs<a class="headerlink" href="#selected-rois" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
@@ -414,7 +444,7 @@ fslmaths FFpoint_L -kernel sphere 6 -fmean -thr 0.001 -bin FFsphere_L -odt float
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11d0bdcd0&gt;
 </pre></div>
 </div>
-<img alt="../_images/rois_9_1.png" src="../_images/rois_9_1.png" />
+<img alt="../_images/rois_12_1.png" src="../_images/rois_12_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -443,7 +473,7 @@ fslmaths PFpoint_L -kernel sphere 6 -fmean -thr 0.001 -bin PFsphere_L -odt float
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11d3c8ad0&gt;
 </pre></div>
 </div>
-<img alt="../_images/rois_11_1.png" src="../_images/rois_11_1.png" />
+<img alt="../_images/rois_14_1.png" src="../_images/rois_14_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -476,7 +506,7 @@ fslmaths LFpoint2_L -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere2_L -odt flo
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11fb6ced0&gt;
 </pre></div>
 </div>
-<img alt="../_images/rois_13_1.png" src="../_images/rois_13_1.png" />
+<img alt="../_images/rois_16_1.png" src="../_images/rois_16_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -601,7 +631,7 @@ fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m PFsphere_R.nii.gz -o stats/PFsphe
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11cb7af90&gt;
 </pre></div>
 </div>
-<img alt="../_images/rois_16_1.png" src="../_images/rois_16_1.png" />
+<img alt="../_images/rois_19_1.png" src="../_images/rois_19_1.png" />
 </div>
 </div>
 </div>
@@ -616,6 +646,7 @@ fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m PFsphere_R.nii.gz -o stats/PFsphe
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="tbss.html" title="previous page">TBSS Preprocessing</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

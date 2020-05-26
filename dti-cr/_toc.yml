@@ -1,18 +1,8 @@
-- file: content/tbss
+- file: content/intro
 
 - header: Preprocessing
 - file: content/tbss
-
-- header: ROIs
 - file: content/rois
 
-- header: Statistical Analysis
-  expand_sections: true
-  sections:
-  - file: content/age-group
-  - file: content/cognition
-  - file: content/rhythm-amplitude
-  - file: content/bmi
-
-- header: Notes
+- header: Analysis
 - file: content/notes

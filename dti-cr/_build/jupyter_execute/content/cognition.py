@@ -1,4 +1,4 @@
-# GLM
+# Cognition
 
 import numpy as np
 import pandas as pd

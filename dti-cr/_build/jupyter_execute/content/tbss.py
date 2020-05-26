@@ -1,9 +1,8 @@
-## Preprocessing
+# TBSS Preprocessing
 
 1. Run main.sh
 2. Inspect all subjects for model fit
 
-## TBSS
 We performed analyses separately for older adults and young adults. These analyses were therefore conducted independently in separate directories, tbss_oa and tbss_ya.
 
 1. Move all FA and MD files from DTI preprocessing directory to a new tbss directory
@@ -304,5 +303,3 @@ cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_ya/stats
 for mask in `ls ../../roi`; do
 echo `fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}"-meants".txt`
 done
-
-

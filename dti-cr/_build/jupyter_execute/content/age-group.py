@@ -1,6 +1,6 @@
 # Age Group Effects
 
-### GLM Setup
+## GLM Setup
 
 import numpy as np
 import pandas as pd
@@ -47,10 +47,14 @@ ya_dsn = ya_files.join(ya_df, sort=True).dropna(subset = ['files'])
 
 ya_dsn.shape
 
-## TBSS Analysis
+## Randomise
 
 1. Concatenate all_FA images
 2. Run fsl randomise looking for interaction of age group x RAR amplitude
+
+[FSL GLM 2 groups, continuous covariate interaction](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GLM#Two_Groups_with_continuous_covariate_interaction) <br>
+
+[Mumford Brain Stats](http://mumford.fmripower.org/mean_centering/)
 
 %%bash
 
@@ -100,11 +104,14 @@ scan_dir = '/Volumes/G-DRIVE mobile/derivatives/'
 
 plotting.plot_img(scan_dir + 'tbss/stats/all_FA_YA-OA_mask.nii.gz')
 
-[FSL GLM 2 groups, continuous covariate interaction](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GLM#Two_Groups_with_continuous_covariate_interaction) <br>
-
-[Mumford Brain Stats](http://mumford.fmripower.org/mean_centering/)
-
 ## Age Group Differences in WM
+
+Why are we seeing areas of greater FA in older adults relative to young adults?
+
+1. Checked all_FA image - First all_FA for OA corresponds to #47 of concatenated all_FA
+2. Checked design matrix, matches
+3. Checked contrast, matches
+4. Rerun with JHU as WM mask?
 
 %%bash
 
@@ -137,14 +144,9 @@ scan_dir = '/Volumes/G-DRIVE mobile/derivatives/'
 plotting.plot_stat_map(scan_dir + 'tbss/stats/tbss_agegroup_tfce_corrp_tstat2.nii.gz', cmap = 'coolwarm', threshold = 0.95, title = 'YA < OA')
 
 
-Why are we seeing areas of greater FA in older adults relative to young adults?
+## Rerun age group differences t-test using JHU atlas as mask
 
-1. Checked all_FA image - First all_FA for OA corresponds to #47 of concatenated all_FA
-2. Checked design matrix, matches
-3. Checked contrast, matches
-4. Rerun with JHU as WM mask?
-
-### Rerun age group differences t-test using JHU atlas as mask
+Still seeing some regions where OA FA > YA FA?
 
 %%bash
 
@@ -183,9 +185,7 @@ scan_dir = '/Volumes/G-DRIVE mobile/derivatives/'
 plotting.plot_stat_map(scan_dir + 'tbss/stats/tbss_agegroup_jhu_tfce_corrp_tstat2.nii.gz', cmap = 'coolwarm', threshold = 0.95, title = 'YA < OA')
 
 
-Still seeing some regions where OA FA > YA FA?
-
-### Rerun interaction model with JHU mask
+## Rerun interaction model with JHU mask
 
 %%bash
 
@@ -211,8 +211,6 @@ scan_dir = '/Volumes/G-DRIVE mobile/derivatives/'
 
 plotting.plot_stat_map(scan_dir + 'tbss/stats/tbss_int_jhu_tfce_corrp_tstat2.nii.gz', threshold = 0.95, title = 'YA < OA')
 
-
-No significant interaction effect
 
 ## FA Skeleton
 

@@ -1,4 +1,4 @@
-# GLM
+# Effect of circadian rhythm amplitude
 
 import numpy as np
 import pandas as pd

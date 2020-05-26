@@ -1,4 +1,4 @@
-### BMI Correlations
+# BMI 
 
 bmi = pd.read_csv('/Users/PSYC-mcm5324/Box/CogNeuroLab/Aging Decision Making R01/data/Redcap/bmi.csv').dropna().reset_index()
 bmi[0:5]

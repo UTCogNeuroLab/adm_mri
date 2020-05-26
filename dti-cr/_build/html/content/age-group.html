@@ -64,7 +64,17 @@
 
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   
-  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="intro.html">Introduction</a>
+  </li>
+  <li class="">
+    <a href="tbss.html">TBSS Preprocessing</a>
+  </li>
+  <li class="">
+    <a href="rois.html">ROIs</a>
+  </li>
+</ul>
 </nav>
 
  <!-- To handle the deprecated key -->
@@ -109,7 +119,7 @@
         </div>
 
         <!-- Edit this page -->
-        
+        <a class="edit-button" href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/age-group.ipynb"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" title="Edit this page"><i class="fas fa-pencil-alt"></i></button></a>
 
         <!-- Full screen (wrap in <a> to have style consistency -->
         <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
@@ -120,7 +130,7 @@
             <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
             <div class="dropdown-buttons">
                 
-                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/age-group.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                <a class="binder-button" href="https://mybinder.org/v2/gh/UTCogNeuroLab/aging-study/master?urlpath=tree/dti-cr/content/age-group.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
                 
                 
                 
@@ -141,21 +151,19 @@
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#tbss-analysis" class="nav-link">TBSS Analysis</a>
+            <a href="#randomise" class="nav-link">Randomise</a>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#age-group-differences-in-wm" class="nav-link">Age Group Differences in WM</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
+            <a href="#age-group-differences-in-wm" class="nav-link">Age Group Differences in WM</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
             <a href="#rerun-age-group-differences-t-test-using-jhu-atlas-as-mask" class="nav-link">Rerun age group differences t-test using JHU atlas as mask</a>
         </li>
     
-        <li class="nav-item toc-entry toc-h3">
+        <li class="nav-item toc-entry toc-h2">
             <a href="#rerun-interaction-model-with-jhu-mask" class="nav-link">Rerun interaction model with JHU mask</a>
-        </li>
-    
-            </ul>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
@@ -165,6 +173,13 @@
     </ul>
 </nav>
 
+
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/age-group.ipynb">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
 
     </div>
 </div>
@@ -430,12 +445,14 @@
 </div>
 </div>
 </div>
-<div class="section" id="tbss-analysis">
-<h2>TBSS Analysis<a class="headerlink" href="#tbss-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="randomise">
+<h2>Randomise<a class="headerlink" href="#randomise" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Concatenate all_FA images</p></li>
 <li><p>Run fsl randomise looking for interaction of age group x RAR amplitude</p></li>
 </ol>
+<p><a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GLM#Two_Groups_with_continuous_covariate_interaction">FSL GLM 2 groups, continuous covariate interaction</a> <br></p>
+<p><a class="reference external" href="http://mumford.fmripower.org/mean_centering/">Mumford Brain Stats</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
@@ -550,7 +567,7 @@ file_type	NIFTI-1+
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x119949d90&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_11_1.png" src="../_images/age-group_11_1.png" />
+<img alt="../_images/age-group_12_1.png" src="../_images/age-group_12_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -712,14 +729,19 @@ e.g. fslmaths inputVolume -add inputVolume2 output_volume
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1194bab10&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_14_1.png" src="../_images/age-group_14_1.png" />
+<img alt="../_images/age-group_15_1.png" src="../_images/age-group_15_1.png" />
 </div>
 </div>
-<p><a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GLM#Two_Groups_with_continuous_covariate_interaction">FSL GLM 2 groups, continuous covariate interaction</a> <br></p>
-<p><a class="reference external" href="http://mumford.fmripower.org/mean_centering/">Mumford Brain Stats</a></p>
 </div>
 <div class="section" id="age-group-differences-in-wm">
 <h2>Age Group Differences in WM<a class="headerlink" href="#age-group-differences-in-wm" title="Permalink to this headline">¶</a></h2>
+<p>Why are we seeing areas of greater FA in older adults relative to young adults?</p>
+<ol class="simple">
+<li><p>Checked all_FA image - First all_FA for OA corresponds to #47 of concatenated all_FA</p></li>
+<li><p>Checked design matrix, matches</p></li>
+<li><p>Checked contrast, matches</p></li>
+<li><p>Rerun with JHU as WM mask?</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
@@ -1807,15 +1829,10 @@ Finished, exiting.
 <img alt="../_images/age-group_21_1.png" src="../_images/age-group_21_1.png" />
 </div>
 </div>
-<p>Why are we seeing areas of greater FA in older adults relative to young adults?</p>
-<ol class="simple">
-<li><p>Checked all_FA image - First all_FA for OA corresponds to #47 of concatenated all_FA</p></li>
-<li><p>Checked design matrix, matches</p></li>
-<li><p>Checked contrast, matches</p></li>
-<li><p>Rerun with JHU as WM mask?</p></li>
-</ol>
+</div>
 <div class="section" id="rerun-age-group-differences-t-test-using-jhu-atlas-as-mask">
-<h3>Rerun age group differences t-test using JHU atlas as mask<a class="headerlink" href="#rerun-age-group-differences-t-test-using-jhu-atlas-as-mask" title="Permalink to this headline">¶</a></h3>
+<h2>Rerun age group differences t-test using JHU atlas as mask<a class="headerlink" href="#rerun-age-group-differences-t-test-using-jhu-atlas-as-mask" title="Permalink to this headline">¶</a></h2>
+<p>Still seeing some regions where OA FA &gt; YA FA?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
@@ -1841,7 +1858,7 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x123908ad0&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_25_1.png" src="../_images/age-group_25_1.png" />
+<img alt="../_images/age-group_24_1.png" src="../_images/age-group_24_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2900,7 +2917,7 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x12686f790&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_28_1.png" src="../_images/age-group_28_1.png" />
+<img alt="../_images/age-group_27_1.png" src="../_images/age-group_27_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2917,13 +2934,12 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1263bff10&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_29_1.png" src="../_images/age-group_29_1.png" />
+<img alt="../_images/age-group_28_1.png" src="../_images/age-group_28_1.png" />
 </div>
 </div>
-<p>Still seeing some regions where OA FA &gt; YA FA?</p>
 </div>
 <div class="section" id="rerun-interaction-model-with-jhu-mask">
-<h3>Rerun interaction model with JHU mask<a class="headerlink" href="#rerun-interaction-model-with-jhu-mask" title="Permalink to this headline">¶</a></h3>
+<h2>Rerun interaction model with JHU mask<a class="headerlink" href="#rerun-interaction-model-with-jhu-mask" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
@@ -3984,7 +4000,7 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x1275a1b50&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_34_1.png" src="../_images/age-group_34_1.png" />
+<img alt="../_images/age-group_32_1.png" src="../_images/age-group_32_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -4001,10 +4017,8 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x127743710&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_35_1.png" src="../_images/age-group_35_1.png" />
+<img alt="../_images/age-group_33_1.png" src="../_images/age-group_33_1.png" />
 </div>
-</div>
-<p>No significant interaction effect</p>
 </div>
 </div>
 <div class="section" id="fa-skeleton">
@@ -5198,7 +5212,7 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11631b590&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_42_1.png" src="../_images/age-group_42_1.png" />
+<img alt="../_images/age-group_39_1.png" src="../_images/age-group_39_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -5215,7 +5229,7 @@ Finished, exiting.
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11559e350&gt;
 </pre></div>
 </div>
-<img alt="../_images/age-group_43_1.png" src="../_images/age-group_43_1.png" />
+<img alt="../_images/age-group_40_1.png" src="../_images/age-group_40_1.png" />
 </div>
 </div>
 </div>

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>GLM &#8212; DTI-CR</title>
+    <title>Cognition &#8212; DTI-CR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
@@ -64,7 +64,17 @@
 
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   
-  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="intro.html">Introduction</a>
+  </li>
+  <li class="">
+    <a href="tbss.html">TBSS Preprocessing</a>
+  </li>
+  <li class="">
+    <a href="rois.html">ROIs</a>
+  </li>
+</ul>
 </nav>
 
  <!-- To handle the deprecated key -->
@@ -109,7 +119,7 @@
         </div>
 
         <!-- Edit this page -->
-        
+        <a class="edit-button" href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/cognition.ipynb"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" title="Edit this page"><i class="fas fa-pencil-alt"></i></button></a>
 
         <!-- Full screen (wrap in <a> to have style consistency -->
         <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
@@ -120,7 +130,7 @@
             <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
             <div class="dropdown-buttons">
                 
-                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/cognition.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                <a class="binder-button" href="https://mybinder.org/v2/gh/UTCogNeuroLab/aging-study/master?urlpath=tree/dti-cr/content/cognition.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
                 
                 
                 
@@ -144,6 +154,13 @@
 </nav>
 
 
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/cognition.ipynb">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
     </div>
 </div>
     <div id="main-content" class="row">
@@ -151,8 +168,8 @@
         
               <div>
                 
-  <div class="section" id="glm">
-<h1>GLM<a class="headerlink" href="#glm" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="cognition">
+<h1>Cognition<a class="headerlink" href="#cognition" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

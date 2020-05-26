@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Preprocessing &#8212; DTI-CR</title>
+    <title>TBSS Preprocessing &#8212; DTI-CR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
@@ -31,6 +31,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ROIs" href="rois.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="docsearch:language" content="en">
@@ -64,7 +66,17 @@
 
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   
-  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="intro.html">Introduction</a>
+  </li>
+  <li class="active">
+    <a href="">TBSS Preprocessing</a>
+  </li>
+  <li class="">
+    <a href="rois.html">ROIs</a>
+  </li>
+</ul>
 </nav>
 
  <!-- To handle the deprecated key -->
@@ -109,7 +121,7 @@
         </div>
 
         <!-- Edit this page -->
-        
+        <a class="edit-button" href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/tbss.ipynb"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" title="Edit this page"><i class="fas fa-pencil-alt"></i></button></a>
 
         <!-- Full screen (wrap in <a> to have style consistency -->
         <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
@@ -120,7 +132,7 @@
             <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
             <div class="dropdown-buttons">
                 
-                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/content/tbss.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                <a class="binder-button" href="https://mybinder.org/v2/gh/UTCogNeuroLab/aging-study/master?urlpath=tree/dti-cr/content/tbss.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
                 
                 
                 
@@ -129,13 +141,47 @@
         
     </div>
     <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
     <ul class="nav section-nav flex-column">
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tbss-1-preprocessing" class="nav-link">TBSS 1 Preprocessing</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#note-02-20-2020" class="nav-link">Note 02-20-2020</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tbss-2-registration" class="nav-link">TBSS 2 Registration</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tbss-3-post-registration" class="nav-link">TBSS 3 Post-registration</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#qa" class="nav-link">QA</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#extract-mean-fa-md-ad-rd-in-roi" class="nav-link">Extract mean FA, MD, AD, RD in ROI</a>
+        </li>
+    
     </ul>
 </nav>
 
+
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/UTCogNeuroLab/aging-study/edit/master/dti-cr/content/tbss.ipynb">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
 
     </div>
 </div>
@@ -144,15 +190,12 @@
         
               <div>
                 
-  <div class="section" id="preprocessing">
-<h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tbss-preprocessing">
+<h1>TBSS Preprocessing<a class="headerlink" href="#tbss-preprocessing" title="Permalink to this headline">¶</a></h1>
 <ol class="simple">
 <li><p>Run main.sh</p></li>
 <li><p>Inspect all subjects for model fit</p></li>
 </ol>
-</div>
-<div class="section" id="tbss">
-<h1>TBSS<a class="headerlink" href="#tbss" title="Permalink to this headline">¶</a></h1>
 <p>We performed analyses separately for older adults and young adults. These analyses were therefore conducted independently in separate directories, tbss_oa and tbss_ya.</p>
 <ol class="simple">
 <li><p>Move all FA and MD files from DTI preprocessing directory to a new tbss directory</p></li>
@@ -1389,9 +1432,8 @@ randomise -i all_RD_skeletonised -o tbss_RD -m mean_FA_skeleton_mask -d design.m
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="extract-mean-fa-md-ad-rd-in-roi">
-<h1>Extract mean FA, MD, AD, RD in ROI<a class="headerlink" href="#extract-mean-fa-md-ad-rd-in-roi" title="Permalink to this headline">¶</a></h1>
+<h2>Extract mean FA, MD, AD, RD in ROI<a class="headerlink" href="#extract-mean-fa-md-ad-rd-in-roi" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
@@ -1427,6 +1469,7 @@ done
 </div>
 </div>
 </div>
+</div>
 
 
               </div>
@@ -1437,6 +1480,8 @@ done
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">Introduction</a>
+    <a class='right-next' id="next-link" href="rois.html" title="next page">ROIs</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

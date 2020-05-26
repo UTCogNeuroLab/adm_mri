@@ -1,4 +1,6 @@
-## Extract mean FA, MD, AD, RD in ROI
+# ROIs
+
+Extract mean FA from ROIs
 
 %%bash
 
@@ -26,7 +28,7 @@ echo `fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}"-meants".txt`
 done
 
 
-# Creating ROIs from coordinates
+## Creating ROIs from coordinates
 
 [Andy's Brain Blog](http://andysbrainblog.blogspot.com/2013/04/fsl-tutorial-creating-rois-from.html)
 
