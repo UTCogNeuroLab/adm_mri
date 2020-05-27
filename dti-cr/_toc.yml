@@ -5,4 +5,10 @@
 - file: content/rois
 
 - header: Analysis
+- file: content/age-group
+- file: content/cognition
+- file: content/rhythm-amplitude
+- file: bmi
+
+- header: Notes
 - file: content/notes

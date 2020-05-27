@@ -84,6 +84,34 @@ plotting.plot_roi('/Volumes/G-DRIVE mobile/derivatives/roi/PFsphere_R.nii.gz')
 
 cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
 
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 54 1 115 1 100 1 0 1 cluster_R -odt float
+fslmaths cluster_R -kernel sphere 6 -fmean -thr 0.001 -bin cluster_sphere_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 126 1 115 1 100 1 0 1 cluster_L -odt float
+fslmaths cluster_L -kernel sphere 6 -fmean -thr 0.001 -bin cluster_sphere_L -odt float
+
+
+from nilearn import plotting
+
+plotting.plot_roi('/Volumes/G-DRIVE mobile/derivatives/roi/cluster_sphere_R.nii.gz')
+
+%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 89 1 93 1 90 1 0 1 genu_point -odt float
+fslmaths genu_point -kernel sphere 6 -fmean -thr 0.001 -bin genu_sphere -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 89 1 151 1 75 1 0 1 splenium_point -odt float
+fslmaths splenium_point -kernel sphere 6 -fmean -thr 0.001 -bin splenium_sphere -odt float
+
+
+from nilearn import plotting
+
+plotting.plot_roi('/Volumes/G-DRIVE mobile/derivatives/roi/splenium_sphere.nii.gz')
+
+%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
 fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 78 1 108 1 109 1 0 1 LFpoint1_R -odt float
 fslmaths LFpoint1_R -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere1_R -odt float
 fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 102 1 108 1 109 1 0 1 LFpoint1_L -odt float
@@ -105,13 +133,13 @@ mkdir stats
 
 for i in `ls *sphere*`; do
 echo $i
-outfile="`echo ${i##*/.nii.gz} | cut -d. -f1`"
+maskfile="`echo ${i##*/.nii.gz} | cut -d. -f1`"
 
-echo "fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${outfile}_oa_tstat_means.txt;"
-fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${outfile}_oa_tstat_means.txt;
+echo "fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${maskfile}_oa_tstat_means.txt;"
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${maskfile}_oa_tstat_means.txt;
 
-echo "fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${outfile}_ya_tstat_means.txt;"
-fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${outfile}_ya_tstat_means.txt;
+echo "fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${maskfile}_ya_tstat_means.txt;"
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M >> stats/${maskfile}_ya_tstat_means.txt;
 done
 
 
@@ -122,15 +150,45 @@ mkdir stats
 
 for i in `ls *sphere*`; do
 echo $i
-outfile="`echo ${i##*/.nii.gz} | cut -d. -f1`"
+maskfile="`echo ${i##*/.nii.gz} | cut -d. -f1`"
 
-echo "fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${outfile}_oa_fa_means.txt;"
-fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${outfile}_oa_fa_means.txt;
+echo "fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_oa_fa_means.txt;"
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_oa_fa_means.txt;
 
-echo "fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${outfile}_ya_fa_means.txt;"
-fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${outfile}_ya_fa_means.txt;
+echo "fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_ya_fa_means.txt;"
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_ya_fa_means.txt;
 done
+
+Without thresholding the image, it looks like this:
 
 from nilearn import plotting
 
 plotting.plot_roi('/Volumes/G-DRIVE mobile/derivatives/roi/FFsphere1.nii.gz')
+
+more /Volumes/G-DRIVE mobile/derivatives/roi/stats/PFsphere_R_ya_fa_means.txt
+
+%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/stats/
+
+ls *ya_fa_means.txt
+ls *oa_fa_means.txt
+
+rm all_ya_fa_means.txt
+rm all_oa_fa_means.txt
+
+paste -d , *ya_fa_means.txt >> all_ya_fa_means.txt
+paste -d , *oa_fa_means.txt >> all_oa_fa_means.txt
+
+import pandas as pd
+import os
+
+roi_ya = pd.read_csv('/Volumes/G-DRIVE mobile/derivatives/roi/stats/all_ya_fa_means.txt', header=None, names=['Frontal Forceps L', 'Frontal Forceps R', 'Long Fasciculus 1 L', 'Long Fasciculus 1 R', 'Long Fasciculus 2 L', 'Long Fasciculus 2 R', 'Posterior Forceps L', 'Posterior Forceps R', 'Cluster L', 'Cluster R', 'Genu', 'Splenium'])
+roi_oa = pd.read_csv('/Volumes/G-DRIVE mobile/derivatives/roi/stats/all_oa_fa_means.txt', header=None, names=['Frontal Forceps L', 'Frontal Forceps R', 'Long Fasciculus 1 L', 'Long Fasciculus 1 R', 'Long Fasciculus 2 L', 'Long Fasciculus 2 R', 'Posterior Forceps L', 'Posterior Forceps R', 'Cluster L', 'Cluster R', 'Genu', 'Splenium'])
+
+roi_fa = pd.concat([roi_ya, roi_oa])
+roi_fa.index=os.listdir('/Volumes/G-DRIVE mobile/derivatives/tbss_ya/origdata') + os.listdir('/Volumes/G-DRIVE mobile/derivatives/tbss_oa/origdata')
+roi_fa.index=roi_fa.index.str[4:9]
+roi_fa.to_csv('/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/data/fa_roi_sphere2.csv')
+
+
