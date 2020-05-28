@@ -303,3 +303,18 @@ cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_ya/stats
 for mask in `ls ../../roi`; do
 echo `fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}"-meants".txt`
 done
+
+
+
+```{toctree}
+:hidden:
+:titlesonly:
+
+
+rois
+age-group
+cognition
+rhythm-amplitude
+../bmi
+notes
+```
