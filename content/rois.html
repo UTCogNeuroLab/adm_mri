@@ -1,0 +1,818 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ROIs &#8212; DTI-CR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/togglebutton.js"></script>
+    <script type="text/javascript" src="../_static/clipboard.min.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/mystnb.js"></script>
+    <script type="text/javascript" src="../_static/sphinx-book-theme.js"></script>
+    <script type="text/javascript">var togglebuttonSelector = '.toggle, .secondtoggle, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="TBSS Preprocessing" href="tbss.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">DTI-CR</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="intro.html">Introduction</a>
+  </li>
+  <li class="">
+    <a href="tbss.html">TBSS Preprocessing</a>
+  </li>
+  <li class="active">
+    <a href="">ROIs</a>
+  </li>
+</ul>
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse" data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu" aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation" title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i class="fas fa-download"></i></button>
+
+            
+            <div class="dropdown-buttons">
+                <!-- ipynb file if we had a myst markdown file -->
+                
+                <!-- Download raw file -->
+                <a class="dropdown-buttons" href="../_sources/content/rois.ipynb.txt"><button type="button" class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip" data-placement="left">.ipynb</button></a>
+                <!-- Download PDF via print -->
+                <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF" onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+            </div>
+            
+        </div>
+
+        <!-- Edit this page -->
+        
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+            <div class="dropdown-buttons">
+                
+                <a class="binder-button" href="https://mybinder.org/v2/gh/UTCogNeuroLab/aging-study/master?urlpath=tree/dti-cr/content/rois.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#creating-rois-from-coordinates" class="nav-link">Creating ROIs from coordinates</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#selected-rois" class="nav-link">Selected ROIs</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="rois">
+<h1>ROIs<a class="headerlink" href="#rois" title="Permalink to this headline">¶</a></h1>
+<p>Extract mean FA from ROIs</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_ya
+cd ${tbss_dir}/roi
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 5 ${tbss_dir}/roi/cc.nii.gz
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 3 ${tbss_dir}/roi/genu.nii.gz
+
+tbss_dir=/Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/tbss_oa
+cd ${tbss_dir}/roi
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 5 ${tbss_dir}/roi/cc.nii.gz
+fslmaths /usr/local/fsl/data/atlases/JHU/JHU-ICBM-labels-1mm.nii.gz -thr 3 -uthr 3 ${tbss_dir}/roi/genu.nii.gz
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+# cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_oa/stats
+# for mask in `ls ../../roi`; do
+# fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}-meants.txt
+# done
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/tbss_ya/stats
+for mask in `ls ../../roi`; do
+echo `fslmeants -i all_FA_skeletonised -m ${mask} -o ${mask}&quot;-meants&quot;.txt`
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-rois-from-coordinates">
+<h2>Creating ROIs from coordinates<a class="headerlink" href="#creating-rois-from-coordinates" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://andysbrainblog.blogspot.com/2013/04/fsl-tutorial-creating-rois-from.html">Andy’s Brain Blog</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">fslmaths</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
+Usage: fslmaths [-dt &lt;datatype&gt;] &lt;first_input&gt; [operations and inputs] &lt;output&gt; [-odt &lt;datatype&gt;]
+
+Datatype information:
+ -dt sets the datatype used internally for calculations (default float for all except double images)
+ -odt sets the output datatype ( default is float )
+ Possible datatypes are: char short int float double input
+ &quot;input&quot; will set the datatype to that of the original image
+
+Binary operations:
+  (some inputs can be either an image or a number)
+ -add   : add following input to current image
+ -sub   : subtract following input from current image
+ -mul   : multiply current image by following input
+ -div   : divide current image by following input
+ -rem   : modulus remainder - divide current image by following input and take remainder
+ -mas   : use (following image&gt;0) to mask current image
+ -thr   : use following number to threshold current image (zero anything below the number)
+ -thrp  : use following percentage (0-100) of ROBUST RANGE to threshold current image (zero anything below the number)
+ -thrP  : use following percentage (0-100) of ROBUST RANGE of non-zero voxels and threshold below
+ -uthr  : use following number to upper-threshold current image (zero anything above the number)
+ -uthrp : use following percentage (0-100) of ROBUST RANGE to upper-threshold current image (zero anything above the number)
+ -uthrP : use following percentage (0-100) of ROBUST RANGE of non-zero voxels and threshold above
+ -max   : take maximum of following input and current image
+ -min   : take minimum of following input and current image
+ -seed  : seed random number generator with following number
+ -restart : replace the current image with input for future processing operations
+ -save : save the current working image to the input filename
+
+Basic unary operations:
+ -exp   : exponential
+ -log   : natural logarithm
+ -sin   : sine function
+ -cos   : cosine function
+ -tan   : tangent function
+ -asin  : arc sine function
+ -acos  : arc cosine function
+ -atan  : arc tangent function
+ -sqr   : square
+ -sqrt  : square root
+ -recip : reciprocal (1/current image)
+ -abs   : absolute value
+ -bin   : use (current image&gt;0) to binarise
+ -binv  : binarise and invert (binarisation and logical inversion)
+ -fillh : fill holes in a binary mask (holes are internal - i.e. do not touch the edge of the FOV)
+ -fillh26 : fill holes using 26 connectivity
+ -index : replace each nonzero voxel with a unique (subject to wrapping) index number
+ -grid &lt;value&gt; &lt;spacing&gt; : add a 3D grid of intensity &lt;value&gt; with grid spacing &lt;spacing&gt;
+ -edge  : edge strength
+ -tfce &lt;H&gt; &lt;E&gt; &lt;connectivity&gt;: enhance with TFCE, e.g. -tfce 2 0.5 6 (maybe change 6 to 26 for skeletons)
+ -tfceS &lt;H&gt; &lt;E&gt; &lt;connectivity&gt; &lt;X&gt; &lt;Y&gt; &lt;Z&gt; &lt;tfce_thresh&gt;: show support area for voxel (X,Y,Z)
+ -nan   : replace NaNs (improper numbers) with 0
+ -nanm  : make NaN (improper number) mask with 1 for NaN voxels, 0 otherwise
+ -rand  : add uniform noise (range 0:1)
+ -randn : add Gaussian noise (mean=0 sigma=1)
+ -inm &lt;mean&gt; :  (-i i ip.c) intensity normalisation (per 3D volume mean)
+ -ing &lt;mean&gt; :  (-I i ip.c) intensity normalisation, global 4D mean)
+ -range : set the output calmin/max to full data range
+
+Matrix operations:
+ -tensor_decomp : convert a 4D (6-timepoint )tensor image into L1,2,3,FA,MD,MO,V1,2,3 (remaining image in pipeline is FA)
+
+Kernel operations (set BEFORE filtering operation if desired):
+ -kernel 3D : 3x3x3 box centered on target voxel (set as default kernel)
+ -kernel 2D : 3x3x1 box centered on target voxel
+ -kernel box    &lt;size&gt;     : all voxels in a cube of width &lt;size&gt; mm centered on target voxel
+ -kernel boxv   &lt;size&gt;     : all voxels in a cube of width &lt;size&gt; voxels centered on target voxel, CAUTION: size should be an odd number
+ -kernel boxv3  &lt;X&gt; &lt;Y&gt; &lt;Z&gt;: all voxels in a cuboid of dimensions X x Y x Z centered on target voxel, CAUTION: size should be an odd number
+ -kernel gauss  &lt;sigma&gt;    : gaussian kernel (sigma in mm, not voxels)
+ -kernel sphere &lt;size&gt;     : all voxels in a sphere of radius &lt;size&gt; mm centered on target voxel
+ -kernel file   &lt;filename&gt; : use external file as kernel
+
+Spatial Filtering operations: N.B. all options apart from -s use the default kernel or that _previously_ specified by -kernel
+ -dilM    : Mean Dilation of non-zero voxels
+ -dilD    : Modal Dilation of non-zero voxels
+ -dilF    : Maximum filtering of all voxels
+ -dilall  : Apply -dilM repeatedly until the entire FOV is covered
+ -ero     : Erode by zeroing non-zero voxels when zero voxels found in kernel
+ -eroF    : Minimum filtering of all voxels
+ -fmedian : Median Filtering 
+ -fmean   : Mean filtering, kernel weighted (conventionally used with gauss kernel)
+ -fmeanu  : Mean filtering, kernel weighted, un-normalised (gives edge effects)
+ -s &lt;sigma&gt; : create a gauss kernel of sigma mm and perform mean filtering
+ -subsamp2  : downsamples image by a factor of 2 (keeping new voxels centred on old)
+ -subsamp2offc  : downsamples image by a factor of 2 (non-centred)
+
+Dimensionality reduction operations:
+  (the &quot;T&quot; can be replaced by X, Y or Z to collapse across a different dimension)
+ -Tmean   : mean across time
+ -Tstd    : standard deviation across time
+ -Tmax    : max across time
+ -Tmaxn   : time index of max across time
+ -Tmin    : min across time
+ -Tmedian : median across time
+ -Tperc &lt;percentage&gt; : nth percentile (0-100) of FULL RANGE across time
+ -Tar1    : temporal AR(1) coefficient (use -odt float and probably demean first)
+
+Basic statistical operations:
+ -pval    : Nonparametric uncorrected P-value, assuming timepoints are the permutations; first timepoint is actual (unpermuted) stats image
+ -pval0   : Same as -pval, but treat zeros as missing data
+ -cpval   : Same as -pval, but gives FWE corrected P-values
+ -ztop    : Convert Z-stat to (uncorrected) P
+ -ptoz    : Convert (uncorrected) P to Z
+ -rank    : Convert data to ranks (over T dim)
+ -ranknorm: Transform to Normal dist via ranks
+
+Multi-argument operations:
+ -roi &lt;xmin&gt; &lt;xsize&gt; &lt;ymin&gt; &lt;ysize&gt; &lt;zmin&gt; &lt;zsize&gt; &lt;tmin&gt; &lt;tsize&gt; : zero outside roi (using voxel coordinates). Inputting -1 for a size will set it to the full image extent for that dimension.
+ -bptf  &lt;hp_sigma&gt; &lt;lp_sigma&gt; : (-t in ip.c) Bandpass temporal filtering; nonlinear highpass and Gaussian linear lowpass (with sigmas in volumes, not seconds); set either sigma&lt;0 to skip that filter
+ -roc &lt;AROC-thresh&gt; &lt;outfile&gt; [4Dnoiseonly] &lt;truth&gt; : take (normally binary) truth and test current image in ROC analysis against truth. &lt;AROC-thresh&gt; is usually 0.05 and is limit of Area-under-ROC measure FP axis. &lt;outfile&gt; is a text file of the ROC curve (triplets of values: FP TP threshold). If the truth image contains negative voxels these get excluded from all calculations. If &lt;AROC-thresh&gt; is positive then the [4Dnoiseonly] option needs to be set, and the FP rate is determined from this noise-only data, and is set to be the fraction of timepoints where any FP (anywhere) is seen, as found in the noise-only 4d-dataset. This is then controlling the FWE rate. If &lt;AROC-thresh&gt; is negative the FP rate is calculated from the zero-value parts of the &lt;truth&gt; image, this time averaging voxelwise FP rate over all timepoints. In both cases the TP rate is the average fraction of truth=positive voxels correctly found.
+
+Combining 4D and 3D images:
+ If you apply a Binary operation (one that takes the current image and a new image together), when one is 3D and the other is 4D,
+ the 3D image is cloned temporally to match the temporal dimensions of the 4D image.
+
+e.g. fslmaths inputVolume -add inputVolume2 output_volume
+     fslmaths inputVolume -add 2.5 output_volume
+     fslmaths inputVolume -add 2.5 -mul inputVolume2 output_volume
+
+     fslmaths 4D_inputVolume -Tmean -mul -1 -add 4D_inputVolume demeaned_4D_inputVolume
+
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">-roi</span> <span class="pre">&lt;xmin&gt;</span> <span class="pre">&lt;xsize&gt;</span> <span class="pre">&lt;ymin&gt;</span> <span class="pre">&lt;ysize&gt;</span> <span class="pre">&lt;zmin&gt;</span> <span class="pre">&lt;zsize&gt;</span> <span class="pre">&lt;tmin&gt;</span> <span class="pre">&lt;tsize&gt;</span> <span class="pre">:</span> <span class="pre">zero</span> <span class="pre">outside</span> <span class="pre">roi</span> <span class="pre">(using</span> <span class="pre">voxel</span> <span class="pre">coordinates).</span> <span class="pre">Inputting</span> <span class="pre">-1</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">size</span> <span class="pre">will</span> <span class="pre">set</span> <span class="pre">it</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">full</span> <span class="pre">image</span> <span class="pre">extent</span> <span class="pre">for</span> <span class="pre">that</span> <span class="pre">dimension.</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+ls $FSLDIR/data/standard
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>FMRIB58_FA-skeleton_1mm.nii.gz
+FMRIB58_FA_1mm.nii.gz
+FSL_HCP1065_FA_1mm.nii.gz
+FSL_HCP1065_L1_1mm.nii.gz
+FSL_HCP1065_L2_1mm.nii.gz
+FSL_HCP1065_L3_1mm.nii.gz
+FSL_HCP1065_MD_1mm.nii.gz
+FSL_HCP1065_MO_1mm.nii.gz
+FSL_HCP1065_V1_1mm.nii.gz
+FSL_HCP1065_V2_1mm.nii.gz
+FSL_HCP1065_V3_1mm.nii.gz
+FSL_HCP1065_tensor_1mm.nii.gz
+Fornix_FMRIB_FA1mm.nii.gz
+LowerCingulum_1mm.nii.gz
+MNI152_T1_0.5mm.nii.gz
+MNI152_T1_1mm.nii.gz
+MNI152_T1_1mm_BigFoV_facemask.nii.gz
+MNI152_T1_1mm_Hipp_mask_dil8.nii.gz
+MNI152_T1_1mm_brain.nii.gz
+MNI152_T1_1mm_brain_mask.nii.gz
+MNI152_T1_1mm_brain_mask_dil.nii.gz
+MNI152_T1_1mm_first_brain_mask.nii.gz
+MNI152_T1_2mm.nii.gz
+MNI152_T1_2mm_LR-masked.nii.gz
+MNI152_T1_2mm_VentricleMask.nii.gz
+MNI152_T1_2mm_b0.nii.gz
+MNI152_T1_2mm_brain.nii.gz
+MNI152_T1_2mm_brain_mask.nii.gz
+MNI152_T1_2mm_brain_mask_deweight_eyes.nii.gz
+MNI152_T1_2mm_brain_mask_dil.nii.gz
+MNI152_T1_2mm_brain_mask_dil1.nii.gz
+MNI152_T1_2mm_edges.nii.gz
+MNI152_T1_2mm_eye_mask.nii.gz
+MNI152_T1_2mm_skull.nii.gz
+MNI152_T1_2mm_strucseg.nii.gz
+MNI152_T1_2mm_strucseg_periph.nii.gz
+MNI152lin_T1_1mm.nii.gz
+MNI152lin_T1_1mm_brain.nii.gz
+MNI152lin_T1_1mm_subbr_mask.nii.gz
+MNI152lin_T1_2mm.nii.gz
+MNI152lin_T1_2mm_brain.nii.gz
+MNI152lin_T1_2mm_brain_mask.nii.gz
+avg152T1.nii.gz
+avg152T1_brain.nii.gz
+bianca
+tissuepriors
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="selected-rois">
+<h2>Selected ROIs<a class="headerlink" href="#selected-rois" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Frontal forceps (23 32 4) –&gt; 67/113 158 76</p></li>
+<li><p>Posterior forceps (34 51 0) –&gt; 56/124 177 72</p></li>
+<li><p>Longitudinal fasciculus (19 -18 37 –&gt; 78/102 108 109; -21 -13 23 –&gt; 111/69 113 95)</p></li>
+<li><p>YA cluster (36 -11 28) –&gt; 54/126 115 100</p></li>
+<li><p>Corpus callosum</p></li>
+</ol>
+<p><a class="reference external" href="https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=fsl%3B27fa5348.1409">Thresholding</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 67 1 158 1 76 1 0 1 FFpoint_R -odt float
+fslmaths FFpoint_R -kernel sphere 6 -fmean -thr 0.001 -bin FFsphere_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 113 1 158 1 76 1 0 1 FFpoint_L -odt float
+fslmaths FFpoint_L -kernel sphere 6 -fmean -thr 0.001 -bin FFsphere_L -odt float
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/FFsphere_R.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11d0bdcd0&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_12_1.png" src="../_images/rois_12_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 56 1 177 1 72 1 0 1 PFpoint_R -odt float
+fslmaths PFpoint_R -kernel sphere 6 -fmean -thr 0.001 -bin PFsphere_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 124 1 177 1 72 1 0 1 PFpoint_L -odt float
+fslmaths PFpoint_L -kernel sphere 6 -fmean -thr 0.001 -bin PFsphere_L -odt float
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/PFsphere_R.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11d3c8ad0&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_14_1.png" src="../_images/rois_14_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 54 1 115 1 100 1 0 1 cluster_R -odt float
+fslmaths cluster_R -kernel sphere 6 -fmean -thr 0.001 -bin cluster_sphere_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 126 1 115 1 100 1 0 1 cluster_L -odt float
+fslmaths cluster_L -kernel sphere 6 -fmean -thr 0.001 -bin cluster_sphere_L -odt float
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/cluster_sphere_R.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11934f710&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_16_1.png" src="../_images/rois_16_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 89 1 93 1 90 1 0 1 genu_point -odt float
+fslmaths genu_point -kernel sphere 6 -fmean -thr 0.001 -bin genu_sphere -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 89 1 151 1 75 1 0 1 splenium_point -odt float
+fslmaths splenium_point -kernel sphere 6 -fmean -thr 0.001 -bin splenium_sphere -odt float
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/splenium_sphere.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11978cf10&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_18_1.png" src="../_images/rois_18_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi/
+
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 78 1 108 1 109 1 0 1 LFpoint1_R -odt float
+fslmaths LFpoint1_R -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere1_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 102 1 108 1 109 1 0 1 LFpoint1_L -odt float
+fslmaths LFpoint1_L -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere1_L -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 69 1 113 1 95 1 0 1 LFpoint2_R -odt float
+fslmaths LFpoint2_R -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere2_R -odt float
+fslmaths $FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -roi 111 1 113 1 95 1 0 1 LFpoint2_L -odt float
+fslmaths LFpoint2_L -kernel sphere 6 -fmean -thr 0.001 -bin LFsphere2_L -odt float
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/LFsphere1_L.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11fb6ced0&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_20_1.png" src="../_images/rois_20_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi
+mkdir stats
+
+for i in `ls *sphere*`; do
+echo $i
+maskfile=&quot;`echo ${i##*/.nii.gz} | cut -d. -f1`&quot;
+
+echo &quot;fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M &gt;&gt; stats/${maskfile}_oa_tstat_means.txt;&quot;
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k $i -M &gt;&gt; stats/${maskfile}_oa_tstat_means.txt;
+
+echo &quot;fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M &gt;&gt; stats/${maskfile}_ya_tstat_means.txt;&quot;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k $i -M &gt;&gt; stats/${maskfile}_ya_tstat_means.txt;
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>FFsphere_L.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k FFsphere_L.nii.gz -M &gt;&gt; stats/FFsphere_L_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k FFsphere_L.nii.gz -M &gt;&gt; stats/FFsphere_L_ya_tstat_means.txt;
+FFsphere_R.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k FFsphere_R.nii.gz -M &gt;&gt; stats/FFsphere_R_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k FFsphere_R.nii.gz -M &gt;&gt; stats/FFsphere_R_ya_tstat_means.txt;
+LFsphere1_L.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k LFsphere1_L.nii.gz -M &gt;&gt; stats/LFsphere1_L_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k LFsphere1_L.nii.gz -M &gt;&gt; stats/LFsphere1_L_ya_tstat_means.txt;
+LFsphere1_R.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k LFsphere1_R.nii.gz -M &gt;&gt; stats/LFsphere1_R_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k LFsphere1_R.nii.gz -M &gt;&gt; stats/LFsphere1_R_ya_tstat_means.txt;
+LFsphere2_L.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k LFsphere2_L.nii.gz -M &gt;&gt; stats/LFsphere2_L_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k LFsphere2_L.nii.gz -M &gt;&gt; stats/LFsphere2_L_ya_tstat_means.txt;
+LFsphere2_R.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k LFsphere2_R.nii.gz -M &gt;&gt; stats/LFsphere2_R_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k LFsphere2_R.nii.gz -M &gt;&gt; stats/LFsphere2_R_ya_tstat_means.txt;
+PFsphere_L.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k PFsphere_L.nii.gz -M &gt;&gt; stats/PFsphere_L_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k PFsphere_L.nii.gz -M &gt;&gt; stats/PFsphere_L_ya_tstat_means.txt;
+PFsphere_R.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k PFsphere_R.nii.gz -M &gt;&gt; stats/PFsphere_R_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k PFsphere_R.nii.gz -M &gt;&gt; stats/PFsphere_R_ya_tstat_means.txt;
+cluster_sphere_L.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k cluster_sphere_L.nii.gz -M &gt;&gt; stats/cluster_sphere_L_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k cluster_sphere_L.nii.gz -M &gt;&gt; stats/cluster_sphere_L_ya_tstat_means.txt;
+cluster_sphere_R.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k cluster_sphere_R.nii.gz -M &gt;&gt; stats/cluster_sphere_R_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k cluster_sphere_R.nii.gz -M &gt;&gt; stats/cluster_sphere_R_ya_tstat_means.txt;
+genu_sphere.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k genu_sphere.nii.gz -M &gt;&gt; stats/genu_sphere_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k genu_sphere.nii.gz -M &gt;&gt; stats/genu_sphere_ya_tstat_means.txt;
+splenium_sphere.nii.gz
+fslstats ../tbss_oa/stats/tbss_oa_amp7_jhu_tstat1.nii.gz -k splenium_sphere.nii.gz -M &gt;&gt; stats/splenium_sphere_oa_tstat_means.txt;
+fslstats ../tbss_ya/stats/tbss_ya_amp7_jhu_tstat1.nii.gz -k splenium_sphere.nii.gz -M &gt;&gt; stats/splenium_sphere_ya_tstat_means.txt;
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">mkdir: stats: File exists
+ERROR:: Empty mask image
+ERROR:: Empty mask image
+ERROR:: Empty mask image
+ERROR:: Empty mask image
+</pre>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%bash
+
+cd /Volumes/G-DRIVE\ mobile/derivatives/roi
+mkdir stats
+
+for i in `ls *sphere*`; do
+echo $i
+maskfile=&quot;`echo ${i##*/.nii.gz} | cut -d. -f1`&quot;
+
+echo &quot;fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_oa_fa_means.txt;&quot;
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_oa_fa_means.txt;
+
+echo &quot;fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_ya_fa_means.txt;&quot;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m $i -o stats/${maskfile}_ya_fa_means.txt;
+done
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>FFsphere_L.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m FFsphere_L.nii.gz -o stats/FFsphere_L_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m FFsphere_L.nii.gz -o stats/FFsphere_L_ya_fa_means.txt;
+FFsphere_R.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m FFsphere_R.nii.gz -o stats/FFsphere_R_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m FFsphere_R.nii.gz -o stats/FFsphere_R_ya_fa_means.txt;
+LFsphere1_L.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m LFsphere1_L.nii.gz -o stats/LFsphere1_L_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m LFsphere1_L.nii.gz -o stats/LFsphere1_L_ya_fa_means.txt;
+LFsphere1_R.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m LFsphere1_R.nii.gz -o stats/LFsphere1_R_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m LFsphere1_R.nii.gz -o stats/LFsphere1_R_ya_fa_means.txt;
+LFsphere2_L.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m LFsphere2_L.nii.gz -o stats/LFsphere2_L_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m LFsphere2_L.nii.gz -o stats/LFsphere2_L_ya_fa_means.txt;
+LFsphere2_R.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m LFsphere2_R.nii.gz -o stats/LFsphere2_R_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m LFsphere2_R.nii.gz -o stats/LFsphere2_R_ya_fa_means.txt;
+PFsphere_L.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m PFsphere_L.nii.gz -o stats/PFsphere_L_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m PFsphere_L.nii.gz -o stats/PFsphere_L_ya_fa_means.txt;
+PFsphere_R.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m PFsphere_R.nii.gz -o stats/PFsphere_R_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m PFsphere_R.nii.gz -o stats/PFsphere_R_ya_fa_means.txt;
+cluster_sphere_L.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m cluster_sphere_L.nii.gz -o stats/cluster_sphere_L_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m cluster_sphere_L.nii.gz -o stats/cluster_sphere_L_ya_fa_means.txt;
+cluster_sphere_R.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m cluster_sphere_R.nii.gz -o stats/cluster_sphere_R_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m cluster_sphere_R.nii.gz -o stats/cluster_sphere_R_ya_fa_means.txt;
+genu_sphere.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m genu_sphere.nii.gz -o stats/genu_sphere_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m genu_sphere.nii.gz -o stats/genu_sphere_ya_fa_means.txt;
+splenium_sphere.nii.gz
+fslmeants -i ../tbss_oa/stats/all_FA.nii.gz -m splenium_sphere.nii.gz -o stats/splenium_sphere_oa_fa_means.txt;
+fslmeants -i ../tbss_ya/stats/all_FA.nii.gz -m splenium_sphere.nii.gz -o stats/splenium_sphere_ya_fa_means.txt;
+</pre></div>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">mkdir: stats: File exists
+</pre>
+</div>
+</div>
+</div>
+<p>Without thresholding the image, it looks like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="k">import</span> <span class="n">plotting</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_roi</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/FFsphere1.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x11cb7af90&gt;
+</pre></div>
+</div>
+<img alt="../_images/rois_24_1.png" src="../_images/rois_24_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">more</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span> <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">roi</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">PFsphere_R_ya_fa_means</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">Volumes</span><span class="o">/</span><span class="n">G</span><span class="o">-</span><span class="n">DRIVE</span>\ <span class="n">mobile</span><span class="o">/</span><span class="n">derivatives</span><span class="o">/</span><span class="n">roi</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span>
+
+<span class="n">ls</span> <span class="o">*</span><span class="n">ya_fa_means</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">ls</span> <span class="o">*</span><span class="n">oa_fa_means</span><span class="o">.</span><span class="n">txt</span>
+
+<span class="n">rm</span> <span class="n">all_ya_fa_means</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">rm</span> <span class="n">all_oa_fa_means</span><span class="o">.</span><span class="n">txt</span>
+
+<span class="n">paste</span> <span class="o">-</span><span class="n">d</span> <span class="p">,</span> <span class="o">*</span><span class="n">ya_fa_means</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;&gt;</span> <span class="n">all_ya_fa_means</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">paste</span> <span class="o">-</span><span class="n">d</span> <span class="p">,</span> <span class="o">*</span><span class="n">oa_fa_means</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;&gt;</span> <span class="n">all_oa_fa_means</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>FFsphere_L_ya_fa_means.txt
+FFsphere_R_ya_fa_means.txt
+LFsphere1_L_ya_fa_means.txt
+LFsphere1_R_ya_fa_means.txt
+LFsphere2_L_ya_fa_means.txt
+LFsphere2_R_ya_fa_means.txt
+PFsphere_L_ya_fa_means.txt
+PFsphere_R_ya_fa_means.txt
+all_ya_fa_means.txt
+cluster_sphere_L_ya_fa_means.txt
+cluster_sphere_R_ya_fa_means.txt
+genu_sphere_ya_fa_means.txt
+splenium_sphere_ya_fa_means.txt
+FFsphere_L_oa_fa_means.txt
+FFsphere_R_oa_fa_means.txt
+LFsphere1_L_oa_fa_means.txt
+LFsphere1_R_oa_fa_means.txt
+LFsphere2_L_oa_fa_means.txt
+LFsphere2_R_oa_fa_means.txt
+PFsphere_L_oa_fa_means.txt
+PFsphere_R_oa_fa_means.txt
+all_oa_fa_means.txt
+cluster_sphere_L_oa_fa_means.txt
+cluster_sphere_R_oa_fa_means.txt
+genu_sphere_oa_fa_means.txt
+splenium_sphere_oa_fa_means.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">roi_ya</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/stats/all_ya_fa_means.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Frontal Forceps L&#39;</span><span class="p">,</span> <span class="s1">&#39;Frontal Forceps R&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 1 L&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 1 R&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 2 L&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 2 R&#39;</span><span class="p">,</span> <span class="s1">&#39;Posterior Forceps L&#39;</span><span class="p">,</span> <span class="s1">&#39;Posterior Forceps R&#39;</span><span class="p">,</span> <span class="s1">&#39;Cluster L&#39;</span><span class="p">,</span> <span class="s1">&#39;Cluster R&#39;</span><span class="p">,</span> <span class="s1">&#39;Genu&#39;</span><span class="p">,</span> <span class="s1">&#39;Splenium&#39;</span><span class="p">])</span>
+<span class="n">roi_oa</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/roi/stats/all_oa_fa_means.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Frontal Forceps L&#39;</span><span class="p">,</span> <span class="s1">&#39;Frontal Forceps R&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 1 L&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 1 R&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 2 L&#39;</span><span class="p">,</span> <span class="s1">&#39;Long Fasciculus 2 R&#39;</span><span class="p">,</span> <span class="s1">&#39;Posterior Forceps L&#39;</span><span class="p">,</span> <span class="s1">&#39;Posterior Forceps R&#39;</span><span class="p">,</span> <span class="s1">&#39;Cluster L&#39;</span><span class="p">,</span> <span class="s1">&#39;Cluster R&#39;</span><span class="p">,</span> <span class="s1">&#39;Genu&#39;</span><span class="p">,</span> <span class="s1">&#39;Splenium&#39;</span><span class="p">])</span>
+
+<span class="n">roi_fa</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">roi_ya</span><span class="p">,</span> <span class="n">roi_oa</span><span class="p">])</span>
+<span class="n">roi_fa</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/tbss_ya/origdata&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;/Volumes/G-DRIVE mobile/derivatives/tbss_oa/origdata&#39;</span><span class="p">)</span>
+<span class="n">roi_fa</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">roi_fa</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span>
+<span class="n">roi_fa</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/data/fa_roi_sphere2.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="tbss.html" title="previous page">TBSS Preprocessing</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Megan McMahon<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+  </body>
+</html>
