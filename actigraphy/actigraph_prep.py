@@ -8,7 +8,7 @@ today = date.today()
 
 from pathlib import Path
 home_dir = str(Path.home())
-work_dir = os.path.join(home_dir, 'Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy')
+work_dir = os.path.join(home_dir, 'Box/CogNeuroLab/Aging Decision Making R01/data/actigraphy')
 in_dir= os.path.join(work_dir, 'raw')
 out_dir = os.path.join(work_dir, 'processed_' + today.strftime("%Y-%m-%d"))
 
@@ -18,7 +18,7 @@ else:
     os.mkdir(out_dir)
 
 #settings
-recording_period_min = 10 #10 days
+recording_period_min = 7 #10 days
 interpolate_limit = 10 #5 minutes
 
 #log file for errors
@@ -69,7 +69,7 @@ def clean_actig(in_file, out_dir, recording_period_min, interpolate_limit, trunc
 
     if period < dt.timedelta(days = recording_period_min):
         print('----- error: less than %s days actigraphy data' % (str(recording_period_min)))
-        logging.warning('----- discard: insufficient recording period')
+        logging.warning('----- discard: insufficient recording period %s' % (str(recording_period_min)))
         error = error + 1
 
     if truncate == True:

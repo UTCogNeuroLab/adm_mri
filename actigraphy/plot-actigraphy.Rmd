@@ -15,6 +15,7 @@ library(stringr)
 library(gridExtra)
 library(scales)
 
+
 find_act_file <- function(directory, record_id){
   files <- list.files(directory, pattern = '.csv', full.names = TRUE)
   
@@ -34,7 +35,7 @@ read_actig_file <- function(filename) {
 }
 
 get_watch_end_times <- function(csvsave = FALSE){
-  end_times = read.csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Redcap/AgingDecMem-WatchInformation_DATA_2019-12-08_0806.csv", stringsAsFactors = FALSE)
+  end_times = read.csv(paste0(work_dir, "data/redcap/AgingDecMem-WatchInformation_DATA_2019-12-08_0806.csv"), stringsAsFactors = FALSE)
   end_times = select(end_times, record_id, actigraph_off)
   
   end_times$record_id = str_pad(end_times$record_id, 3, pad = "0")
@@ -42,7 +43,7 @@ get_watch_end_times <- function(csvsave = FALSE){
   end_times <- end_times[!is.na(end_times$actigraph_off), ]
   
   if (csvsave == TRUE){
-    write.csv(end_times, "~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/WatchOffs.csv")
+    write.csv(end_times, paste0(work_dir, "/data/actigraphy/WatchOffs.csv"))
   }
   
   return(end_times)
@@ -153,8 +154,9 @@ plot_actigraphy <- function(d, date=NULL, add_table=FALSE, print=TRUE){
       scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
       theme_minimal() + theme(axis.text.x = element_blank()) +
       #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      xlab("Date") + ylab("Activity") +
-      ggtitle(d2$record_id[1])
+      xlab("Time") + ylab("Activity") +
+      ggtitle(d2$record_id[1]) + 
+      ggsave(paste0(figs_dir, d2$record_id[1], ".png"), dpi=300, height=3, width=4, units="in")
     
   } 
   
@@ -164,7 +166,8 @@ plot_actigraphy <- function(d, date=NULL, add_table=FALSE, print=TRUE){
 
 act_plot_all <- function(file, ndays, date=NULL, add_table=FALSE, save=FALSE){
   d <- read_actig_file(file)
-  end_times <- get_watch_end_times()
+  end_times <- read_csv(paste0(work_dir, "data/actigraphy/WatchOffs.csv"))
+  get_watch_end_times()
   d <- truncate(d, 10, end_times)
   p <- plot_actigraphy(d, add_table = TRUE)
 }
@@ -173,15 +176,33 @@ act_plot_all <- function(file, ndays, date=NULL, add_table=FALSE, save=FALSE){
 
 
 ```{r, include = TRUE}
-work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2019-12-11'
+
+work_dir <- "~/Box/CogNeuroLab/Aging Decision Making R01/"
+results_dir <- paste0(work_dir, "results/rest-activity_age_differences/")
+figs_dir <- paste0(results_dir, "figures/")
+data_dir <- paste0(work_dir, "data/actigraphy/processed_2019-12-11")
+
 load("~/Box/CogNeuroLab/Aging Decision Making R01/Data/combined_data_2020-01-27.RData")
 cr_data <- dplyr::select(d, record_id, actamp:fact, IS:RA)
 
 rm(d)
-files <- list.files(work_dir, pattern = '.csv', full.names = TRUE)
+files <- list.files(data_dir, pattern = '.csv', full.names = TRUE)
 
-for (file in files) {
-  p <- act_plot_all(file, 10, date=NULL, add_table=FALSE)
+for (file in files[93]) {
+  act_plot_all(file, 10, date=NULL, add_table=FALSE)
 }
+
+#plot one!
+d <- read_actig_file(files[45])
+end_times <- get_watch_end_times()
+d <- truncate(d2, 7, end_times)
+ggplot(data = d, aes(x = as_datetime(time), y = activity)) + 
+    geom_point(size = 0.4) + 
+    scale_x_datetime(breaks = "day") +
+    theme_minimal() + theme(axis.text.x = element_blank()) +
+    #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    xlab("Time") + ylab("Activity") +
+    ggsave(paste0(figs_dir, d$record_id[1], ".png"), dpi=300, height=3, width=4, units="in")
+
 
 ```

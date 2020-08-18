@@ -42,7 +42,7 @@ response_lapses = function(d){
   return(rl)
 }
 
-pvt_stats = function(pvt_files, print = FALSE){
+pvt_stats = function(pvt_files, print = TRUE){
   library(readr)
   
   pvt = c()
@@ -69,11 +69,12 @@ pvt_stats = function(pvt_files, print = FALSE){
   }
   colnames(pvt_all) = c("record_id", "rt_mean", "rt_sd", "fs", "rl")
   head(pvt_all)
-  return(data.frame(pvt_all), row.names = NULL)
+  pvt_all <- data.frame(pvt_all, row.names = NULL)
+  return(pvt_all)
 }
 
 #set directory to pvt data files
-pvt_dir <- "~/Box/CogNeuroLab/Aging Decision Making R01/Data/PVT"
+pvt_dir <- "~/Box/CogNeuroLab/Aging Decision Making R01/data/PVT"
 pvt_files <- list.files(pvt_dir, pattern = "data.raw", recursive = TRUE, full.names = TRUE)
 head(pvt_files)
 
@@ -88,6 +89,6 @@ pvt_files
 #get pvt rt stats
 pvt_all <- pvt_stats(pvt_files)
 
-write_csv(pvt_all, paste0("~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/pvt/pvt_stats_", Sys.Date(), ".csv"))
+write_csv(pvt_all, paste0("~/Box/CogNeuroLab/Aging Decision Making R01/data/pvt/pvt_stats_", Sys.Date(), ".csv"))
 
           

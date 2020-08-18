@@ -2,6 +2,8 @@
 ## Megan McMahon
 ## Fall 2019
 
+## CHANGE OUTPUT DIRECTORY!!!! ####################################
+
 library(lubridate)
 library(tidyverse)
 library(reshape2)
@@ -10,26 +12,11 @@ library(stringr)
 
 read_actig_file <- function(filename) {
   # read actigraphy file - csv format, 2 columns, datetime and activity
-  d=read.csv(filename, header=TRUE, sep=',', na.string=' ', stringsAsFactors = FALSE)
+  d=read.csv(filename, header=TRUE, sep=' ', na.string=' ', stringsAsFactors = FALSE)
   colnames(d) <- c('time', 'activity')
   d$record_id <- stringr::str_sub(basename(filename), 1, 5)
   d$total_recording_period <- ymd_hms(tail(d$time, 1), tz="UTC") - ymd_hms(head(d$time, 1), tz="UTC")
   return(d)
-}
-
-get_watch_end_times <- function(csvsave = FALSE){
-  end_times = read.csv("~/Box/CogNeuroLab/Aging Decision Making R01/Data/Redcap/AgingDecMem-WatchInformation_DATA_2019-12-08_0806.csv", stringsAsFactors = FALSE)
-  end_times = select(end_times, record_id, actigraph_off)
-  
-  end_times$record_id = str_pad(end_times$record_id, 3, pad = "0")
-  end_times$actigraph_off = ymd_hm(end_times$actigraph_off)
-  end_times <- end_times[!is.na(end_times$actigraph_off), ]
-  
-  if (csvsave == TRUE){
-    write.csv(end_times, "~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/WatchOffs.csv")
-  }
-  
-  return(end_times)
 }
 
 truncate <- function(d, ndays, end_times){
@@ -57,8 +44,7 @@ plot_actigraphy <- function(d, date=NULL, print=TRUE){
       geom_point(size = 0.7) + 
       scale_x_datetime(breaks = "day") +
       theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      xlab("Date") + ylab("Activity") +
-      ggtitle(d$record_id[1])
+      xlab("Time") + ylab("Activity") + theme(axis.text.x = element_blank())
     
   } else if (is.numeric(date)) {
     print(paste0("grabbing day ", date))
@@ -75,11 +61,10 @@ plot_actigraphy <- function(d, date=NULL, print=TRUE){
         geom_point(size = 0.7) + 
         scale_x_datetime(breaks = "day") +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        xlab("Date") + ylab("Activity") +
-        ggtitle(d2$record_id[1])
+        xlab("Date") + ylab("Activity")
       
     } else {
-      dates = get_dates(d)
+      dates = unique(as.Date(d$time))
       date = dates[date]
       
       d2 <- d[date(d$time) == date,]
@@ -88,8 +73,7 @@ plot_actigraphy <- function(d, date=NULL, print=TRUE){
         geom_point(size = 0.7) + 
         scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        xlab("Date") + ylab("Activity") +
-        ggtitle(d2$record_id[1])
+        xlab("Date") + ylab("Activity") 
     }
     
   } else if (is.Date(as.Date(date))) {
@@ -102,173 +86,14 @@ plot_actigraphy <- function(d, date=NULL, print=TRUE){
       geom_point(size = 0.7) + 
       scale_x_datetime(breaks = "2 hours", labels=date_format("%H:%M")) +
       theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      xlab("Date") + ylab("Activity") +
-      ggtitle(d2$record_id[1])
+      xlab("Date") + ylab("Activity") 
     
   } 
   
   return(p.act)
 }
 
-circadian_measures <- function(d, ndays, end_times, print = FALSE) {
-  # modified from Stephanie Sherman
-  
-  results <- data.frame(stringsAsFactors = FALSE)
-  d <- truncate(d, ndays, end_times)
-  d$cloktime=lubridate::hour(d$time) + lubridate::minute(d$time)/60
-  
-  if (sum(d$cloktime) != 0) {
-    d$twopio24 = (2*3.14159)/24 
-    d$xcos = cos(d$twopio24*d$cloktime) 
-    d$xsin = sin(d$twopio24*d$cloktime)
-    
-    #d$activity=as.character(d$ZCM)
-    #d$activity=as.numeric(d$PIM, 'NA')
-    d$lactivity = log((d$activity +1),10)
-    
-    allwatch=d[,c('record_id','cloktime','lactivity','xcos','xsin','twopio24')]
-    allwatch=na.omit(allwatch)
-    
-    model=lm(allwatch$lactivity ~ allwatch$xcos + allwatch$xsin)
-    allwatch$linactxb=coef(model)['(Intercept)']
-    allwatch$linactcos=coef(model)['allwatch$xcos']
-    allwatch$linactsin=coef(model)['allwatch$xsin']
-    #need column for residuals called linract
-    allwatch$linract=model$residuals
-    
-    # filename = paste0(work_dir, '/residuals/', subject, '_residuals.csv')
-    # write.csv(allwatch, file = filename, row.names = FALSE)
-    
-    actres1 <- allwatch
-    
-    actres1$linactamp = sqrt(actres1$linactcos^2 + actres1$linactsin^2)
-    actres1$linactmin = actres1$linactxb-actres1$linactamp 
-    
-    for (p in 1:length(actres1$lactivity[1])){
-      if (actres1$linactsin[1] > 0 & actres1$linactcos[1] > 0) {
-        actres1$phase = atan(actres1$linactsin/actres1$linactcos)}
-      else if (actres1$linactsin[1] > 0 & actres1$linactcos[1] < 0) {
-        actres1$phase = 3.14159 - atan(actres1$linactsin/abs(actres1$linactcos))}
-      else if (actres1$linactsin[1] < 0 & actres1$linactcos[1] < 0) {
-        actres1$phase = 3.14159 + atan(abs(actres1$linactsin)/abs(actres1$linactcos))}
-      else {(actres1$linactsin[1] < 0 & actres1$linactcos[1] > 0)
-        actres1$phase = 2*3.14159 - atan(abs(actres1$linactsin)/(actres1$linactcos))} 
-    }
-    
-    actres1$linactacro = actres1$phase*24/(2*3.14159) 
-    
-    #get sum of squares (uss variable)
-    linractuss=(sum((actres1$linract)^2))-((sum(actres1$linract))^2/(length(actres1$linract))) 
-    
-    #num_nonmissingvalues
-    nlinract=dim(actres1)[1]
-    
-    #nonlinear regression
-    carhythm = function(actphi,actbeta,actalph,actmin,actamp,cloktime) {
-      twopio24 = (2*3.14159)/24 
-      rhythm = cos(twopio24*(cloktime - actphi ))
-      lexpt=actbeta*(rhythm - actalph)
-      expt = exp(lexpt)
-      er = expt/(1 + expt)
-      actmin + actamp*er
-      
-    }
-    
-    #if want it to print out iterations change trace=TRUE
-    error = try(b <- nls(actres1$lactivity ~carhythm(actphi,actbeta,actalph,actmin,actamp,cloktime),
-                         data=actres1, algorithm='port',
-                         start=list(actphi = 12,actbeta = 2.00,actalph = 0.0,actmin =0,actamp=1),
-                         lower=list(actphi = -3,actbeta = 0,actalph = -1,actmin =0,actamp=1),
-                         upper=list(actphi = 27,actbeta = Inf,actalph = 1,actmin =Inf,actamp=5),
-                         control=list(maxiter=200), #warnOnly=TRUE
-                         trace=FALSE))
-    print(error)
-    
-    if(class(error)!="try-error"){
-      actres1$rnlact=resid(b)
-      actres1$pnlact=fitted(b)	
-      
-      
-      # take estimates from model and add to actres (in SAS all5) changes parameter names
-      ## x beginning variables are the same as the e beginning variables
-      actres1$xactphi=coef(b)['actphi']
-      actres1$xactbeta=coef(b)['actbeta']
-      actres1$xactalph=coef(b)['actalph']
-      actres1$xactmin=coef(b)['actmin']
-      actres1$xactamp=coef(b)['actamp']
-      
-      actres1$coact = actres1$linactxb + actres1$linactcos*actres1$xcos + actres1$linactsin*actres1$xsin
-      
-      ncssrnlact=(sum((actres1$rnlact)^2))-((sum(actres1$rnlact))^2/(length(actres1$rnlact)))
-      cssact=(sum((actres1$lactivity)^2))-((sum(actres1$lactivity))^2/(length(actres1$lactivity)))
-      nact=length(actres1$lactivity)
-      nlinract=length(actres1$lactivity) 
-      
-      
-      actacos=acos(actres1$xactalph[1])/actres1$twopio24[1]
-      acthalftimel=-actacos + actres1$xactphi[1]
-      acthalftimer=actacos + actres1$xactphi[1]
-      actwidthratio = 2*actacos/24
-      
-      
-      if(actres1$xactalph[1] < -0.99 |actres1$xactalph[1] > 0.99){
-        actwidthratio = 0.5
-        acthalftimel = (actres1$xactphi[1] - 6)
-        acthalftimer = actres1$xactphi[1] + 6
-      }
-      
-      actdervl = -sin((acthalftimel - actres1$xactphi[1])*actres1$twopio24[1])
-      actdervr = -sin((acthalftimer - actres1$xactphi[1])*actres1$twopio24[1])	
-      
-      #sd is standard error I can get that from nls output 
-      sdactphi=summary(b)$coefficients['actphi',2]
-      sdactbeta=summary(b)$coefficients['actbeta',2]
-      sdactalph=summary(b)$coefficients['actalph',2]
-      sdactmin=summary(b)$coefficients['actmin',2]
-      sdactamp=summary(b)$coefficients['actamp',2]
-      
-      #t is t value from model
-      tactphi=summary(b)$coefficients['actphi',3]
-      tactbeta=summary(b)$coefficients['actbeta',3]
-      tactalph=summary(b)$coefficients['actalph',3]
-      tactmin=summary(b)$coefficients['actmin',3]
-      tactamp=summary(b)$coefficients['actamp',3]
-      
-      rsqact = (cssact - ncssrnlact)/cssact  
-      fact = ((cssact - ncssrnlact)/4)/(ncssrnlact/(nlinract - 5))
-      ndf = 4
-      ddfact = nlinract - 5
-      efact = ddfact/(ddfact - 2)
-      varfact = ( 2/ndf )*( efact**2 )*( (ndf + ddfact -2)/(ddfact - 4) )  #wilks p. 187 */;
-      tfact = (fact - efact)/sqrt(varfact)
-      varact = cssact/(nlinract - 1)
-      mselinact = linractuss/(nlinract - 3)
-      msenlinact = (ncssrnlact/(nlinract - 5))
-      fnlrgact = ((linractuss - ncssrnlact)/2)/(ncssrnlact/(nlinract - 5)) 
-      flinact = ((cssact - linractuss)/2)/(linractuss/(nlinract - 3)) 
-      
-      actmesor = actres1$xactmin[1] + (actres1$xactamp[1]/2) 
-      actupmesor = acthalftimel
-      actdownmesor = acthalftimer 
-      actamp=actres1$xactamp[1]
-      actbeta=actres1$xactbeta[1]
-      actphi=actres1$xactphi[1]
-      actmin=actres1$xactmin[1]
-      actalph=actres1$xactalph[1]
-      session=actres1$session[1]
-      record_id=actres1$record_id[1]
-      rhythm=as.character(c(record_id, actamp,actbeta,actphi,actmin,actmesor,actupmesor,actdownmesor,actalph,actwidthratio,rsqact,fact,fnlrgact))
-      newline <- data.frame(t(rhythm), stringsAsFactors = FALSE)
-      #results <- rbind(results, newline)
-      return(newline)
-    }else{
-      print(paste0("Unable to obtain cosinor model for subject ", d$record_id[1]))
-      newline <- c(d$record_id[1], rep(NA, 12))
-      return(newline)
-    }
-    
-  }
-}
+
 
 # group_circadian_measures <- function(rhythm){
 #   results <- rbind(results, rhythm)
@@ -276,7 +101,7 @@ circadian_measures <- function(d, ndays, end_times, print = FALSE) {
 #   return(results)
 # }
 
-optimize_recording_period <- function(files, nsample, recording_period, print = TRUE) {
+optimize_recording_period <- function(files, nsample, recording_period, proc_dir = out_dir, print = TRUE) {
   
   all_results <- list()
   selected_files <- sample(files, nsample, replace = FALSE, prob = NULL)
@@ -290,7 +115,7 @@ optimize_recording_period <- function(files, nsample, recording_period, print = 
       d <- read_actig_file(filename)
       
       if (d$total_recording_period[1] > ndays){
-        rhythm <- circadian_measures(d, ndays, end_times)
+        rhythm <- circadian_measures(d, ndays, end_times, proc_dir=proc_dir)
         results <- rbind(results, rhythm)
       }
     }
@@ -341,7 +166,9 @@ plot_group_circadian_measures <- function(results1, results2, group1, group2) {
 }
 
 # location of processed actigraphy files
-work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2019-12-11'
+work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2020-06-17'
+out_dir <- paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_R_', Sys.Date())
+dir.create(out_dir, showWarnings = T)
 files <- list.files(work_dir, pattern = '.csv', full.names = TRUE)
 
 # separate out younger and older adults
@@ -360,6 +187,9 @@ recording_period = 7
 #ya_results <- optimize_recording_period(ya_files, nsample, recording_period)
 #oa_results <- optimize_recording_period(oa_files, nsample, recording_period)
 new_results <- optimize_recording_period(files, nsample, recording_period)
+df <- data.frame(new_results$`7 days`)
+write.csv(df, '~/Box/CogNeuroLab/Aging Decision Making R01/data/actigraphy/circadian_measures/7_days/cr_7days_new.csv')
+#new_results <- optimize_recording_period("/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2019-12-11/40878.csv", 1, 7)
 
 # plot results
 ya_plot <- plot_circadian_measures(ya_results)
@@ -370,3 +200,21 @@ oa_plot <- plot_circadian_measures(oa_results)
 oa_plot
 ggsave(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/Analysis/results/oa_recording_period_effect-', sys.Date(), '.png'), oa_plot, width = 13, height = 7)
 
+
+#non parametric actigraphy
+library(lubridate)
+library(nparACT)
+
+#aging study
+work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/processed_2020-04-02/'
+
+for (file in list.files(out_dir)[6:length(list.files(out_dir))]){
+  print(file)
+  act <- read_delim(paste0(work_dir, file), delim = ',',)
+  act$time <- strftime(as_datetime(act$time, "%Y-%m-%d %H:%M:%S"))
+  write.table(act, paste0(work_dir, file), sep = " ", row.names = F, col.names = F)
+}
+
+actall <- nparACT_base_loop(in_dir, SR = 1/30, fulldays = F)
+actall$record_id <- substr(list.files(in_dir), 1, 5)
+write.csv(actall, paste0(out_dir, "nparact_7days_.csv"), row.names = F)
