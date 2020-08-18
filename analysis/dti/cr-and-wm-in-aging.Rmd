@@ -1,0 +1,1071 @@
+---
+title: "Rest-Activity Measures and White Matter Microstructure in Aging"
+author: "Megan McMahon"
+date: "4/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(tidyverse)
+library(beset)
+library(gridExtra)
+library(tableone)
+library(corxplor)
+
+work_dir <- "~/Box/CogNeuroLab/Aging Decision Making R01/"
+results_dir <- paste0(work_dir, "results/rest-activity_and_white_matter_microstructure/")
+figs_dir <- paste0(results_dir, "figures/")
+data_dir <- paste0(work_dir, "data/")
+#d <- read_csv(paste0(data_dir, "dataset_2020-04-09.csv"))
+#d <- select(d, -(actamp:fnlrgact))
+#d <- merge(d, df, by = "record_id", all = T)  
+d <- read_csv(paste0(data_dir, "dataset_2020-06-17.csv")) #includes mean fa from spherical rois 6mm rad
+d$Group <- factor(d$Group, levels = c("Young Adults", "Older Adults"))
+
+recodeVars = c("vascular_disease", "diabetes", "cancer", "head_inj", 
+               "neurologicaldisorders", "psychiatric_do", "sleep_do", "sex", "stroke", "Group")
+
+d[,recodeVars] <- d %>%
+  select(recodeVars) %>%
+  mutate_if(is.integer, factor) %>%
+  mutate_if(is.character, factor)
+
+head(d)
+
+#write.csv(d, paste0(data_dir, "dataset_2020-06-17.csv"))
+
+```
+
+cc_fa measures are on G Drive (external)
+
+# Import Redcap Data 
+```{r}
+rc <- read_csv(paste0(data_dir, "AgingDecisionMakingA_DATA_2020-04-01_1502.csv"))
+rc$record_id <- stringr::str_pad(rc$record_id, 4, side = "left", pad = 0)
+rc$record_id <- ifelse(rc$age < 60, paste0("3", rc$record_id), paste0("4", rc$record_id))
+rc$Group <- factor(ifelse(rc$record_id < 40000, -1, 1), labels = c("Young Adults", "Older Adults"))
+
+rc %>%
+  fill(record_id,) %>%
+  mutate(record_id = as.factor(record_id)) %>%
+  fill(sex, years_educ, .direction = "downup") %>%
+  filter(redcap_event_name == "online_eligibility_arm_1") %>%
+  distinct() -> rc
+
+rc %>%
+  drop_na(record_id) %>%
+  filter(age > 30 & age < 60) %>%
+  select(record_id) -> exclude
+
+np <- read_csv(paste0(data_dir, "neuropsych/AgingDecMemNeuropsyc_DATA_2019-06-12_0708.csv"))
+np %>%
+  mutate_all(as.numeric) -> np
+head(np)
+
+```
+
+# Import Freesurfer Segmentation Volumes
+```{r}
+fsvol <- read_delim(paste0(data_dir, "mri/aseg.vol.table"), delim = "\t")
+fsvol$cc_vol <- fsvol$CC_Anterior + fsvol$CC_Central + fsvol$CC_Mid_Anterior + fsvol$CC_Mid_Posterior + fsvol$CC_Posterior
+
+ICVnorm <- function(d, x){
+  
+  f <- paste(x, "~ EstimatedTotalIntraCranialVol")
+  b <- as.numeric((lm(f, d))$coefficients[2])
+  d[x] = d[x] - b * (d$EstimatedTotalIntraCranialVol - mean(d$EstimatedTotalIntraCranialVol, na.rm = TRUE))
+  
+  return(d)
+}
+
+cols <- names(fsvol[,grepl("CC_", names(fsvol))])
+for (col in cols){
+  fsvol2 <- ICVnorm(fsvol, col)
+}
+
+fsvol2$record_id <- substring(fsvol2$`Measure:volume`, 5, 9)
+```
+
+# Import fslstats mean FA values
+```{r}
+ya <- as.data.frame(list.files("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/origdata/"))
+colnames(ya) <- "files"
+ya$cc_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_cc-ya.txt", delim =" ", col_names = F)[,1]))
+ya$ccbody_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_ccbody-ya.txt", delim =" ", col_names = F)[,1]))
+ya$splenium_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_splenium-ya.txt", delim =" ", col_names = F)[,1]))
+ya$genu_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_genu-ya.txt", delim =" ", col_names = F)[,1]))
+ya$coronaradiata_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_coronaradiata-ya.txt", delim =" ", col_names = F)[,1]))
+ya$postthalamicradiation_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_postthalamicradiation-ya.txt", delim =" ", col_names = F)[,1]))
+ya$suplongfasciculus_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_suplongfasciculus-ya.txt", delim =" ", col_names = F)[,1]))
+ya$externalcapsule_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_externalcapsule-ya.txt", delim =" ", col_names = F)[,1]))
+ya$global_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_ya/stats/mean_fa_global-ya.txt", delim =" ", col_names = F)[,1]))
+
+head(ya)
+
+oa <- as.data.frame(list.files("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/origdata/"))
+colnames(oa) <- "files"
+oa$cc_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_cc-oa.txt", delim =" ", col_names = F)[,1]))
+oa$ccbody_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_ccbody-oa.txt", delim =" ", col_names = F)[,1]))
+oa$splenium_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_splenium-oa.txt", delim =" ", col_names = F)[,1]))
+oa$splenium_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_splenium-oa.txt", delim =" ", col_names = F)[,1]))
+oa$genu_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_genu-oa.txt", delim =" ", col_names = F)[,1]))
+oa$coronaradiata_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_coronaradiata-oa.txt", delim =" ", col_names = F)[,1]))
+oa$postthalamicradiation_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_postthalamicradiation-oa.txt", delim =" ", col_names = F)[,1]))
+oa$suplongfasciculus_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_suplongfasciculus-oa.txt", delim =" ", col_names = F)[,1]))
+oa$externalcapsule_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_externalcapsule-oa.txt", delim =" ", col_names = F)[,1]))
+oa$global_fa <- as.numeric(unlist(read_delim("/Volumes/G-DRIVE mobile/derivatives/tbss_oa/stats/mean_fa_global-oa.txt", delim =" ", col_names = F)[,1]))
+
+head(oa)
+
+data <- rbind(ya, oa)
+data$record_id <- substring(data$files, 5, 9)
+data$record_id 
+```
+
+# Import Rest-Activity Measures and Sleep Measures
+```{r}
+
+cr <- read_csv(paste0(data_dir, "actigraphy/circadian_measures/7_days/cr_7days.csv"))
+npact <- read_csv(paste0(data_dir, "/actigraphy/circadian_measures/7_days/nparact_7days.csv"))
+sleep <- read_csv(paste0(data_dir, "actigraphy/actiware_exports/sleep_metrics_summarized.csv"))
+```
+
+# Merge all data
+```{r}
+cr %>%
+  merge(data, by = "record_id", all = T) %>%
+  merge(npact, by = "record_id", all = T) %>%
+  merge(select(fsvol2, record_id, cc_vol), by = "record_id", all = T) %>%
+  merge(sleep, by.x = "record_id", by.y = "subject_id", all = T) %>%
+  merge(rc, by = "record_id", all = F) %>%
+  merge(select(np, -age, -education, -gender), by = "record_id", all = T) %>%
+  drop_na(record_id) %>%
+  filter(age <= 30 | age >= 60) -> d
+
+d$sex <- factor(ifelse(substr(d$sex, 1, 1) == "M", -1, 1), labels = c("Male", "Female"))
+d$stroke <- as.factor(ifelse(d$stroke == 0, "Negative", "Positive"))
+
+recodeVars = c("vascular_disease", "diabetes", "cancer", "head_inj", 
+               "neurologicaldisorders", "psychiatric_do", "sleep_do")
+
+d %>%
+  select(recodeVars) %>%
+  mutate_if(is.integer, factor) %>%
+  mutate_at(recodeVars, funs(recode(.,`1` = "Positive", `2` = "Negative", `3` = "Negative"))) -> d[recodeVars]
+
+write_csv(d, paste0(data_dir, "dataset_2020-06-17.csv"))
+
+```
+
+# Filter to only include participants with DTI data
+```{r}
+# all participants
+d2 <- d 
+
+# only participants with dti data
+d <- d2 %>%
+  drop_na(cc_fa) %>%
+  distinct(record_id, .keep_all = T)
+
+```
+
+# Histograms and Normality Tests
+```{r}
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10) %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10, Group) %>%
+  melt(id.vars = "Group") %>%
+  ggplot(aes(value, group = Group, fill = Group, alpha = 0.75)) +
+    facet_wrap(~ variable, scales = "free") +
+    geom_density() + 
+  theme_classic() + scale_fill_brewer(palette = "Set1")
+
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10) %>%
+  keep(is.numeric) %>% 
+  shapiro_test(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10)
+
+```
+
+# Demographics
+```{r}
+
+d %>%
+  drop_na(cc_fa) %>%
+  group_by(Group) %>%
+  summarize(n = n(), age_x = mean(age, na.rm = T), age_sd = sd(age, na.rm = T))
+
+tab1 <- CreateTableOne(vars = c("age", "years_educ", "sex"), data = d, factorVars = c("sex"), strata = "Group")
+print(tab1)
+tab1Mat <- print(tab1, quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+## Save to a CSV file
+write.csv(tab1Mat, file = paste0(results_dir, "table1.csv"))
+
+```
+
+# Health Characteristics
+```{r}
+
+d %>%
+  drop_na(cc_fa) %>%
+  group_by(Group) %>%
+  summarize(heart = length(which(heart == 1))/n(), 
+            vascular_disease = length(which(vascular_disease == "Positive"))/n(), 
+            diabetes = length(which(diabetes == "Positive"))/n(), 
+            cancer = length(which(cancer == "Positive"))/n(), 
+            head_injury = length(which(head_inj == "Positive"))/n(), 
+            neuro = length(which(neurologicaldisorders == "Positive"))/n(), 
+            stroke = length(which(stroke == "Positive"))/n(), 
+            psychiatric = length(which(psychiatric_do == "Positive"))/n(), 
+            sleep = length(which(sleep_do == "Positive"))/n())
+
+
+
+listVars = c("age", "sex", "years_educ", "vascular_disease", "diabetes", "cancer", "head_inj", 
+             "neurologicaldisorders", "stroke", "psychiatric_do", "sleep_do")
+
+catVars = c("sex", "vascular_disease", "diabetes", "stroke", "cancer", "head_inj", 
+            "neurologicaldisorders", "psychiatric_do", "sleep_do")
+
+tab2 <- CreateTableOne(listVars, data = d, factorVars = catVars, strata = c("Group"))
+print(tab2)
+tab2Mat <- print(tab2, quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+write.csv(tab2Mat, file = paste0(results_dir, "table2.csv"))
+
+```
+
+# Sleep and Rest-Activity Rhythm Characteristics
+```{r}
+
+listVars = c("sleep_time_mean_sleep", "efficiency_mean_sleep", "onset_latency_mean_sleep", "total_ac_mean_active", "actamp", "actalph", "actbeta", "actmesor", "actphi", "actupmesor", "actdownmesor", "actmin", "fact", "IS", "IV", "RA", "L5", "M10")
+tab3 <- CreateTableOne(listVars, data = d, strata = c("Group"), test = T, addOverall = T)
+print(tab3)
+tab3Mat <- print(tab3, quote = T, noSpaces = TRUE, printToggle = FALSE, minMax = FALSE)
+write.csv(tab3Mat, file = paste0(results_dir, "table3.csv"))
+
+```
+
+
+# Microstructure Characteristics
+```{r}
+
+listVars = c("global_fa", "cc_fa", "genu_fa", "ccbody_fa", "splenium_fa", "coronaradiata_fa", "suplongfasciculus_fa", 
+             "externalcapsule_fa", "postthalamicradiation_fa")
+tab4 <- CreateTableOne(listVars, data = d, strata = c("Group"))
+print(tab4)
+tab4Mat <- print(tab4, quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+write.csv(tab4Mat, file = paste0(results_dir, "table4.csv"))
+
+```
+
+
+# Neuropsych and PVT Results
+```{r}
+d %>%
+  select(vc_zscore, cowat_zscore, cvlt_sdelay_recall_zscore, cvlt_ldelay_recall_zscore, cvlt_zscore, ds_zscore, cw_stroop_agecorrected, trails_a_z_score, trails_b_z_score, rt_mean, fs, rl, Group) %>%
+  melt(id.vars = "Group") %>%
+  ggplot(aes(value, group = Group, fill = Group, alpha = 0.75)) +
+    facet_wrap(~ variable, scales = "free") +
+    geom_density() + 
+  theme_classic() + scale_fill_brewer(palette = "Set1")
+
+d %>%
+  select(vc_zscore, cowat_zscore, cvlt_sdelay_recall_zscore, cvlt_ldelay_recall_zscore, cvlt_zscore, ds_zscore, cw_stroop_agecorrected, trails_a_z_score, trails_b_z_score, rt_mean, fs, rl) %>%
+  keep(is.numeric) %>% 
+  shapiro_test(vc_zscore, cowat_zscore, cvlt_sdelay_recall_zscore, cvlt_ldelay_recall_zscore, cvlt_zscore, ds_zscore, cw_stroop_agecorrected, trails_a_z_score, trails_b_z_score, rt_mean, fs, rl)
+
+listVars = c("vc_zscore", "cowat_zscore", "cvlt_sdelay_recall_zscore", "cvlt_ldelay_recall_zscore", "cvlt_zscore", "ds_zscore", "cw_stroop_agecorrected", "trails_a_z_score", "trails_b_z_score", "rt_mean", "fs", "rl")
+nonnormalVars <- 
+tab5 <- CreateTableOne(listVars, data = d, strata = c("Group"))
+print(tab5)
+tab5Mat <- print(tab5, quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+write.csv(tab5Mat, file = paste0(results_dir, "table5.csv"))
+
+```
+
+# Neuropsych Regression Results
+```{r}
+
+library(apaTables)
+library(corxplor)
+
+npall <- d %>%
+  select(actamp, vc_zscore, ds_zscore, matches("trails*.*z_score"), rt_mean, fs, rl) 
+cor_boot(npall, use = "complete.obs", n_rep = 1000)
+
+npall <- d %>%
+  select(IV, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(npall, use = "complete.obs", n_rep = 1000)
+
+####
+npyoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(actamp, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(npyoung, use = "complete.obs", n_rep = 1000)
+
+npyoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(IV, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(npyoung, use = "complete.obs", n_rep = 1000)
+
+###
+npolder <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(actamp, cvlt_zscore, cowat_zscore, vc_zscore, ds_zscore, matches("trails*.*z_score"))
+cor_boot(npolder, use = "complete.obs", n_rep = 1000)
+
+cor.test(npolder$actamp, npolder$trails_b_z_score, use = "complete.obs")
+
+npolder <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(IV, cvlt_zscore, cowat_zscore, vc_zscore, ds_zscore, matches("trails*.*z_score"))
+cor_boot(npolder, use = "complete.obs", n_rep = 1000)
+
+summary(lm(ds_zscore ~ age*actamp, data = filter(d, Group == "Older Adults")))
+summary(lm(trails_b_z_score ~ age*actamp, data = filter(d, Group == "Older Adults")))
+summary(lm(cowat_zscore ~ age*actamp, data = filter(d, Group == "Older Adults")))
+summary(lm(cvlt_zscore ~ age*actamp, data = filter(d, Group == "Older Adults")))
+
+
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = trails_b_z_score, group = Group, color = Group)) + 
+  #stat_smooth(aes(x = actamp, y = trails_b_z_score, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Amplitude") + ylab("Trails B Z-Score") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  facet_wrap(.~Group, scales = "fixed") +
+  ggsave(paste0(figs_dir, "amp_tmtbz.png"), dpi=300, height=4, width=8, units="in")
+
+```
+
+
+# Cognition and CC Volume
+```{r}
+library(apaTables)
+library(corxplor)
+
+npall <- d %>%
+  select(cc_vol, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(npall, use = "complete.obs", n_rep = 1000)
+
+####
+npyoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(cc_vol, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(npyoung, use = "complete.obs", n_rep = 1000)
+
+###
+npolder <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(cc_vol, cvlt_zscore, cowat_zscore, vc_zscore, ds_zscore, matches("trails*.*z_score"))
+cor_boot(npolder, use = "complete.obs", n_rep = 1000)
+
+```
+
+# Sleep Metrics and RAR correlations
+```{r}
+sleepcor <- d %>%
+  select(actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
+cor_boot(sleepcor, use = "complete.obs", n_rep = 1000)
+
+```
+
+
+# Amplitude and age
+```{r}
+#Amplitude and age
+summary(lm(actamp ~ age, data = filter(d, Group == "Young Adults"))) # Model is NS
+summary(lm(actamp ~ age, data = filter(d, Group == "Older Adults"))) # Model is NS
+
+```
+
+# FA and non-parametric variables
+```{r}
+mod1 <- beset_lm(cc_fa ~ ., data = select(d, IS, IV, RA, cc_fa), n_folds = sum(complete.cases(select(d, IS, IV, RA, cc_fa)))-1)
+summary(mod1, oneSE = F)
+
+```
+
+#TMT-B and non-parametric variables
+```{r}
+mod1 <- beset_lm(time_trails_b ~ ., data = select(d, IS, IV, RA, time_trails_b), n_folds = sum(complete.cases(select(d, IS, IV, RA, cc_fa)))-1)
+summary(mod1, oneSE = F)
+
+```
+
+#TMT-B and non-parametric variables
+```{r}
+mod1 <- beset_lm(time_trails_b ~ ., data = select(d, actamp:fact, -rsqact, time_trails_b, age, sex, years_educ, Group), n_folds = sum(complete.cases(select(d, actamp:fact, time_trails_b)))-1)
+summary(mod1, oneSE = F)
+
+lm1 <- lm(time_trails_b ~ actamp + age + Group, d)
+summary(lm1)
+plot(lm1)
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = time_trails_b, group = Group, color = Group)) + 
+  stat_smooth(aes(x = actamp, y = time_trails_b, color = NA), color = 'black', method = "lm") +
+  theme_classic() + xlab("Amplitude") + ylab("Time Trails B (s)") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  ggsave(paste0(figs_dir, "amp_tmtb.png"), dpi=300, height=4, width=8, units="in")
+
+d$TMT <- factor(ifelse(d$trails_b_z_score < 0, -1, 1), labels = c("Low", "High"))
+d$CVLT <- factor(ifelse(d$cvlt_zscore < 0, -1, 1), labels = c("Low", "High"))
+d$DS <- factor(ifelse(d$ds_zscore < 0, -1, 1), labels = c("Low", "High"))
+d$VC <- factor(ifelse(d$vc_zscore < 0, -1, 1), labels = c("Low", "High"))
+
+d %>%
+  drop_na(Group, TMT) %>%
+  ggplot() + 
+  geom_point(aes(x = TMT, y = actamp, group = Group, color = Group)) + 
+  theme_classic() + xlab("Trails B") + ylab("Amplitude") + 
+  facet_wrap(. ~ Group, scales = "free") + scale_color_brewer(palette="Set1") + ylim(0, 4) +
+  ggsave(paste0(figs_dir, "amp_tmtb_bar.png"), dpi=300, height=4, width=8, units="in")
+
+t.test(actamp ~ TMT, filter(d, Group == "Young Adults")) # NS
+t.test(actamp ~ TMT, filter(d, Group == "Older Adults")) # p = 0.04
+t.test(actamp ~ TMT, filter(d, Group == "Older Adults" & actamp < 3)) # p = 0.08
+
+t.test(cc_fa ~ TMT, filter(d, Group == "Young Adults")) # NS
+t.test(genu_fa ~ TMT, filter(d, Group == "Older Adults")) # p = 0.04
+
+t.test(actamp ~ CVLT, filter(d, Group == "Older Adults")) # NS
+
+t.test(actamp ~ DS, filter(d, Group == "Young Adults")) # NS
+t.test(actamp ~ DS, filter(d, Group == "Older Adults")) # NS
+
+```
+
+# CC Volume
+```{r}
+
+library(beset)
+# CC 
+
+summary(lm(cc_vol ~ actamp*Group, data = d))
+
+lm1 <- lm(cc_vol ~ actamp + age, data = filter(d, Group == "Young Adults")) 
+summary(lm1)
+lm2 <- lm(cc_vol ~ actamp + age, data = filter(d, Group == "Older Adults")) 
+summary(lm2)
+
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_vol, group = Group, color = Group, shape = Group), size = 2) + 
+  #stat_smooth(aes(x = actamp, y = cc_vol, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum Volume") +
+  scale_color_brewer(palette="Set1") + 
+  ggsave(paste0(figs_dir, "amp_ccvol.png"), dpi=300, height=4, width=6, units="in")
+
+```
+
+
+# Amplitude and sleep metrics
+```{r}
+cor.test(d$actamp, d$total_ac_mean_active)
+cor.test(d$actamp, d$efficiency_mean_sleep) #p = 0.014, R=0.24
+cor.test(d$actamp, d$sleep_time_mean_sleep)
+
+d$Amplitude <- factor(ifelse(d$actamp < median(d$actamp, na.rm = T), 0, 1), labels = c("Low", "High"))
+head(d$Amplitude)
+
+listVars = c("sleep_time_mean_sleep", "efficiency_mean_sleep", "onset_latency_mean_sleep", "total_ac_mean_active")
+nonnormalVars = c("sleep_time_mean_sleep", "efficiency_mean_sleep", "onset_latency_mean_sleep", "total_ac_mean_active")
+tab <- CreateTableOne(listVars, data = d, strata = c("Amplitude"), test = T)
+print(tab, nonnormal = nonnormalVars)
+
+
+t.test(d$total_ac_mean_active ~ d$Amplitude) # t = 0.19374, df = 63.097, p-value = 0.847
+t.test(d$efficiency_mean_sleep ~ d$Amplitude) # p = 0.03349, t = -2.1609, df = 85.975, mlow = 79.22, mhigh = 82.65558
+t.test(d$sleep_time_mean_sleep ~ d$Amplitude) # t = 0.11654, df = 68.296, p-value = 0.9076
+t.test(d$onset_latency_mean_sleep ~ d$Amplitude) # t = 2.8631, df = 86.78, p-value = 0.005259
+
+```
+
+#### Main analysis: CC FA
+
+```{r}
+library(lm.beta)
+library(beset)
+library(tableone)
+
+summary(lm(cc_fa ~ actamp*Group, data = d)) #NS
+summary(lm(genu_fa ~ actamp*Group, data = d)) #NS
+summary(lm(ccbody_fa ~ actamp*Group, data = d)) #NS
+summary(lm(splenium_fa ~ actamp*Group, data = d)) #NS
+
+lm1 <- lm(cc_fa ~ actamp + age + cc_vol, data = filter(d, Group == "Young Adults"))
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(cc_fa, actamp, age, cc_vol) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1)
+
+
+
+lm2 <- lm(cc_fa ~ actamp + age + cc_vol, data = filter(d, Group == "Older Adults"))
+summary(lm2)
+lm2.beta <- lm.beta(lm2)
+print(lm2.beta)
+summary(lm2.beta)
+ShowRegTable(lm2.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(cc_fa, actamp, age, cc_vol) %>%
+  drop_na()
+beset::validate(lm2, data = cvdata, n_folds = sum(complete.cases(cvdata))-1)
+
+summary(lm(cc_fa ~ actamp + age + sleep_time_mean_sleep + total_ac_mean_active, data = filter(d, Group == "Young Adults")))
+summary(lm(cc_fa ~ actamp + age + sleep_time_mean_sleep + total_ac_mean_active, data = filter(d, Group == "Older Adults")))
+
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum FA") +
+  scale_color_brewer(palette="Set1") +
+  #theme(legend.position = c(0.9, 0.2)) + # for OHBM poster
+  #ggsave(paste0(figs_dir, "amp_cc_fa2.png"), dpi=300, height=4, width=6, units="in") + # for OHBM poster
+  ggsave(paste0(figs_dir, "amp_cc_fa.png"), dpi=300, height=4, width=6, units="in")
+  
+# Sex effects?
+t.test(d$cc_fa ~ d$sex) #NS
+cor.test(d$cc_fa, d$age) #duh
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum FA") +
+  scale_color_brewer(palette="Set1") +
+  facet_wrap(. ~ sex)
+
+
+
+## sleep efficiency
+summary(lm(cc_fa ~ efficiency_mean_sleep + age + cc_vol, data = filter(d, Group == "Young Adults"))) 
+summary(lm(cc_fa ~ efficiency_mean_sleep + age + cc_vol, data = filter(d, Group == "Older Adults"))) 
+
+# corona radiata
+summary(lm(coronaradiata_fa ~ actamp + total_ac_mean_active + sleep_time_mean_sleep + Group, data = d)) #NS
+summary(lm(cc_fa ~ actamp + cc_vol + Group, data = d)) #NS
+summary(lm(coronaradiata_fa ~ efficiency_mean_sleep + age, data = filter(d, Group == "Young Adults"))) 
+summary(lm(coronaradiata_fa ~ efficiency_mean_sleep + age, data = filter(d, Group == "Older Adults")))
+
+# plots
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = coronaradiata_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = coronaradiata_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corona Radiata FA") +
+  scale_color_brewer(palette="Set1") 
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = externalcapsule_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = externalcapsule_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("External Capsule FA") +
+  scale_color_brewer(palette="Set1") 
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = postthalamicradiation_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = postthalamicradiation_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Post-Thalamic Radiation FA") +
+  scale_color_brewer(palette="Set1") 
+```
+
+# Trails B
+```{r}
+
+df <- select(d, time_trails_b, actamp, matches("_fa"), Group, age, years_educ)
+df <- df[complete.cases(df),]
+
+mod <- beset_lm(time_trails_b ~ ., data = df, n_folds = sum(complete.cases(df))-1)
+summary(mod, oneSE = F)
+tmtlm <- lm(time_trails_b ~ Group + age + actamp, data = d)
+summary(tmtlm)
+
+d %>%
+  filter(actamp < 3) %>%
+  filter(time_trails_b < 150) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = time_trails_b, group = Group, color = Group)) + 
+  stat_smooth(aes(x = actamp, y = time_trails_b, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("TMT-B (seconds)") +
+  scale_color_brewer(palette="Set1") + theme(text = element_text(size=20)) +
+  labs(caption = paste0("y = 44.180 -15.977 amp -64.145 Group + 1.741 age, R2 = ", round(summary(tmtlm)$r.squared, 2), "\n F(3,78) = ", round(summary(tmtlm)$fstatistic[[1]], 2), " \n Amplitude p = 0.071")) +
+  ggsave(paste0(figs_dir, "amp_tmtb.png"), dpi=300, height=4, width=5, units="in")
+
+d %>%
+  group_by(Group) %>%
+  summarize(ccfa_med = median(cc_fa, na.rm = T))
+
+d %>%
+  filter(actamp < 3) %>%
+  filter(time_trails_b < 150) %>%
+  ggplot() + 
+  geom_point(aes(x = cc_fa, y = time_trails_b, group = Group, color = Group)) + 
+  stat_smooth(aes(x = cc_fa, y = time_trails_b, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("CC FA") + ylab("TMT-B (seconds)") +
+  scale_color_brewer(palette="Set1") + theme(text = element_text(size=20))
+```
+
+# ROI Spheres
+```{r}
+roi <- read_csv('/Users/megmcmahon/Box/CogNeuroLab/Aging Decision Making R01/data/fa_roi_sphere2.csv')
+head(roi)
+
+d <- merge(d, roi, by.x = "record_id", by.y = "X1", all = T)
+write.csv(d, paste0(data_dir, "dataset_2020-06-17.csv"))
+
+d %>%
+  filter(actamp < 3) %>%
+  select(record_id, Group, actamp, matches(" L| R"), Genu, Splenium, -matches("Cluster")) %>%
+  pivot_longer(-c(record_id, Group, actamp), names_to = "ROI", values_to = "FA") -> d_long
+
+d_long$ROI[d_long$ROI == "Long Fasciculus 1 R"] <- "Longitudinal Fasciculus R 1"
+d_long$ROI[d_long$ROI == "Long Fasciculus 2 R"] <- "Longitudinal Fasciculus R 2"
+d_long$ROI[d_long$ROI == "Long Fasciculus 1 L"] <- "Longitudinal Fasciculus L 1"
+d_long$ROI[d_long$ROI == "Long Fasciculus 2 L"] <- "Longitudinal Fasciculus L 2"
+
+d_long$ROI <- factor(d_long$ROI, levels = c("Frontal Forceps R", "Frontal Forceps L", "Posterior Forceps R", "Posterior Forceps L", "Longitudinal Fasciculus R 1", "Longitudinal Fasciculus L 1", "Longitudinal Fasciculus R 2", "Longitudinal Fasciculus L 2", "Genu", "Splenium"))
+
+d_long %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = FA, group = Group, color = Group, shape = Group)) + 
+  geom_smooth(aes(x = actamp, y = FA, group = Group, color = Group), method = "lm") + 
+  facet_wrap(. ~ ROI, scales = "free", nrow = 3) +
+  theme_minimal() + xlab("Rhythm Amplitude") + ylab("Fractional Anisotropy") +
+  scale_color_brewer(palette="Set1") + theme(text = element_text(size=20)) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") +
+  ggsave(paste0(figs_dir, "amp_fa_sphere_rois_by_group.png"), dpi=300, height=10, width=15, units="in")
+
+```
+
+```{r}
+d_long$Group <- as.factor(d_long$Group)
+d_long$ROI <- as.factor(d_long$ROI)
+mod <- lm(FA ~ Group*ROI*actamp, data = d_long)
+plot(mod)
+summary(mod)
+
+mod2 <- lm(FA ~ Group + ROI + actamp, data = d_long)
+summary(mod2)
+```
+
+```{r}
+md <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/data/md_roi_values.csv")
+head(md)
+
+d <- merge(d, md, by = "record_id", all = T)
+head(d)
+
+summary(lm(cc_md ~ Group*IV, data = d))
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_md, group = Group, color = Group)) + 
+  #stat_smooth(aes(x = actamp, y = trails_b_z_score, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  facet_wrap(.~Group, scales = "fixed") #+
+  #ggsave(paste0(figs_dir, "amp_tmtbz.png"), dpi=300, height=4, width=8, units="in")
+
+
+### IV REGRESSION HERE ###
+lm1 <- lm(cc_md ~ IV + age + cc_vol, data = filter(d, Group == "Young Adults"))
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(cc_md, IV, age, cc_vol) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1)
+
+lm1 <- lm(corona_radiata_md ~ IV + age + cc_vol, data = filter(d, Group == "Young Adults"))
+summary(lm1)
+
+lm2 <- lm(cc_md ~ IV + age + cc_vol, data = filter(d, Group == "Older Adults"))
+summary(lm2)
+lm2.beta <- lm.beta(lm2)
+print(lm2.beta)
+summary(lm2.beta)
+ShowRegTable(lm2.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(cc_md, actamp, age, cc_vol) %>%
+  drop_na()
+beset::validate(lm2, data = cvdata, n_folds = sum(complete.cases(cvdata))-1)
+
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = cc_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Corpus Callosum MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_CC.png"), dpi=300, height=4, width=8, units="in")
+
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = corona_radiata_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = corona_radiata_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Anterior Corona Radiata MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_ACR.png"), dpi=300, height=4, width=8, units="in")
+
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = superior_long_fasciculus_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = superior_long_fasciculus_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Superior Longitudinal \nFasciculus MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_SLF.png"), dpi=300, height=4, width=8, units="in")
+```
+
+# PVT
+```{r}
+# PVT results contain mean and sd reaction times (rt_mean, rt_sd), number of false starts (fs), number of response lapses (rl)
+pvt <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/data/pvt/pvt_stats_2020-06-19.csv")
+head(pvt)
+
+d <- merge(d, pvt, by = "record_id", all = T)
+d <- d %>%
+  drop_na(cc_fa) 
+
+pvtcor <- d %>%
+  select(rt_mean, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(pvtcor, use = "complete.obs", n_rep = 1000)
+
+pvtcor <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(rt_mean, vc_zscore, ds_zscore, matches("trails*.*z_score")) 
+cor_boot(pvtcor, use = "complete.obs", n_rep = 1000)
+
+pvtcor <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(rt_mean, cvlt_zscore, cowat_zscore, vc_zscore, ds_zscore, matches("trails*.*z_score"))
+cor_boot(pvtcor, use = "complete.obs", n_rep = 1000)
+
+# PVT and sleep, RAR correlations
+
+pvtcor <- d %>%
+  select(rt_mean, fs, actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
+write.csv(cor_boot(pvtcor, use = "complete.obs", n_rep = 1000), "~/Box/CogNeuroLab/Aging Decision Making R01/results/rest-activity_and_white_matter_microstructure/pvt_rar_sleep_correlations.csv")
+
+pvtcoryoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(rt_mean, fs, actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
+write.csv(cor_boot(pvtcoryoung, use = "complete.obs", n_rep = 1000), "~/Box/CogNeuroLab/Aging Decision Making R01/results/rest-activity_and_white_matter_microstructure/pvt_rar_sleep_correlations_ya.csv")
+
+pvtcorolder <- d %>%
+  filter(Group == "Older Adults") %>%
+  select(rt_mean, fs, actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
+write.csv(cor_boot(pvtcorolder, use = "complete.obs", n_rep = 1000), "~/Box/CogNeuroLab/Aging Decision Making R01/results/rest-activity_and_white_matter_microstructure/pvt_rar_sleep_correlations_oa.csv")
+
+pvtcoryoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(rt_mean, fs, IV, cc_fa, coronaradiata_fa, cc_md, corona_radiata_md, cc_vol)
+cor_boot(pvtcoryoung, use = "complete.obs", n_rep = 1000)
+write.csv(cor_boot(pvtcoryoung, use = "complete.obs", n_rep = 1000), "~/Box/CogNeuroLab/Aging Decision Making R01/results/rest-activity_and_white_matter_microstructure/pvt_IV_MD_ya.csv")
+
+d %>%
+  filter(rt_mean < 500) %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = rt_mean, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = rt_mean, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("PVT Mean RT") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group) 
+  ggsave(paste0(figs_dir, "IV_PVT-RT.png"), dpi=300, height=4, width=8, units="in")
+
+summary(lm(rt_mean ~ IV*Group, data = d))
+summary(lm(rt_mean ~ IV + Group, data = d))
+cor.test(d$rt_mean[d$Group == "Young Adults"], d$IV[d$Group == "Young Adults"])
+
+d %>%
+  filter(rt_mean < 500) %>%
+  ggplot() + 
+  geom_point(aes(x = cc_fa, y = rt_mean, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = cc_fa, y = rt_mean, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Corpus Callosum FA") + ylab("PVT Mean RT") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  ggsave(paste0(figs_dir, "CCFA_PVT-RT.png"), dpi=300, height=4, width=8, units="in")
+
+d %>%
+  filter(rt_mean < 500) %>%
+  ggplot() + 
+  geom_point(aes(x = cc_md, y = rt_mean, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = cc_md, y = rt_mean, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Corpus Callosum MD") + ylab("PVT Mean RT") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  ggsave(paste0(figs_dir, "CCMD_PVT-RT.png"), dpi=300, height=4, width=8, units="in")
+
+d %>%
+  filter(rt_mean < 500) %>%
+  ggplot() + 
+  geom_point(aes(x = corona_radiata_md, y = rt_mean, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = corona_radiata_md, y = rt_mean, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Corona Radiata MD") + ylab("PVT Mean RT") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  ggsave(paste0(figs_dir, "CRMD_PVT-RT.png"), dpi=300, height=4, width=8, units="in")
+
+summary(lm(rt_mean ~ corona_radiata_md*Group, data = d))
+summary(lm(rt_mean ~ corona_radiata_md, data = filter(d, Group == "Young Adults")))
+summary(lm(rt_mean ~ cc_md*Group, data = d))
+summary(lm(rt_mean ~ cc_md, data = filter(d, Group == "Young Adults")))
+
+cor.test(d$rt_mean[d$Group == "Young Adults"], d$corona_radiata_md[d$Group == "Young Adults"])
+cor.test(d$rt_mean[d$Group == "Young Adults"], d$cc_md[d$Group == "Young Adults"])
+
+pvtcoryoung <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(cc_vol, actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
+cor_boot(pvtcoryoung, use = "complete.obs", n_rep = 1000)
+write.csv(cor_boot(pvtcoryoung, use = "complete.obs", n_rep = 1000), "~/Box/CogNeuroLab/Aging Decision Making R01/results/rest-activity_and_white_matter_microstructure/pvt_rar_sleep_correlations_ya.csv")
+
+```
+
+# Why missing 13 IV values?
+```{r}
+d$record_id[(is.na(d$IV) & !is.na(d$actamp))]
+list.files("~/Box/CogNeuroLab/Aging Decision Making R01/data/actigraphy/error_files/")
+```
+
+# Figure 4 Grid Plot
+```{r}
+p.legend <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_md, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_md, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("MD") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "right")
+
+p1.a <- d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("FA") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(A)")
+
+p1.b <- d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_md, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_md, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("MD") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none")  + ggtitle("(B)")
+
+p1.c <- d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_vol, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_vol, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Volume") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") +  ggtitle("(C)")
+
+p1.d <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("FA") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(D)")
+
+p2.c <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("FA") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(C)")
+
+p1.e <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_md, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_md, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("MD") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(E)")
+
+p2.d <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_md, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_md, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("MD") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(D)")
+
+p1.f <- d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_vol, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = IV, y = cc_vol, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Intradaily Variability") + ylab("Volume") +
+  scale_color_brewer(palette="Set1") + theme(legend.position = "none") + ggtitle("(F)")
+
+library(cowplot)
+legend <- cowplot::get_legend(p.legend)
+#empty <- plot(0,type='n',axes=FALSE,ann=FALSE)
+
+fig4.1 <- grid.arrange(p1.a, p1.b, p1.c, p1.d, p1.e, p1.f, legend, nrow = 3, heights = c(2, 2, 0.75), layout_matrix=rbind(c(1,2,3), c(4,5,6), 8)) 
+ggsave(paste0(figs_dir, "figure4-11.png"), fig4.1, dpi=300, height=10, width=12, units="in")
+
+fig4.2 <- grid.arrange(p1.a, p1.b, p1.c, p1.d, p1.e, p1.f, legend, nrow = 3, heights = c(2, 2, 0.75), layout_matrix=rbind(c(1,2), c(3,4), 6))
+ggsave(paste0(figs_dir, "figure4-22.png"), fig4.2, dpi=300, height=10, width=12, units="in")
+```
+
+```{r}
+d$`Intradaily Variability` <- factor(ifelse(d$IV > median(d$IV, na.rm = T), 1, -1))
+
+listVars = c("sleep_time_mean_sleep", "efficiency_mean_sleep", "onset_latency_mean_sleep", "total_ac_mean_active", "exercise_prop")
+nonnormalVars = c("sleep_time_mean_sleep", "efficiency_mean_sleep", "onset_latency_mean_sleep", "total_ac_mean_active", "exercise_prop")
+tab <- CreateTableOne(listVars, data = d, strata = c("Intradaily Variability"), test = T)
+print(tab, nonnormal = nonnormalVars)
+
+t.test(d$sleep_time_mean_sleep ~ d$`Intradaily Variability`) # p =0.004
+t.test(d$total_ac_mean_active ~ d$`Intradaily Variability`) #NS
+t.test(d$onset_latency_mean_sleep ~ d$`Intradaily Variability`) #NS
+t.test(d$efficiency_mean_sleep ~ d$`Intradaily Variability`) #NS
+
+shapiro.test(d$exercise_prop)
+t.test(d$exercise_prop ~ d$`Intradaily Variability`) #t = -2.4766, df = 84.539, p-value = 0.01526, low = 0.2938225, high = 0.4273378 
+
+428.1521 - 375.2910
+
+ya <- filter(d, Group == "Young Adults")
+t.test(ya$sleep_time_mean_sleep ~ ya$`Intradaily Variability`) # p=0.04
+t.test(ya$total_ac_mean_active ~ ya$`Intradaily Variability`) #NS
+t.test(ya$onset_latency_mean_sleep ~ ya$`Intradaily Variability`) #NS
+t.test(ya$efficiency_mean_sleep ~ ya$`Intradaily Variability`) #NS
+
+oa <- filter(d, Group == "Older Adults")
+t.test(oa$sleep_time_mean_sleep ~ oa$`Intradaily Variability`) # p=0.09
+t.test(oa$total_ac_mean_active ~ oa$`Intradaily Variability`) #NS
+t.test(oa$onset_latency_mean_sleep ~ oa$`Intradaily Variability`) #NS
+t.test(oa$efficiency_mean_sleep ~ oa$`Intradaily Variability`) #NS
+```
+
+```{r}
+# young adults
+lm1 <- lm(cc_md ~ age + cc_vol + IV, ya)
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(age, cc_md, cc_vol, IV) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) #var exp = 0.009
+
+# older adults - NS
+lm1 <- lm(cc_md ~ age + cc_vol + IV, oa)
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(age, cc_md, cc_vol, IV) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) 
+
+lm1 <- lm(corona_radiata_md ~ age + cc_vol + IV, ya)
+summary(lm1)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(age, IV, corona_radiata_md) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = 39) #var exp = 0.009
+
+lm1 <- lm(cc_md ~ exercise_prop + sleep_time_mean_sleep + age + cc_vol + IV, ya)
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  filter(Group == "Young Adults") %>%
+  select(sleep_time_mean_sleep, age, cc_vol, IV, exercise_prop) %>%
+  drop_na()
+beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) #0.056 R
+
+lm1 <- lm(cc_md ~ exercise_prop + sleep_time_mean_sleep + age + cc_vol + IV, oa)
+summary(lm1)
+```
+
+## CC MD and IV interaction effect of age group
+```{r}
+# create dummy variable
+d$GroupI <- ifelse(d$Group == "Older Adults", 1, 0)
+
+# significant age group interaction effect for cc md, IV
+lm1 <- lm(formula = cc_md ~ Group*IV + cc_vol + age + exercise_prop + sleep_time_mean_sleep, data = d)
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  select(cc_md, GroupI, age, cc_vol, IV, sleep_time_mean_sleep, exercise_prop) %>%
+  drop_na()
+beset::validate(lm1.beta, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) 
+
+lm1 <- lm(formula = cc_md ~ Group*IV + cc_vol + age, data = d)
+summary(lm1)
+lm1.beta <- lm.beta(lm1)
+print(lm1.beta)
+summary(lm1.beta)
+ShowRegTable(lm1.beta, exp= F)
+cvdata <- d %>%
+  select(cc_md, GroupI, age, cc_vol, IV) %>%
+  drop_na()
+beset::validate(lm1.beta, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) 
+
+# no significant age group interaction effect for cc fa, amplitude
+lm2 <- lm(formula = cc_fa ~ Group*actamp + cc_vol + age, data = d)
+summary(lm2)
+lm2.beta <- lm.beta(lm2)
+print(lm2.beta)
+summary(lm2.beta)
+ShowRegTable(lm2.beta, exp= F)
+cvdata <- d %>%
+  select(cc_fa, GroupI, age, cc_vol, actamp) %>%
+  drop_na()
+beset::validate(lm2.beta, data = cvdata, n_folds = sum(complete.cases(cvdata))-1) 
+```
+
