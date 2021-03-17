@@ -1,0 +1,187 @@
+---
+title: "Rest-Activity Measures and White Matter Microstructure Across the Lifespan"
+author: "Megan McMahon"
+date: "10/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+
+source("load.R", local = knitr::knit_global())
+source("clean.R", local = knitr::knit_global())
+source("tables.R", local = knitr::knit_global())
+```
+
+## Exploring Some Histograms
+```{r warning = FALSE}
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10) %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+
+```
+
+## Exploring Some Histograms by Group
+```{r warning = FALSE}
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10, Group) %>%
+  melt(id.vars = "Group") %>%
+  ggplot(aes(value, group = Group, fill = Group, alpha = 0.75)) +
+    facet_wrap(~ variable, scales = "free") +
+    geom_density() + 
+  theme_classic() + scale_fill_brewer(palette = "Set1")
+
+```
+
+## Normality Tests
+```{r warning = FALSE}
+d %>%
+  select(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10) %>%
+  keep(is.numeric) %>% 
+  shapiro_test(age, years_educ, sleep_time_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active, actamp, actalph, actbeta, actmesor, actphi, actupmesor, actdownmesor, actmin, fact, IS, IV, RA, L5, M10)
+```
+
+## Demographics
+```{r}
+tab1
+```
+
+## Health Characteristics
+```{r}
+tab2
+```
+
+## Sleep and Rest-Activity Rhythm Characteristics
+```{r}
+tab3
+```
+
+## Microstructure Characteristics
+```{r}
+tab4
+```
+
+## Neuropsych and PVT Results
+```{r}
+tab5
+```
+
+## Corpus Callosum Volume and Rhythm Amplitude
+```{r warning = FALSE}
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_vol, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_vol, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum Volume") +
+  scale_color_brewer(palette="Set1") #+ 
+  #ggsave(paste0(figs_dir, "amp_ccvol.png"), dpi=300, height=4, width=6, units="in")
+
+```
+
+
+## Corpus Callosum FA and Rhythm Amplitude
+```{r warning = FALSE}
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum FA") +
+  scale_color_brewer(palette="Set1") +
+  #theme(legend.position = c(0.9, 0.2)) + # for OHBM poster
+  #ggsave(paste0(figs_dir, "amp_cc_fa2.png"), dpi=300, height=4, width=6, units="in") + # for OHBM poster
+  ggsave(paste0(figs_dir, "amp_cc_fa.png"), dpi=300, height=4, width=6, units="in")
+```
+
+### No significant sex differences
+```{r warning = FALSE}
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_fa, group = sex, color = sex, shape = sex), size = 2) + 
+  stat_smooth(aes(x = actamp, y = cc_fa, group = sex, color = sex), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum FA") +
+  scale_color_brewer(palette="Set1") +
+  facet_wrap(. ~ Group)
+```
+
+
+## Mean FA in other areas with significant clusters showing association between FA and rhythm amplitude
+```{r warning = FALSE}
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = coronaradiata_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = coronaradiata_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Corona Radiata FA") +
+  scale_color_brewer(palette="Set1") 
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = externalcapsule_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = externalcapsule_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("External Capsule FA") +
+  scale_color_brewer(palette="Set1") 
+
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = postthalamicradiation_fa, group = Group, color = Group, shape = Group), size = 2) + 
+  stat_smooth(aes(x = actamp, y = postthalamicradiation_fa, group = Group, color = Group), method = "lm") + 
+  theme_classic() + xlab("Amplitude") + ylab("Post-Thalamic Radiation FA") +
+  scale_color_brewer(palette="Set1") 
+```
+
+## Corpus Callosum MD and Rhythm Amplitude - NS
+```{r warning = FALSE}
+d %>%
+  filter(actamp < 3) %>%
+  ggplot() + 
+  geom_point(aes(x = actamp, y = cc_md, group = Group, color = Group)) + 
+  #stat_smooth(aes(x = actamp, y = trails_b_z_score, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Amplitude") + ylab("Corpus Callosum MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  facet_wrap(.~Group, scales = "fixed") #+
+#ggsave(paste0(figs_dir, "amp_tmtbz.png"), dpi=300, height=4, width=8, units="in")
+```
+
+## Corpus Callosum MD and Intradaily Variability
+```{r warning = FALSE}
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = cc_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = cc_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Corpus Callosum MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_CC.png"), dpi=300, height=4, width=8, units="in")
+```
+
+## MD in other regions and Intradaily Variability
+```{r warning = FALSE}
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = corona_radiata_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = corona_radiata_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Anterior Corona Radiata MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_ACR.png"), dpi=300, height=4, width=8, units="in")
+
+d %>%
+  ggplot() + 
+  geom_point(aes(x = IV, y = superior_long_fasciculus_md, group = Group, color = Group, shape = Group)) + 
+  stat_smooth(aes(x = IV, y = superior_long_fasciculus_md, group = Group, color = Group), method = "lm") +
+  theme_classic() + xlab("Intradaily Variability") + ylab("Superior Longitudinal \nFasciculus MD") +
+  scale_color_brewer(palette="Set1") + scale_fill_brewer(palette="Set1") +
+  #facet_wrap(.~Group, scales = "fixed") #+
+  ggsave(paste0(figs_dir, "IV_MD_SLF.png"), dpi=300, height=4, width=8, units="in")
+```
+
+

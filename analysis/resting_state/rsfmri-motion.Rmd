@@ -1,0 +1,125 @@
+---
+title: "rsfmri Motion"
+author: "Megan McMahon"
+date: "10/23/2020"
+output: 
+  html_document:
+    df_print: kable
+---
+
+```{r setup, include=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(pwr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+library(knitr)
+library(rpart)
+library(rpart.plot)
+library(reshape2)
+```
+
+## Power
+
+Tutorial from [CRAN pwr package](https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html)
+
+```{r}
+pwr.t.test(n =  , d = 0.5 , sig.level = 0.05, power = 0.80, type = "two.sample")
+```
+
+```{r}
+sample_sizes = seq(5,300,by=5)
+power_t_test=pwr.t.test(n = sample_sizes , d = 0.5 , sig.level = 0.05, power = , type = "two.sample")
+
+ggplot() +
+  geom_point(aes(x = sample_sizes, y = power_t_test$power)) + 
+  geom_line(aes(x = sample_sizes, y = 0.80, color = 'red')) +
+  ylab("statistical power") + xlab("sample size") +
+  theme(legend.position = "none")
+```
+
+## Motion vs non-motion
+
+```{r message = FALSE}
+motion <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/results/rsfmri-motion/mriqc.csv")
+head(motion)
+
+print(paste("n subjects who meet motion criteria:", sum(!complete.cases(motion))))
+
+print(paste("n subjects who do not meet motion criteria:", length(grep("fd*", motion$Rest))))
+
+print(paste("n subjects pending mriqc:", length(grep("Pending", motion$Rest))))
+
+print(paste("n subjects excluded / have other annotations:", length(motion$Rest) - length(grep("fd*", motion$Rest)) - sum(!complete.cases(motion)) - length(grep("Pending", motion$Rest))))
+```
+
+```{r message = FALSE}
+d <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/data/dataset_2020-10-10.csv")
+d <- merge(motion, d, by.x = "Subject", by.y = "record_id", all = TRUE)
+d$Group <- factor(ifelse(d$Subject < 40000, "Young Adult", "Older Adult"))
+
+d <- d %>% 
+  mutate(Rest = replace_na(Rest, 1)) %>%
+  filter(Rest != "Pending") %>%
+  filter(Rest != "Exclude") %>%
+  mutate(Rest = replace(Rest, Rest != 1, 0)) %>%
+  group_by(Subject) %>%
+  select(Subject, Group, Rest, matches("tr_.|component"), scan_time) %>%
+  select_if(~sum(!is.na(.)) > 0)
+head(d)
+#, duration_mean_sleep, efficiency_mean_sleep, onset_latency_mean_sleep, total_ac_mean_active,
+```
+
+```{r}
+d %>%
+  melt(id.vars = c("Rest", "Group")) %>%
+  ggplot() +
+  geom_violin(aes(x = Rest, y = value, group = Rest, color = Rest)) + 
+  facet_wrap(. ~ variable, scales = "free") + xlab("") + ylab("") +
+  scale_color_discrete(name = "Motion", labels = c("Fail", "Pass")) + 
+  theme_classic() + scale_fill_brewer(palette = "Set1")
+```
+
+``` {r }
+#
+nrow(d[!complete.cases(d), ])/nrow(d)*100
+
+d <- d %>%
+  na.omit() %>% 
+  ungroup() %>%
+  dplyr::select(-Subject)
+
+d$Rest <- factor(d$Rest)
+head(d)
+```
+
+```{r}
+table(d$Rest)
+```
+
+```{r}
+set.seed(1)
+# Use sample() to select random numbers from 1, 2, 3, ... Nrow of the data (row indices)
+train <- sample(1:nrow(d), size = nrow(d)*.8)
+
+tree<- rpart(Rest~., data = d[train,], method = 'class')
+rpart.plot(tree)
+```
+
+
+
+```{r}
+tree.pred = predict(tree, d[-train,], type="class")
+
+table_mat <- with(d[-train,], table(tree.pred, Rest))
+table_mat 
+```
+
+```{r}
+accuracy_Test <- sum(diag(table_mat)) / sum(table_mat)
+print(paste('Accuracy for test', accuracy_Test))
+```
+
+
+

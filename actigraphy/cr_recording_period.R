@@ -2,8 +2,6 @@
 ## Megan McMahon
 ## Fall 2019
 
-## CHANGE OUTPUT DIRECTORY!!!! ####################################
-
 library(lubridate)
 library(tidyverse)
 library(reshape2)

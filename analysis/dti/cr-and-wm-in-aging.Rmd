@@ -162,6 +162,17 @@ write_csv(d, paste0(data_dir, "dataset_2020-06-17.csv"))
 
 # Filter to only include participants with DTI data
 ```{r}
+d$sex <- factor(ifelse(substr(d$sex, 1, 1) == "M", -1, 1), labels = c("Male", "Female"))
+d$stroke <- as.factor(ifelse(d$stroke == 0, "Negative", "Positive"))
+
+recodeVars = c("vascular_disease", "diabetes", "cancer", "head_inj", 
+               "neurologicaldisorders", "psychiatric_do", "sleep_do")
+
+d %>%
+  select(recodeVars) %>%
+  mutate_if(is.integer, factor) %>%
+  mutate_at(recodeVars, funs(recode(.,`1` = "Positive", `2` = "Negative", `3` = "Negative"))) -> d[recodeVars]
+
 # all participants
 d2 <- d 
 
@@ -285,7 +296,7 @@ d %>%
   shapiro_test(vc_zscore, cowat_zscore, cvlt_sdelay_recall_zscore, cvlt_ldelay_recall_zscore, cvlt_zscore, ds_zscore, cw_stroop_agecorrected, trails_a_z_score, trails_b_z_score, rt_mean, fs, rl)
 
 listVars = c("vc_zscore", "cowat_zscore", "cvlt_sdelay_recall_zscore", "cvlt_ldelay_recall_zscore", "cvlt_zscore", "ds_zscore", "cw_stroop_agecorrected", "trails_a_z_score", "trails_b_z_score", "rt_mean", "fs", "rl")
-nonnormalVars <- 
+
 tab5 <- CreateTableOne(listVars, data = d, strata = c("Group"))
 print(tab5)
 tab5Mat <- print(tab5, quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
@@ -377,6 +388,7 @@ cor_boot(npolder, use = "complete.obs", n_rep = 1000)
 # Sleep Metrics and RAR correlations
 ```{r}
 sleepcor <- d %>%
+  filter(Group == "Young Adults") %>%
   select(actamp, fact, IS, IV, RA, global_psqi, sleep_time_mean_sleep, total_ac_mean_active, efficiency_mean_sleep)
 cor_boot(sleepcor, use = "complete.obs", n_rep = 1000)
 
@@ -405,7 +417,7 @@ summary(mod1, oneSE = F)
 
 ```
 
-#TMT-B and non-parametric variables
+#TMT-B and cosinor variables
 ```{r}
 mod1 <- beset_lm(time_trails_b ~ ., data = select(d, actamp:fact, -rsqact, time_trails_b, age, sex, years_educ, Group), n_folds = sum(complete.cases(select(d, actamp:fact, time_trails_b)))-1)
 summary(mod1, oneSE = F)
@@ -482,6 +494,10 @@ cor.test(d$actamp, d$total_ac_mean_active)
 cor.test(d$actamp, d$efficiency_mean_sleep) #p = 0.014, R=0.24
 cor.test(d$actamp, d$sleep_time_mean_sleep)
 
+cor.test(d$cc_fa, d$total_ac_mean_active) #p = 0.02073, R=0.229
+cor.test(d$cc_fa, d$efficiency_mean_sleep)
+cor.test(d$cc_fa, d$sleep_time_mean_sleep)
+
 d$Amplitude <- factor(ifelse(d$actamp < median(d$actamp, na.rm = T), 0, 1), labels = c("Low", "High"))
 head(d$Amplitude)
 
@@ -506,11 +522,12 @@ library(beset)
 library(tableone)
 
 summary(lm(cc_fa ~ actamp*Group, data = d)) #NS
+summary(lm(cc_fa ~ actamp*Group + cc_vol + total_ac_mean_active + efficiency_mean_sleep, data = d)) #NS
 summary(lm(genu_fa ~ actamp*Group, data = d)) #NS
 summary(lm(ccbody_fa ~ actamp*Group, data = d)) #NS
 summary(lm(splenium_fa ~ actamp*Group, data = d)) #NS
 
-lm1 <- lm(cc_fa ~ actamp + age + cc_vol, data = filter(d, Group == "Young Adults"))
+lm1 <- lm(cc_fa ~ actamp + age + cc_vol + Group, data = d)
 summary(lm1)
 lm1.beta <- lm.beta(lm1)
 print(lm1.beta)
@@ -521,6 +538,11 @@ cvdata <- d %>%
   select(cc_fa, actamp, age, cc_vol) %>%
   drop_na()
 beset::validate(lm1, data = cvdata, n_folds = sum(complete.cases(cvdata))-1)
+
+summary(lm(cc_fa ~ actamp + Group + age + cc_vol + total_ac_mean_active + efficiency_mean_sleep, data = d))
+summary(lm(cc_fa ~ actamp + Group + cc_vol + total_ac_mean_active + efficiency_mean_sleep, data = d)) 
+summary(lm(cc_fa ~ actamp + Group + cc_vol, data = d)) 
+summary(lm(cc_fa ~ actamp + Group + cc_vol + age, data = d)) 
 
 
 
