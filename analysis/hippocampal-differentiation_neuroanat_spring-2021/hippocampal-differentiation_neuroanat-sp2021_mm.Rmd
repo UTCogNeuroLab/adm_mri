@@ -37,6 +37,8 @@ d %>%
 
 ```
 
+Available on Github: [mcmahonmc](https://github.com/UTCogNeuroLab/aging-study/tree/master/analysis/hippocampal-differentiation_neuroanat_spring-2021)
+
 ## Hippocampal long axis differentiation
 
 - The hippocampus shows a long axis anterior-posterior differentiation of function
@@ -61,6 +63,9 @@ d %>%
 - Chronic sleep disruption and circadian rhythmicity affect hippocampal neurogenesis in animals (Raven et al., 2018; Kreutzmann et al., 2015)
 - In older adults, more robust rest-activity rhythms were associated with greater anterior hippocampal volume (Sherman et al., 2015)
 - Sleep disturbance in older adults predicts increasingly worse scores on standardized neuropsychological tests, including memory subcomponents that depend upon the hippocampus (HVLT)
+
+## Dedifferentiation with aging
+- There is a reduction in the specificity of neural representations which may be responsible for cognitive decline as people age
 
 ## Research Question 
 
@@ -145,7 +150,7 @@ kableone(print(tab1, cramVars=TRUE, test = FALSE))
 ![In vivo dataset and comparison with ex vivo images](1-s2.0-S1053811915003420-gr3.jpg)
 
 
-![](FS_HC_Parcellation.jpeg){width=700px}{width=700px}
+![Freesurfer HBT](FS_HC_Parcellation.jpeg){width=700px}
 
 ## Results
 ## Aging and hippocampal volume
@@ -165,7 +170,7 @@ d %>%
   geom_point() + 
   stat_smooth(method = 'loess', formula = 'y ~ x') +
   scale_color_brewer(palette = 'Set1') + theme_minimal() + 
-  facet_wrap(`Hippocampal region` ~ ., scales = 'free') + 
+  facet_wrap(. ~ `Hippocampal region`, scales = 'free', nrow=3, ncol=1) + 
   theme(legend.position='none') +
   theme_minimal() #+
   #ggsave('~/Desktop/vol_no-icv.png', height = 5, width = 12, units = 'in', dpi=300)
@@ -209,7 +214,7 @@ d %>%
   geom_point() + 
   stat_smooth(method = 'loess', formula = 'y ~ x') +
   scale_color_brewer(palette = 'Set1') + theme_minimal() + 
-  facet_wrap(`Hippocampal region` ~ ., scales = 'free') + 
+  facet_wrap(. ~ `Hippocampal region`, scales = 'free', nrow=3, ncol=1) + 
   theme(legend.position='none') +
   theme_minimal() #+
   #ggsave('~/Desktop/vol_icv.png', height = 5, width = 12, units = 'in', dpi=300)
@@ -405,7 +410,7 @@ dmem %>%
 ## Hippocampal volume and associative memory task performance
 
 - Using the associative memory task allowed us to include the young adult comparison group.
-- There was a significant Group by hippocampal head volume effect on associative memory accuracy during the test phase, where older adults showed a positive association between hippocampal head volume and memory accuracy
+- There was a significant Group by hippocampal head volume effect on associative memory accuracy during the test phase
 
 ```{r, echo = FALSE, warning = FALSE}
 
@@ -472,7 +477,8 @@ dmem %>%
 ```
 
 ## Sleep and memory performance
-- In this study, young and older adult age groups showed differential relationships between acrophase and (1) accuracy during the test phase, and (2) response time on correct trials during both the learning and test phases
+- Significant age group x acrophase interaction effect on test phase accuracy
+- Later acrophase was associated with shorter response times on correct trials when controlling for the effect of age group
 
 ```{r, echo = FALSE, warning = FALSE}
 dmem %>%
