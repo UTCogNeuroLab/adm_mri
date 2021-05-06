@@ -1,0 +1,333 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Hippocampal Differentiation},
+  pdfauthor={Megan McMahon},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Hippocampal Differentiation}
+\author{Megan McMahon}
+\date{4/2/2021}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Hippocampal differentiation}
+\protect\hypertarget{hippocampal-differentiation}{}
+\begin{itemize}
+\tightlist
+\item
+  The hippocampus shows a long axis anterior-posterior differentiation
+  of function (Chase et al., 2015; Kühn \& Gallinat, 2014; Poppenk et
+  al., 2013)
+\item
+  The anterior and posterior portions may undergo different
+  developmental trajectories across the lifespan, and may give rise to
+  some of the cognitive changes that commonly accompany the aging
+  process (i.e., episodic memory; Langnes et al., 2020) ***
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sleep and the hippocampus}
+\protect\hypertarget{sleep-and-the-hippocampus}{}
+\begin{itemize}
+\tightlist
+\item
+  Hippocampus involved in sleep architecture (theta in REM, sharp wave
+  ripples in NREM, coupling with slow wave)
+\item
+  Chronic sleep disruption and circadian rhythmicity affect hippocampal
+  neurogenesis in animals (Raven et al., 2018; Kreutzmann et al., 2015)
+\item
+  Important for learning and memory ***
+\end{itemize}
+\end{frame}
+
+\hypertarget{are-sleep-wake-patterns-associated-with-volumetric-differences-along-the-hippocampal-long-axis-that-underlie-episodic-memory}{%
+\section{Are sleep-wake patterns associated with volumetric differences
+along the hippocampal long axis that underlie episodic
+memory?}\label{are-sleep-wake-patterns-associated-with-volumetric-differences-along-the-hippocampal-long-axis-that-underlie-episodic-memory}}
+
+\begin{frame}[fragile]{Methods}
+\protect\hypertarget{methods}{}
+\begin{itemize}
+\tightlist
+\item
+  Healthy younger (n =
+  \texttt{n(d\$age{[}d\$Group\ ==\ "Young\ Adults",{]}))}, age =
+  \texttt{mean(d\$age{[}d\$Group\ ==\ "Young\ Adults",{]}))},
+  ±\texttt{sd(d\$age{[}d\$Group\ ==\ "Young\ Adults",{]}))}) and older
+  (n = \texttt{n(d\$age{[}d\$Group\ ==\ "Young\ Adults",{]}))}age =
+  \texttt{mean(d\$age{[}d\$Group\ ==\ "Older\ Adults",{]}))},
+  ±\texttt{sd(d\$age{[}d\$Group\ ==\ "Older\ Adults",{]}))}) adults
+\item
+  Episodic memory measures: associative memory task, CVLT (older adults
+  only)
+\item
+  Hippocampal subfield volumes obtained using FreeSurfer v 7.1.1 ***
+  \href{assocmemtask.png}{}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Parcellation}
+\protect\hypertarget{parcellation}{}
+\begin{itemize}
+\tightlist
+\item
+  Subfields *** \href{fsparcellation.png}{}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results}{}
+\end{frame}
+
+\begin{frame}{Hippocampal volume with age}
+\protect\hypertarget{hippocampal-volume-with-age}{}
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-1-1.pdf}
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-1-2.pdf}
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-1-3.pdf}
+
+Langnes Each line represents the results of a separate GAMM. With memory
+as dependent variable, age and each hippocampal measure were first
+tested in separate GAMMs, and then additional GAMMS were run to test the
+age × hippocampus interaction, with age, sex, scanner, subject
+time-point and ICV (for volume) as covariates of no interest.
+\end{frame}
+
+\begin{frame}[fragile]{Hippocampal volume and episodic memory}
+\protect\hypertarget{hippocampal-volume-and-episodic-memory}{}
+\begin{itemize}
+\tightlist
+\item
+  Only had CVLT data for older adults
+\end{itemize}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-1.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-2.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-3.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-4.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-5.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing non-finite values (stat_smooth).
+
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-4-6.pdf}
+\end{frame}
+
+\begin{frame}[fragile]{Hippocampal volume and encoding}
+\protect\hypertarget{hippocampal-volume-and-encoding}{}
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-1.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-2.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-3.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-4.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-5.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-6.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-7.pdf}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{hippocampal-differentiation_neuroanat-sp2021_mm_files/figure-beamer/unnamed-chunk-5-8.pdf}
+\end{frame}
+
+\begin{frame}{Sleep measures}
+\protect\hypertarget{sleep-measures}{}
+\end{frame}
+
+\end{document}
