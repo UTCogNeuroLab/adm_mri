@@ -133,7 +133,7 @@ kableone(print(tab1, cramVars=TRUE, test = FALSE))
 - Checked orientation of all T1 images
 - Ran ACPC alignment
 
-### Originial T1:
+### Original T1:
 ![](t1.png){width=700px}
 
 
