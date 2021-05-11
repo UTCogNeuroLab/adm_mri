@@ -72,7 +72,7 @@ Available on Github: [mcmahonmc](https://github.com/UTCogNeuroLab/aging-study/tr
 Are sleep-wake patterns associated with volumetric differences along the hippocampal long axis that underlie episodic memory? 
 
 ## Methods
-- Healthy younger (n = `r format(count(d[d$Group == 'Young Adults',]), digits = 3)`, age = `r format(mean(d$age[d$Group == 'Young Adults']), digits = 3)`, ±`r format(sd(d$age[d$Group == 'Young Adults']), digits = 3)`) and older (n = `r format(count(d[d$Group == 'Young Adults',]), digits = 3)`, age = `r format(mean(d$age[d$Group == 'Older Adults']), digits = 3)`, ±`r format(sd(d$age[d$Group == 'Older Adults']), digits = 3)`) adults
+- Healthy younger (n = `r format(count(d[d$Group == 'Young Adults',]), digits = 3)`, age = `r format(mean(d$age[d$Group == 'Young Adults']), digits = 3)`, ±`r format(sd(d$age[d$Group == 'Young Adults']), digits = 3)`) and older (n = `r format(count(d[d$Group == 'Older Adults',]), digits = 3)`, age = `r format(mean(d$age[d$Group == 'Older Adults']), digits = 3)`, ±`r format(sd(d$age[d$Group == 'Older Adults']), digits = 3)`) adults
 - Actigraphy
 - fMRI scanning
 - Episodic memory measures: associative memory task, CVLT (older adults only)
