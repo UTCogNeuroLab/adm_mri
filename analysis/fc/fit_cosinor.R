@@ -10,7 +10,7 @@ library(dplyr)
 
 
 work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/'
-proc_dir <- paste0(work_dir, 'processed_R_2021-06-14')
+proc_dir <- paste0(work_dir, 'processed_2021-06-14')
 
 files <- list.files(proc_dir, pattern = '.csv', full.names = TRUE)
 # files should be two-column format, with columns = time, activity
@@ -19,7 +19,7 @@ files <- list.files(proc_dir, pattern = '.csv', full.names = TRUE)
 results = c()
 
 for (filename in files){
-  d=read.csv(filename, header=TRUE, sep=' ', na.string=' ')
+  d = read.csv(filename, header=TRUE, sep=',', na.string=' ')
   colnames(d) <- c('time', 'activity')
   d$record_id <- stringr::str_sub(basename(filename), 1, 5)
   d$cloktime=lubridate::hour(d$time) + lubridate::minute(d$time)/60
@@ -174,8 +174,6 @@ for (filename in files){
 }
 
 colnames(results)=c('record_id','actamp','actbeta','actphi','actmin','actmesor','actupmesor','actdownmesor','actalph','actwidthratio','rsqact','fact','fnlrgact')
-
-cr_results <- merge(cr_np, results, by='record_id', all = TRUE)
 
 write.csv(results, file=(paste0('~/Box/CogNeuroLab/Aging Decision Making R01/data/actigraphy/circadian_measures/7_days/circadian_rhythms_', format(Sys.time(), '%Y-%m-%d'), '.csv')),row.names=FALSE)
 

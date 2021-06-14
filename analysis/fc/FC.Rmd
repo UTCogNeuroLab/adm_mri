@@ -22,11 +22,14 @@ data_dir <- paste0(work_dir, "data/")
 d <- read_csv(paste0(data_dir, "dataset_2020-10-10.csv")) #includes mean fa from spherical rois 6mm rad
 mem <- read_csv(paste0(data_dir, "mri-behavioral/mem_results_06-2020.csv"))
 cr <- read_csv(paste0(data_dir, "actigraphy/circadian_measures/7_days/circadian_rhythms_2021-06-14.csv"))
-dropcols <- c('actamp','actbeta','actphi','actmin','actmesor','actupmesor','actdownmesor','actalph','actwidthratio','rsqact','fact','fnlrgact')
+sleep <- read_csv(paste0(data_dir, "actigraphy/actiware_exports/sleep_metrics_summarized.csv"))
+
+dropcols <- c('actamp','actbeta','actphi','actmin','actmesor','actupmesor','actdownmesor','actalph','actwidthratio','rsqact','fact','fnlrgact', colnames(sleep)[2:81])
 
 d <- d %>%
- select(!dropcols, -IS, -RA, -IV, -X1) %>%
+ select(!dropcols, -X1) %>%
   merge(cr, by = 'record_id', all = T) %>%
+  merge(sleep, by.x = 'record_id', by.y = 'subject_id', all = T) %>%
   merge(mem, by = 'record_id', all = T)
 
 d$Group <- factor(ifelse(as.numeric(d$record_id) < 40000, 0, 1), labels = c("Young Adults", "Older Adults"))
@@ -40,15 +43,14 @@ d[,recodeVars] <- d %>%
   mutate_if(is.character, factor)
 
 d %>%
-  select(record_id, Group, acc_mean.learning, acc_mean.test) %>%
-  head()
+  group_by(Group) %>%
+  summarise(n = n())
 ```
 
 ```{r}
 d %>%
-  group_by(Group) %>%
-  summarise(n = n())
-
+  select(record_id, Group, acc_mean.learning, acc_mean.test) %>%
+  head()
 ```
 
 ## RAR and Sleep Variable Correlations 
@@ -77,6 +79,9 @@ d %>%
 ```
 ## fMRI QC report
 
+A minimum of 6 YA, 3 OA do not have usable memory task fmri data.
+We have fmri data for a maximum of 51 YA, 66 OA.
+
 ```{r}
 qc <- read_csv("~/Box/CogNeuroLab/Aging Decision Making R01/data/mri/QA report 2021.csv")
 
@@ -95,6 +100,9 @@ qc %>%
 
 ```
 
+
+Missing actigraphy data for 5 OA participants. They do not have sleep variables computed either, so they may not have gone through with the study? Will need to check this.
+
 ```{r}
 d %>%
   filter(! record_id %in% exclude_fmri) %>%
@@ -102,6 +110,23 @@ d %>%
   select(record_id, actamp, sleep_time_mean_sleep)
 
 ```
+
+Maximum n subjects available
+- need updated redcap here
+```{r}
+d %>%
+  filter(! record_id %in% exclude_fmri) %>%
+  drop_na(actamp) %>%
+  group_by(Group, sex) %>%
+  summarize(n = n())
+
+d %>%
+  filter(! record_id %in% exclude_fmri) %>%
+  drop_na(actamp) %>%
+  group_by(Group) %>%
+  summarize(n = n())
+```
+
 
 ## Power Analysis
 
@@ -218,7 +243,7 @@ simulation_arguments <- list(
   model_fit = list(formula = y ~ 1 + group + cr + fc, model_function = 'lm'),
   power = list(dist = 'qnorm', alpha = .05), # assume a two-tailed hypothesis test
   extract_coefficients = TRUE,
-  vary_arguments = list(sample_size = seq(50, 1000, 50))
+  vary_arguments = list(sample_size = seq(40, 200, 10))
 )
 
 model_results <- replicate_simulation(simulation_arguments)
@@ -284,7 +309,15 @@ ggplot(power_results_cr, aes(x = sample_size, y = power)) +
              linetype = 2) +
   scale_x_continuous("Sample Size", breaks = seq(0, 2000, 200)) + scale_y_continuous("Power", breaks = seq(0, 1, .2)) +
   theme_bw(base_size = 14) 
+
 ```
+
+Need at least 60 subjects per group to detect a small effect of CR variable in this 3 variable model.
+
+```{r}
+power_results_fc$sample_size[power_results_fc$power > 0.8][1]
+```
+
 
 ```{r}
 ggplot(power_results_fc, aes(x = sample_size, y = power)) +

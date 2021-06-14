@@ -2,7 +2,7 @@ library(tidyverse)
 library(readr)
 
 work_dir <- "~/Box/CogNeuroLab/Aging Decision Making R01/"
-results_dir <- paste0(work_dir, "results/rest-activity_and_white_matter_microstructure/")
+results_dir <- paste0(work_dir, "results/fc/")
 figs_dir <- paste0(results_dir, "figures/")
 data_dir <- paste0(work_dir, "data/")
 
