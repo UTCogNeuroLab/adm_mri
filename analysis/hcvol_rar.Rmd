@@ -431,3 +431,9 @@ fsvol %>%
   arrange(desc(cvlt_ldelay_recall))
 
 ```
+
+
+```{r}
+df1$sex
+```
+

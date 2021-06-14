@@ -22,10 +22,17 @@ work_dir <- '~/Box/CogNeuroLab/Aging Decision Making R01/Data/Actigraphy/'
 proc_dir <- paste0(work_dir, 'processed_2019-12-11')
 
 files <- list.files(proc_dir, pattern = '.csv', full.names = TRUE)
+
+# files should be two-column format, with columns = time, activity
+
 record_id <- substr(basename(files),1, 5)
+
+files
 ```
 
 ## Non-Parametric Actigraphy Measures
+
+Blume 2016 paper
 
 ```{r Non-Parametric Circadian Measures}
 
@@ -37,6 +44,8 @@ cr_np <- cbind(record_id, cr_np)
 ```
 
 ## Cosinor Method Circadian Measures
+
+Marler 2006 paper
 
 ```{r Cosinor Method Circadian Measures}
 #results = c()

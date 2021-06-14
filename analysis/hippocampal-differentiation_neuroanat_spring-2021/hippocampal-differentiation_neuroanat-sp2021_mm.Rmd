@@ -113,7 +113,7 @@ myVars <- c('Group', 'age', 'sex', 'years_educ', 'global_psqi', 'cesd_score', 'g
 
 catVars <- c('Group', 'sex')
 
-tab1 <- CreateTableOne(vars = myVars, strata = 'Group' , data = d, factorVars = catVars)
+tab1 <- CreateTableOne(vars = myVars, strata = 'Group' , data = df, factorVars = catVars)
 
 ```
 
@@ -178,26 +178,72 @@ d %>%
 ```
 
 ```{r icv_norm, include = FALSE, warning=FALSE}
-ICVnorm <- function(d, x){
+ICVnorm <- function(df, x){
   
   f <- paste(x, '~ EstimatedTotalIntraCranialVol')
-  b <- as.numeric((lm(f, d))$coefficients[2])
-  d[x] = d[x] - b * (d$EstimatedTotalIntraCranialVol - mean(d$EstimatedTotalIntraCranialVol, na.rm = TRUE))
+  b <- as.numeric((lm(f, df))$coefficients[2])
+  df[x] = df[x] - (b * (df$EstimatedTotalIntraCranialVol - mean(df$EstimatedTotalIntraCranialVol, na.rm = TRUE)))
   
-  return(d)
+  return(df)
 }
 
 cols <- names(d[,grepl('hippoc|Hippoc|CA', names(d))])
 
+d_old <- d
+ya <- d_old %>% filter(Group == "Young Adults")
+oa <- d_old %>% filter(Group == "Older Adults")
+ya_old <- ya
+oa_old <- oa
+
 for (col in cols){
   d <- ICVnorm(d, col)
+  ya <- ICVnorm(ya, col)
+  oa <- ICVnorm(oa, col)
 }
+
+d_og <- d
+d_og$Group <- factor(d_og$Group, levels = c('Young Adults', 'Older Adults'))
+
+d <- c()
+d <- rbind(ya, oa)
+d$Group <- factor(d$Group, levels = c('Young Adults', 'Older Adults'))
+d$sleepundersix <- factor(ifelse(d$sleep_time_mean_sleep < 360, 'Under 6 h', 'At least 6 h'))
+  
 
 ```
 
 ### ICV normalized 
 
 We wanted to look at hippocampal volume independently of total intracranial volume, so we calculated HC volume as follows: adjusted HC volume = raw HC volume – b X (ICV – average ICV), where b is the slope of regression of the raw HC volume on ICV ([Brehmer et al., 2020](https://doi.org/10.1016/j.neuroimage.2019.116475)).
+
+```{r, echo = FALSE, warning = FALSE}
+pl1 <- d_old %>%
+  group_by(Group) %>%
+  select(record_id, Group, Left.Hippocampus) %>%
+  do(head(., 5))
+
+pl2 <- d_og %>%
+  group_by(Group) %>%
+  select(record_id, Group, Left.Hippocampus) %>%
+  do(head(., 5))
+
+pl3 <- d %>%
+  group_by(Group) %>%
+  select(record_id, Group, Left.Hippocampus) %>%
+  do(head(., 5))
+
+ggplot() +
+  geom_point(data = pl1, aes(x = 0, y = Left.Hippocampus, color = factor(record_id), group = Group)) +
+  geom_point(data = pl2, aes(x = 1, y = Left.Hippocampus, color = factor(record_id), group = Group)) +
+  geom_point(data = pl3, aes(x = 2, y = Left.Hippocampus, color = factor(record_id), group = Group)) + 
+  theme_minimal() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c("no ICV adjustment", "ICV adjusted - all", "ICV adjusted - group")) + 
+  scale_color_discrete(name="Participant ID") +
+  ylab("Left hippocampal volume") +
+  xlab("ICV adjustment method") +
+  facet_grid(Group ~ .)
+```
+
 
 ```{r icv_norm_plots, echo = FALSE, warning = FALSE}
 
@@ -381,7 +427,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'cvlt_1', 'cvlt_sdelay_recall', 'cvlt_ldelay_recall', 'cvlt_recognition_hits'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'cvlt_1', 'cvlt_sdelay_recall', 'cvlt_ldelay_recall', 'cvlt_recognition_hits'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   melt(id.vars = c('record_id', 'Group', 'Hippocampal region', 'Hippocampal subregion volume', 'cvlt_1', 'cvlt_sdelay_recall', 'cvlt_ldelay_recall', 'cvlt_recognition_hits'), measure.vars = c('cvlt_1', 'cvlt_sdelay_recall', 'cvlt_ldelay_recall', 'cvlt_recognition_hits'), variable.name = 'CVLT Measure', value.name = 'Raw Score') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = `Raw Score`, group = Group, color = Group)) +
   geom_point() + 
@@ -421,7 +468,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'acc_mean.learning'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'acc_mean.learning'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = acc_mean.learning, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -435,13 +483,15 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'acc_mean.test'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'acc_mean.test'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = acc_mean.test, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
   facet_grid(. ~ `Hippocampal region`, scales = 'free_x') + 
   scale_color_brewer(palette = 'Set1') + theme_minimal() + 
-  ylab('Accuracy') + ggtitle('Test phase')
+  ylab('Accuracy') + ggtitle('Test phase') +
+  ggsave("~/Desktop/hcvol_memtask.png")
 
 
 # rt
@@ -451,7 +501,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.learning'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.learning'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = rt_c_mean.learning, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -465,7 +516,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.test'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.test'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = rt_c_mean.test, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -484,24 +536,26 @@ dmem %>%
 dmem %>%
   melt(id.vars = c('record_id', 'Group', 'acc_mean.learning', 'acc_mean.test', 'memrepeat_accuracy', 'sleep_time_mean_sleep', 'actphi'), measure.vars = c('acc_mean.learning', 'acc_mean.test', 'memrepeat_accuracy'), variable.name = 'Task Phase', value.name = 'Accuracy') %>%
   mutate(`Task Phase` =  factor(`Task Phase`, labels = c('Learning', 'Test', 'Repeat'))) %>%
+  filter(`Task Phase` != 'Repeat') %>%
   ggplot(aes(x = actphi, y = Accuracy, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
   facet_grid(. ~ `Task Phase`, scales = 'free') + 
   scale_color_brewer(palette = 'Set1') + theme_minimal() + 
-  xlab('Acrophase')
+  xlab('Acrophase') + ggsave("~/Desktop/acrophase_accuracy.png")
 
 dmem %>%
   filter(sleep_time_mean_sleep < 700) %>%
   filter(rt_c_mean.learning < 6000) %>%
   melt(id.vars = c('record_id', 'Group', 'rt_c_mean.learning', 'rt_c_mean.test', 'memrepeat_rt', 'sleep_time_mean_sleep', 'actphi'), measure.vars = c('rt_c_mean.learning', 'rt_c_mean.test', 'memrepeat_rt'), variable.name = 'Task Phase', value.name = 'Response Time') %>%
   mutate(`Task Phase` =  factor(`Task Phase`, labels = c('Learning', 'Test', 'Repeat'))) %>%
+  filter(`Task Phase` != 'Repeat') %>%
   ggplot(aes(x = actphi, y = `Response Time`, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
   facet_grid(. ~ `Task Phase`, scales = 'free') + 
   scale_color_brewer(palette = 'Set1') + theme_minimal() + 
-  xlab('Acrophase')
+  xlab('Acrophase') + ggsave("~/Desktop/acrophase_rtc.png")
 
 ```
 
@@ -515,9 +569,10 @@ dmem %>%
   filter(sleep_time_mean_sleep < 700) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
+  rename(`Total` = Hippocampus) %>%
   rename(`Sleep duration` = sleep_time_mean_sleep) %>%
   rename(`Acrophase` = actphi) %>%
-  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Sleep duration`, y = `Hippocampal subregion volume`, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -530,9 +585,10 @@ dmem %>%
   filter(sleep_time_mean_sleep < 700) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
+  rename(`Total` = Hippocampus) %>%
   rename(`Sleep duration` = sleep_time_mean_sleep) %>%
   rename(`Acrophase` = actphi) %>%
-  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = IS, y = `Hippocampal subregion volume`, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -545,9 +601,10 @@ dmem %>%
   filter(sleep_time_mean_sleep < 700) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
+  rename(`Total` = Hippocampus) %>%
   rename(`Sleep duration` = sleep_time_mean_sleep) %>%
   rename(`Acrophase` = actphi) %>%
-  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = Acrophase, y = `Hippocampal subregion volume`, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -585,7 +642,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'acc_mean.learning'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'acc_mean.learning'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = acc_mean.learning, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -599,7 +657,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.learning'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.learning'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = rt_c_mean.learning, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -614,7 +673,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'acc_mean.test'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'acc_mean.test'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = acc_mean.test, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -628,7 +688,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.test'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'rt_c_mean.test'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = rt_c_mean.test, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -645,7 +706,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'accuracy.match', 'accuracy.mismatch'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'accuracy.match', 'accuracy.mismatch'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   melt(id.vars = c('record_id', 'Group', 'Hippocampal region', 'Hippocampal subregion volume'), measure.vars = c('accuracy.match', 'accuracy.mismatch'), variable.name = 'Trial type', value.name = 'Accuracy') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = Accuracy, group = Group, color = Group)) +
   geom_point() + 
@@ -660,7 +722,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'rt_c.match', 'rt_c.mismatch'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'rt_c.match', 'rt_c.mismatch'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   melt(id.vars = c('record_id', 'Group', 'Hippocampal region', 'Hippocampal subregion volume'), measure.vars = c('rt_c.match', 'rt_c.mismatch'), variable.name = 'Trial type', value.name = 'rt_c') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = rt_c, group = Group, color = Group)) +
   geom_point() + 
@@ -677,7 +740,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'memrepeat_accuracy'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'memrepeat_accuracy'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = memrepeat_accuracy, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -691,7 +755,8 @@ dmem %>%
   filter(acc_mean.learning > 0.33) %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
-  melt(id.vars = c('record_id', 'Group', 'memrepeat_rt'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  rename(`Total` = Hippocampus) %>%
+  melt(id.vars = c('record_id', 'Group', 'memrepeat_rt'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = memrepeat_rt, group = Group, color = Group)) +
   geom_point() + 
   stat_smooth(method = 'lm', formula = 'y ~ x') +
@@ -731,9 +796,10 @@ d %>%
 dmem %>%
   rename(`Head` = Hippocampal_head) %>%
   rename(`Tail` = Hippocampal_tail) %>%
+  rename(`Total` = Hippocampus) %>%
   rename(`Sleep duration` = sleep_time_mean_sleep) %>%
   rename(`Acrophase` = actphi) %>%
-  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
+  melt(id.vars = c('record_id', 'Group', 'IS', 'Sleep duration', 'Acrophase'), measure.vars = c('Head', 'Tail', 'Total'), variable.name = 'Hippocampal region', value.name = 'Hippocampal subregion volume') %>%
   melt(id.vars = c('record_id', 'Group', 'Hippocampal region', 'Hippocampal subregion volume'), measure.vars = c('IS', 'Sleep duration', 'Acrophase'), variable.name = 'Rest-Activity measure', value.name = 'value') %>%
   ggplot(aes(x = `Hippocampal subregion volume`, y = value, group = Group, color = Group)) +
   geom_point() + 
@@ -931,8 +997,14 @@ summary(lm(rt_c_mean.test ~ Hippocampal_tail + Group, data = dmem2))
 summary(lm(accuracy.mismatch ~  Hippocampal_head * Group, data = dmem)) 
 summary(lm(accuracy.match ~ Hippocampal_head + Group, data = dmem)) 
 
-summary(lm(accuracy.mismatch ~  Hippocampal_tail + Group, data = dmem)) 
-summary(lm(accuracy.match ~ Hippocampal_head + Group, data = dmem)) 
+summary(lm(accuracy.mismatch ~  Hippocampal_tail * Group, data = dmem)) 
+summary(lm(accuracy.match ~ Hippocampal_tail + Group, data = dmem)) 
+
+summary(lm(rt_c.mismatch ~  Hippocampal_head * Group, data = dmem)) 
+summary(lm(rt_c.match ~ Hippocampal_head + Group, data = dmem)) 
+
+summary(lm(rt_c.mismatch ~  Hippocampal_tail * Group, data = dmem)) 
+summary(lm(rt_c.match ~ Hippocampal_tail + Group, data = dmem)) 
 
 ## recognition
 
@@ -966,21 +1038,31 @@ summary(lm(Hippocampal_tail ~ IS + Group, data = dmem2))
 
 
 ```{r sleep_stats}
+
+summary(lm(sleep_time_mean_sleep ~ age, data = filter(d, Group == 'Older Adults')))
+summary(lm(actphi ~ age, data = filter(d, Group == 'Older Adults')))
+summary(lm(IS ~ age, data = filter(d, Group == 'Older Adults')))
+
 ## cvlt
 summary(lm(cvlt_1 ~ sleep_time_mean_sleep + age, data = filter(dmem2, Group == 'Older Adults')))
 summary(lm(cvlt_sdelay_recall ~ sleep_time_mean_sleep + age, data = filter(dmem2, Group == 'Older Adults')))
 summary(lm(cvlt_ldelay_recall ~ sleep_time_mean_sleep + age, data = filter(dmem2, Group == 'Older Adults')))
 summary(lm(cvlt_recognition_hits ~ sleep_time_mean_sleep + age, data = filter(dmem2, Group == 'Older Adults')))
 
-summary(lm(cvlt_1 ~ IS, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_sdelay_recall ~ IS, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_ldelay_recall ~ IS, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_recognition_hits ~ IS, data = filter(dmem2, Group == 'Older Adults'))) #
+summary(lm(cvlt_1 ~ IS + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_sdelay_recall ~ IS + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_ldelay_recall ~ IS + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_recognition_hits ~ IS + age, data = filter(dmem2, Group == 'Older Adults'))) #
 
-summary(lm(cvlt_1 ~ actphi, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_sdelay_recall ~ actphi, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_ldelay_recall ~ actphi, data = filter(dmem2, Group == 'Older Adults')))
-summary(lm(cvlt_recognition_hits ~ actphi, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_1 ~ actphi + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_sdelay_recall ~ actphi + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_ldelay_recall ~ actphi + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_recognition_hits ~ actphi + age, data = filter(dmem2, Group == 'Older Adults')))
+
+summary(lm(cvlt_1 ~ actamp + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_sdelay_recall ~ actamp + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_ldelay_recall ~ actamp + age, data = filter(dmem2, Group == 'Older Adults')))
+summary(lm(cvlt_recognition_hits ~ actamp + age, data = filter(dmem2, Group == 'Older Adults')))
 
 t.test(acc_mean.test ~ sleepundersix, data = filter(dmem2, Group == 'Older Adults'))
 t.test(rt_c_mean.test ~ sleepundersix, data = filter(dmem2, Group == 'Older Adults'))
@@ -1042,6 +1124,25 @@ summary(lm(memrepeat_accuracy ~ IS + Group, data = dmem2))
 
 summary(lm(memrepeat_rt ~ IS * Group, data = dmem2))
 summary(lm(memrepeat_rt ~ IS + Group, data = dmem2)) 
+
+# amplitude
+summary(lm(acc_mean.learning ~ actamp * Group, data = dmem2))
+summary(lm(acc_mean.learning ~ actamp + Group, data = dmem2))
+
+summary(lm(rt_c_mean.learning~ actamp * Group, data = dmem2))
+summary(lm(rt_c_mean.learning~ actamp + Group, data = dmem2)) # ~
+
+summary(lm(acc_mean.test~ actamp * Group, dmem2))
+summary(lm(acc_mean.test~ actamp + Group, dmem2)) ##
+
+summary(lm(rt_c_mean.test ~ actamp * Group, dmem2))
+summary(lm(rt_c_mean.test ~ actamp + Group, dmem2))
+
+summary(lm(memrepeat_accuracy ~ actamp * Group, data = dmem2)) 
+summary(lm(memrepeat_accuracy ~ actamp + Group, data = dmem2)) 
+
+summary(lm(memrepeat_rt ~ actamp * Group, data = dmem2))
+summary(lm(memrepeat_rt ~ actamp + Group, data = dmem2)) 
 ```
 
 ```{r, include = FALSE, warning=FALSE}
@@ -1111,4 +1212,37 @@ acc_mean.test.face, group = Group, color = Group)) +
   stat_smooth(method = 'lm') + scale_color_brewer(palette = 'Set1') + theme_minimal()
 ```
 
+## Correlation matrix
+```{r}
+
+cordf <- dmem2 %>%
+  select(actamp:fact, IS, IV, RA, matches("Amygdala|Caudate|Pallidus|Putamen|Thalamus")) %>%
+  corrr::correlate() %>%
+  corrr::focus(actamp:fact, IS, IV, RA)
+
+corrplot::corrplot(cordf)
+
+dmem2 %>%
+  select(actamp:fact, IS, IV, RA, matches("Amygdala|Caudate|Pallidus|Putamen|Thalamus")) %>%
+  corrr::correlate() %>%
+  corrr::rplot() + theme_minimal() + theme(axis.text.x = element_text(angle = 90)) +
+  ggsave('~/Desktop/corplot.png')
+
+dmem2 %>%
+  filter(Group == "Young Adults") %>%
+  select(actamp:fact, IS, IV, RA, matches("Amygdala|Caudate|Pallidus|Putamen|Thalamus")) %>%
+  corrr::correlate() %>%
+  corrr::rplot() + theme_minimal() + theme(axis.text.x = element_text(angle = 90)) +
+  ggsave('~/Desktop/corplot_ya.png')
+
+```
+
+```{r}
+dmem2 %>%
+  filter(Group == "Older Adults") %>%
+  select(actamp:fact, IS, IV, RA, matches("Amygdala|Caudate|Pallidus|Putamen|Thalamus")) %>%
+  corrr::correlate() %>%
+  corrr::rplot() + theme_minimal() + theme(axis.text.x = element_text(angle = 90)) +
+  ggsave('~/Desktop/corplot_oa.png')
+```
 
