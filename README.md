@@ -1,25 +1,63 @@
-# Age-related changes in aspects of the rest-activity cycle and their relationship to memory and decision-making performance
-This research is supported by the National Institute on Aging of the National Institutes of Health under award number R01AG043425.
+# Preprocessing
 
-The purpose of this project is to investigate changes in cognitive functions associated with aging and examine how these effects are mediated by sleep-wake cycles. 
+Using data collected on a Siemens Skyra 3T, we convert DICOMS to NIFTI, organize data into BIDS format, use MRIQC for quality analysis, and run fMRIprep for minimal preprocessing.
 
-**Note:** If GitHub isn't displaying notebooks, you can view them using the [Jupyter Notebook Viewer](https://nbviewer.jupyter.org/).
+The following commands are given as an example for subject number 30000. 
 
-## Actigraphy
-- Processing script for actigraphy data
-- Script for computing rest-activity measures using the extended cosinor method [(Marler et al., 2006)](https://doi.org/10.1002/sim.2466)
-- Visualize actigraphy data plots
-- Determine variability in an individual's rest-activity measures based on the duration of the recording period
+## Download raw scan data from Osirix
 
-## MRI
-- BIDS conversion
-- Instructions for running fmriprep and mriqc
-- DTI preprocessing
-- Example job submission script for running fmriprep on tacc
+The directory containing raw scan data should be moved to `/Volumes/schnyer/Aging_DecMem/Scan_Data/RAW`.
 
-## PVT
-For psychomotor vigilance task analysis. We use PC-PVT [(Khitrov et al., 2014)](https://www.ncbi.nlm.nih.gov/pubmed/?term=23709163).
+## BIDS conversion
 
-## Analysis
-Scripts for current and past projects!
+1. BIDS conversion with Heudiconv
 
+**CURRENTLY TESTING**
+
+`docker run --rm -it -v /Volumes/schnyer/Aging_DecMem/Scan_Data:/base nipy/heudiconv:latest -d /base/RAW/Adm-{subject}/*/*/*.dcm -o /base/BIDS/ -f convertall -s 30000 -c none --overwrite`
+
+2. Convert fieldmaps
+
+`sh bids_conversion/fix_fmaps.sh`
+
+3. BIDS Validator
+Upload the BIDS directory to the [BIDS Validator website](http://bids-standard.github.io/bids-validator/) and check to make sure there are no errors.
+
+## mriqc
+Requires [Docker](https://docs.docker.com/engine/installation/).\
+Documentation available [here](https://mriqc.readthedocs.io/en/stable/docker.html).
+
+To run mriqc:
+
+*Participant level command*\
+Currently using a fd threshold of 0.25 mm for rsfMRI and 0.50 mm for task fMRI
+
+```
+docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out participant --fd_thres 0.25 --no-sub -vvv --participant_label 30000 
+```
+*Group level command*
+
+```
+docker run -it --rm -v /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/:/data:ro -v /Volumes/schnyer/Aging_DecMem/Scan_Data/MRIQC/:/out poldracklab/mriqc:0.9.10 /data /out group -m {T1w,bold} 
+```
+
+#### Update excel sheet with information about scan quality
+Review group mriqc report and copy values to the Google Sheet, which is available at `/Volumes/schnyer/Aging_DecMem/Scan_Data/AgingDataProgress.xlsx`
+
+## fmriprep
+Requires [Docker](https://docs.docker.com/engine/installation/).\
+You will need to specify the path to a freesufer license file. If you do not already have a freesurfer license, you can obtain one [here](https://surfer.nmr.mgh.harvard.edu/fswiki/License).
+
+[Installation instructions](https://fmriprep.readthedocs.io/en/stable/installation.html)
+
+To install fmriprep:
+
+```
+pip install --user --upgrade fmriprep-docker
+```
+To run fmriprep:
+
+```
+export FS_LICENSE=/Users/PSYC-mcm5324/Applications/freesurfer/license.txt
+fmriprep-docker /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/     /Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/fmriprep/     participant -w Volumes/schnyer/Aging_DecMem/Scan_Data/BIDS/derivatives/ --notrack --ignore slicetiming -v --participant_label 30000
+```

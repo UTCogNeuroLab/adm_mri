@@ -1,0 +1,54 @@
+#!/bin/bash
+#----------------------------------------------------
+# Sample Slurm job script
+#   for TACC Stampede2 SKX nodes
+#
+#   *** Serial Job on SKX Normal Queue ***
+#
+# Last revised: 20 Oct 2017
+#
+# Notes:
+#
+#   -- Copy/edit this script as desired.  Launch by executing
+#      "sbatch skx.serial.slurm" on a Stampede2 login node.
+#
+#   -- Serial codes run on a single node (upper case N = 1).
+#        A serial code ignores the value of lower case n,
+#        but slurm needs a plausible value to schedule the job.
+#
+#   -- For a good way to run multiple serial executables at the
+#        same time, execute "module load launcher" followed
+#        by "module help launcher".
+
+#----------------------------------------------------
+
+#SBATCH -J fmriprep_adm    # Job name
+#SBATCH -o fmriprep_adm.o%j       # Name of stdout output file
+#SBATCH -e fmriprep_adm.e%j       # Name of stderr error file
+#SBATCH -p normal      # Queue (partition) name
+#SBATCH -N 1               # Total # of nodes (must be 1 for serial)
+#SBATCH -n 8               # Total # of mpi tasks (should be 1 for serial)
+#SBATCH -t 24:00:00        # Run time (hh:mm:ss)
+#SBATCH --mail-user=mcmahonmc@utexas.edu
+#SBATCH --mail-type=all    # Send email at begin and end of job
+#SBATCH -A Machine-learning-app       # Allocation name (req'd if you have more than 1)
+
+# Other commands must follow all #SBATCH directives...
+module load tacc-singularity
+module list
+pwd
+date
+
+# Launch serial code...
+
+singularity run --cleanenv $WORK/singularity/fmriprep-latest.simg \
+    /work/06089/mcm5324/stampede2/BIDS2 /scratch/06089/mcm5324/ \
+    participant \
+    --nthreads 8 --mem_mb 32000 \
+    --ignore slicetiming \
+    --fs-no-reconall \
+    --fs-license-file /work/04171/dpisner/stampede2/freesurfer/license.txt \
+    -w /scratch/06089/mcm5324/ \
+    --participant-label 40779
+
+# ---------------------------------------------------
